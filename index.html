@@ -76,40 +76,172 @@ footer small{color:var(--mute);font-size:.75rem;letter-spacing:.12em;text-transf
 .js .reveal{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s ease}
 .js .reveal.in{opacity:1;transform:none}
 @media (prefers-reduced-motion: reduce){.ticker .track,.kicker::before{animation:none}.js .reveal{opacity:1;transform:none;transition:none}}
-</style>
-</head>
-<body>
-<div class="wrap">
-  <header class="top">
-    <span>Bez maski</span>
-    <nav><a href="#o-mnie">O mnie</a><a href="#ksiazki">Książki</a><a href="#najnowszy">Najnowszy</a><a href="wideo.html">Wszystkie</a><a href="#wesprzyj">Wesprzyj</a></nav>
-  </header>
 
-  <section class="hero">
+.topics{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+@media(max-width:700px){.topics{grid-template-columns:1fr}}
+.topic{display:block;border:1px solid var(--line);padding:1.2rem;text-decoration:none;transition:border-color .2s}
+.topic:hover{border-color:var(--red)}
+.topic h3{font-family:Anton,Impact,sans-serif;font-weight:400;text-transform:uppercase;font-size:1.5rem;line-height:1.1;margin:0 0 .5rem}
+.topic p{margin:0;color:var(--mute);font-size:.92rem}
+.topic .go{display:inline-block;margin-top:.8rem;color:var(--red);font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600}
+.timeline{list-style:none;margin:0;padding:0;border-left:1px solid var(--line)}
+.timeline li{position:relative;padding:0 0 1.4rem 1.4rem}
+.timeline li::before{content:"";position:absolute;left:-5px;top:.45rem;width:9px;height:9px;background:var(--red)}
+.timeline .y{font-family:Anton,Impact,sans-serif;font-size:1.3rem;letter-spacing:.03em}
+.timeline .x{color:var(--soft);font-size:.95rem}
+.quotes{display:grid;gap:1.2rem}
+blockquote{margin:0;padding:1.2rem 1.4rem;border-left:3px solid var(--red);background:#120f0d}
+blockquote p{margin:0 0 .6rem;font-size:1.05rem;color:var(--bone);font-style:italic}
+blockquote footer{font-size:.8rem;color:var(--mute);letter-spacing:.04em;padding:0;border:0;margin:0}
+.tip{border:1px solid var(--line);padding:1.4rem}
+.tip p{color:var(--soft);margin:0 0 1rem}
+.tip a{color:var(--bone);font-weight:600;border-bottom:1px solid var(--red);text-decoration:none}
+.tip small{display:block;margin-top:1rem;color:var(--mute);font-size:.8rem}
+
+.bk{border-top:1px solid var(--line);padding:1.6rem 0}
+.bk:last-child{border-bottom:1px solid var(--line)}
+.bk-head{display:flex;gap:1rem;align-items:baseline;margin-bottom:.4rem}
+.bk-head .n{color:var(--red);font-weight:600;font-size:.8rem;letter-spacing:.08em}
+.bk-head .y{color:var(--mute);font-size:.85rem;letter-spacing:.06em}
+.bk h3{font-family:Anton,Impact,sans-serif;font-weight:400;text-transform:uppercase;font-size:clamp(1.5rem,3.5vw,2.1rem);line-height:1.05;margin:0 0 .5rem}
+.bk > p{margin:0 0 .8rem;color:var(--soft)}
+.bk-opinie{display:grid;gap:.8rem;margin-top:1rem}
+.bk-opinie blockquote{padding:.9rem 1.1rem}
+
+.form label{display:block;margin-bottom:1rem;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.form input[type=text],.form textarea{display:block;width:100%;margin-top:.4rem;background:#0d0a0b;border:1px solid var(--line);color:var(--bone);padding:.75rem;font:inherit;font-size:1rem;letter-spacing:0;text-transform:none}
+.form input[type=text]:focus,.form textarea:focus{outline:none;border-color:var(--red)}
+.form .check{display:flex;gap:.6rem;align-items:flex-start;text-transform:none;letter-spacing:0;font-size:.95rem;color:var(--soft)}
+.form .check input{width:auto;margin:.25rem 0 0}
+.form button.btn{cursor:pointer;background:var(--red);color:#fff;border-color:var(--red);font-family:inherit}
+.form button.btn:hover{background:#fff;border-color:#fff;color:var(--ink)}
+.form .hint{font-size:.8rem;color:var(--mute);margin:.8rem 0 0}
+</style>
+<body>
+
+<section class="hero">
     <div class="kicker">Dziennikarz śledczy</div>
     <h1 class="name"><span>Piotr</span><span class="out">Krysiak</span></h1>
     <p class="lead">Pisze reportaże o tym, co inni wolą przemilczeć. Książki, śledztwa i program „Bez maski”, w którym sprawdza, co wynika z akt.</p>
     <div class="cta"><a class="btn solid" href="#najnowszy">Najnowszy odcinek</a><a class="btn" href="#ksiazki">Książki</a></div>
   </section>
-</div>
-
 <div class="ticker" aria-hidden="true"><div class="track">
   Bez maski<span class="sep">/</span>Dziennikarstwo śledcze<span class="sep">/</span>Ciągle sprawdzam<span class="sep">/</span>Bez maski<span class="sep">/</span>Dziennikarstwo śledcze<span class="sep">/</span>Ciągle sprawdzam<span class="sep">/</span>
   Bez maski<span class="sep">/</span>Dziennikarstwo śledcze<span class="sep">/</span>Ciągle sprawdzam<span class="sep">/</span>Bez maski<span class="sep">/</span>Dziennikarstwo śledcze<span class="sep">/</span>Ciągle sprawdzam<span class="sep">/</span>
 </div></div>
 
 <div class="wrap">
-  <section class="block reveal" id="o-mnie">
+<section class="block reveal" id="o-mnie">
     <div class="about">
       <div><p class="eyebrow">O mnie</p><h2>Kim<br>jestem</h2></div>
       <div>
-        <p>Piotr Tomasz Krysiak (ur. 1976) to polski dziennikarz śledczy i autor książek reportażowych. Wcześniej pracował m.in. w tygodniku „Wprost” i w TVP, a potem skupił się na pisaniu książek.</p>
+        <p>Piotr Krysiak to polski dziennikarz śledczy i autor książek reportażowych. Wcześniej pracował m.in. w tygodniku „Wprost” i w TVP, a potem skupił się na pisaniu książek.</p>
         <p>Od kilku lat prowadzi program <strong>Bez maski</strong>. Pokazuje dokumenty, relacje i powiązania oraz zaznacza, czego jeszcze nie wiemy.</p>
       </div>
     </div>
+  
+    <ol class="timeline" style="margin-top:2rem">
+      <li><span class="y">1998</span><br><span class="x">Początek pracy dziennikarskiej w dziale stołecznym „Trybuny”.</span></li>
+      <li><span class="y">2003</span><br><span class="x">Przejście do powstającego „Faktu”, a następnie praca w „Życiu Warszawy”. Dokładne daty nieustalone.</span></li>
+      <li><span class="y">2004</span><br><span class="x">Organizuje koncert polskich artystów na Majdanie w Kijowie podczas Pomarańczowej Rewolucji.</span></li>
+      <li><span class="y">2005</span><br><span class="x">Praca w „Super Expressie”, potem w tygodniku „Wprost”. Pierwsza książka: „Edyta Górniak. Bez cenzury”. W 2009 r. sąd nakazał m.in. przeprosiny i zakazał rozpowszechniania części książki.</span></li>
+      <li><span class="y">ok. 2008–2009</span><br><span class="x">Przejście z „Wprost” do TVP Info, współtworzenie portalu stacji, potem praca w serwisie informacyjnym.</span></li>
+      <li><span class="y">2010</span><br><span class="x">„Agent Tomek: Spowiedź”. Producent TVP Info, a później szef serwisów informacyjnych.</span></li>
+      <li><span class="y">2013</span><br><span class="x">Szef publicystyki TVP Info. Współtworzy program „Kuchnia z Wiejskiej”, związany z „Woronicza 17” i wydawca „Minęła 20”.</span></li>
+      <li><span class="y">2016</span><br><span class="x">Odejście z TVP. Według relacji Krysiaka stracił pracę po zmianach w telewizji publicznej.</span></li>
+      <li><span class="y">2017</span><br><span class="x">„Wyspa ślepców”.</span></li>
+      <li><span class="y">2018</span><br><span class="x">„Dziewczyny z Dubaju” i „Diler gwiazd”.</span></li>
+      <li><span class="y">2021</span><br><span class="x">Premiera filmu „Dziewczyny z Dubaju” w kinach. Książka „Chłopaki z Dubaju”.</span></li>
+      <li><span class="y">2023</span><br><span class="x">„Dziewczyny z Dubaju 2”. Sprawy sądowe związane z publikacjami, m.in. pozew Omenaa Mensah i prywatny akt oskarżenia Jarosława Jakimowicza, który sąd drugiej instancji oddalił.</span></li>
+      <li><span class="y">Marzec 2024</span><br><span class="x">Dziennikarz śledczy tygodnika „Newsweek”.</span></li>
+      <li><span class="y">2025</span><br><span class="x">Dołącza do redakcji Gońca. Prowadzi stały format na kanale Gońca na YouTube.</span></li>
+      <li><span class="y">2025–2026</span><br><span class="x">Rozwija kanał „Bez maski”. Publikuje także w Pressmanii.</span></li>
+    </ol>
   </section>
 
-  <section class="block reveal" id="najnowszy">
+
+  <section class="block reveal" id="ksiazki">
+    <p class="eyebrow">Bibliografia</p>
+    <h2>Książki</h2>
+
+    <article class="bk">
+      <div class="bk-head"><span class="n">01</span><span class="y">2005</span></div>
+      <h3>Edyta Górniak. Bez cenzury</h3>
+      <p>Książka o karierze i życiu wokalistki. Po pozwie część nakładu została wycofana z półek.</p>
+    </article>
+
+    <article class="bk">
+      <div class="bk-head"><span class="n">02</span><span class="y">2010</span></div>
+      <h3>Agent Tomek: Spowiedź</h3>
+      <p>Wywiad-rzeka z „polskim Jamesem Bondem”.</p>
+    </article>
+
+    <article class="bk">
+      <div class="bk-head"><span class="n">03</span><span class="y">2017</span></div>
+      <h3>Wyspa ślepców</h3>
+      <p>Reportaż o sprawie duchownych na Dominikanie.</p>
+      <div class="bk-opinie">
+        <blockquote>
+          <p>„Piotr Krysiak pokazał, że można inaczej, że można docierać do prawdy nawet na kolanach”</p>
+          <footer>Recenzja, Gazeta Śledcza (2017)</footer>
+        </blockquote>
+        <blockquote>
+          <p>„Bardzo polecam”</p>
+          <footer>Opinia czytelnika, Lubimyczytac.pl (ocena 7,5/10)</footer>
+        </blockquote>
+      </div>
+
+    </article>
+
+    <article class="bk">
+      <div class="bk-head"><span class="n">04</span><span class="y">2018</span></div>
+      <h3>Dziewczyny z Dubaju</h3>
+      <p>Kulisy dziennikarskiego śledztwa.</p>
+      <div class="bk-opinie">
+        <blockquote>
+          <p>„Piotr Krysiak wykonał niesamowitą robotę”</p>
+          <footer>Opinia czytelnika, Taniaksiazka.pl</footer>
+        </blockquote>
+      </div>
+    </article>
+
+    <article class="bk">
+      <div class="bk-head"><span class="n">05</span><span class="y">2018</span></div>
+      <h3>Diler gwiazd</h3>
+      <div class="bk-opinie">
+        <blockquote>
+          <p>„Tej książki byłam bardzo ciekawa, ponieważ odkrywa ona tajemnice życia gwiazd”</p>
+          <footer>Recenzja z Empiku, cytowana na piotrkrysiak.eu</footer>
+        </blockquote>
+      </div>
+    </article>
+
+    <article class="bk">
+      <div class="bk-head"><span class="n">06</span><span class="y">2021</span></div>
+      <h3>Chłopaki z Dubaju</h3>
+      <p>Reportaż wcieleniowy o świecie męskiej prostytucji.</p>
+      <div class="bk-opinie">
+        <blockquote>
+          <p>„Krysiak nie ucieka od sensacji”</p>
+          <footer>Recenzja w serwisie ksiazki.wp.pl</footer>
+        </blockquote>
+      </div>
+    </article>
+
+    <article class="bk">
+      <div class="bk-head"><span class="n">07</span><span class="y">2023</span></div>
+      <h3>Dziewczyny z Dubaju 2</h3>
+      <div class="bk-opinie">
+        <blockquote>
+          <p>„Bestsellerem bym książki nie nazwała, ale zdecydowanie jest warta przeczytania”</p>
+          <footer>Opinia czytelnika, Lubimyczytac.pl (ocena 5/10)</footer>
+        </blockquote>
+      </div>
+    </article>
+  </section>
+
+
+<section class="block reveal" id="najnowszy">
     <p class="eyebrow">Najnowszy odcinek</p>
     <a class="latest" id="najnowszy-link" href="https://www.youtube.com/@Piotr_Krysiak/videos" target="_blank" rel="noopener">
       <div class="thumb">
@@ -124,22 +256,34 @@ footer small{color:var(--mute);font-size:.75rem;letter-spacing:.12em;text-transf
     </a>
   </section>
 
-  <section class="block reveal" id="ksiazki">
-    <p class="eyebrow">Bibliografia</p>
-    <h2>Książki</h2>
-    <ol class="books">
-      <li><span class="n">01</span><span class="t">Edyta Górniak. Bez cenzury</span><span class="y">2005</span></li>
-      <li><span class="n">02</span><span class="t">Agent Tomek: Spowiedź</span><span class="y">2010</span></li>
-      <li><span class="n">03</span><span class="t">Dzieci świata</span><span class="y">2011</span><span class="d">Współautorka: Monika Witkowska</span></li>
-      <li><span class="n">04</span><span class="t">Wyspa ślepców</span><span class="y">2017</span></li>
-      <li><span class="n">05</span><span class="t">Dziewczyny z Dubaju</span><span class="y">2018</span></li>
-      <li><span class="n">06</span><span class="t">Diler gwiazd</span><span class="y">2018</span></li>
-      <li><span class="n">07</span><span class="t">Chłopaki z Dubaju</span><span class="y">2021</span><span class="d">Reportaż wcieleniowy</span></li>
-      <li><span class="n">08</span><span class="t">Dziewczyny z Dubaju 2</span><span class="y">2023</span></li>
-    </ol>
+<section class="block reveal" id="tematy">
+    <p class="eyebrow">Śledztwa</p>
+    <h2>Tematy</h2>
+    <div class="topics">
+      <a class="topic" href="https://www.youtube.com/@Piotr_Krysiak/search?query=Collegium%20Humanum" target="_blank" rel="noopener">
+        <h3>Collegium Humanum</h3>
+        <p>Odcinki o uczelni i dyplomach, które wzbudziły pytania o zasady studiowania.</p>
+        <span class="go">Zobacz odcinki</span>
+      </a>
+      <a class="topic" href="https://www.youtube.com/@Piotr_Krysiak/search?query=Epstein" target="_blank" rel="noopener">
+        <h3>Epstein</h3>
+        <p>Materiały o sprawie Jeffreya Epsteina i ludziach z jego otoczenia.</p>
+        <span class="go">Zobacz odcinki</span>
+      </a>
+      <a class="topic" href="https://www.youtube.com/@Piotr_Krysiak/search?query=Dziewczyny%20z%20Dubaju" target="_blank" rel="noopener">
+        <h3>Dziewczyny z Dubaju</h3>
+        <p>Reportaże o Polkach pracujących w Dubaju. Temat książkowy i kilka odcinków programu.</p>
+        <span class="go">Zobacz odcinki</span>
+      </a>
+      <a class="topic" href="https://www.youtube.com/@Piotr_Krysiak/search?query=Bez%20maski" target="_blank" rel="noopener">
+        <h3>Bez maski</h3>
+        <p>Wszystkie odcinki programu: raporty specjalne i rozmowy z ludźmi z wnętrza afer.</p>
+        <span class="go">Wszystkie odcinki</span>
+      </a>
+    </div>
   </section>
 
-  <section class="block reveal" id="wesprzyj">
+<section class="block reveal" id="wesprzyj">
     <p class="eyebrow">Wsparcie</p>
     <h2>Wesprzyj</h2>
     <div class="support">
@@ -148,16 +292,27 @@ footer small{color:var(--mute);font-size:.75rem;letter-spacing:.12em;text-transf
     </div>
   </section>
 
-  <section class="block reveal" id="social">
+<section class="block reveal" id="social">
     <p class="eyebrow">Gdzie mnie szukać</p>
     <h2>Social media</h2>
     <ul class="links" id="lista-socials"></ul>
   </section>
+  <section class="block reveal" id="informatorzy">
+    <p class="eyebrow">Kontakt</p>
+    <h2>Masz informację?</h2>
+    <form class="form" id="form-info" novalidate>
+      <label>Imię (nieobowiązkowo)<input type="text" name="imie" autocomplete="given-name"></label>
+      <label>Kontakt do odpowiedzi (nieobowiązkowo)<input type="text" name="kontakt" placeholder="e-mail albo numer"></label>
+      <label>Temat<input type="text" name="temat" required></label>
+      <label>Wiadomość<textarea name="tresc" rows="6" required></textarea></label>
+      <label class="check"><input type="checkbox" name="zgoda" required> Rozumiem, że wiadomość zostanie wysłana z mojej poczty, a nie przez stronę.</label>
+      <button type="submit" class="btn">Otwórz wiadomość</button>
+      <p class="hint">Formularz otworzy Twoją aplikację poczty z gotowym tekstem. Nic nie zostanie wysłane bez Twojego kliknięcia. Nie wysyłaj dokumentów z danymi osobowymi, dopóki nie uzgodnisz bezpiecznego sposobu przekazania.</p>
+    </form>
+  </section>
 
-  <footer>
-    <p class="big">Ciągle <em>sprawdzam</em></p>
-    <small>© Piotr Krysiak</small>
-  </footer>
+
+  <footer>Recenzja z Empiku, cytowana na stronie autora (piotrkrysiak.eu)</footer>
 </div>
 
 <script>
@@ -214,6 +369,21 @@ const io = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.12 });
 document.querySelectorAll(".reveal").forEach(el => io.observe(el));
+
+const ADRES = "bezmaski.podcast@gmail.com";
+document.getElementById("form-info").addEventListener("submit", e => {
+  e.preventDefault();
+  const f = e.target;
+  const pole = n => (f.elements[n] ? f.elements[n].value.trim() : "");
+  if (!pole("temat") || !pole("tresc") || !f.elements["zgoda"].checked) {
+    alert("Uzupełnij temat, wiadomość i zaznacz zgodę.");
+    return;
+  }
+  const temat = "Informacja dla redakcji: " + pole("temat");
+  const body = "Imię: " + (pole("imie") || "nie podano") + "\nKontakt: " + (pole("kontakt") || "nie podano") + "\n\n" + pole("tresc");
+  window.location.href = "mailto:" + ADRES + "?subject=" + encodeURIComponent(temat) + "&body=" + encodeURIComponent(body);
+});
 </script>
 </body>
+
 </html>
