@@ -1,5 +1,6 @@
 -- ============================================
--- BEZ MASKI - Row Level Security Policies (v2)
+-- BEZ MASKI - Row Level Security Policies (v2) - POPRAWIONY
+-- Używa funkcji SECURITY DEFINER zamiast zapytań do profiles
 -- ============================================
 
 -- Enable RLS on all tables
@@ -19,7 +20,7 @@ on tiers for select
 using (active = true);
 
 -- ============================================
--- PROFILES: users read own, admins read all
+-- PROFILES: users read own, admins read all (BEZ REKURENCJI)
 -- ============================================
 
 create policy "Users read own profile"
@@ -28,13 +29,7 @@ using (auth.uid() = id);
 
 create policy "Admins read all profiles"
 on profiles for select
-using (
-  exists (
-    select 1 from profiles p
-    where p.id = auth.uid()
-    and p.role = 'admin'
-  )
-);
+using (public.is_admin());
 
 create policy "Users update own profile"
 on profiles for update
@@ -65,41 +60,28 @@ using (
 );
 
 -- 3. Supporter content - tier-based access with hierarchy
--- Higher tier (higher sort_order) grants access to lower tier content
+-- Używa funkcji SECURITY DEFINER
 create policy "Supporter content for active tier with hierarchy"
 on content for select
 using (
   visibility = 'supporter'
   and auth.uid() is not null
-  and exists (
-    select 1 from profiles p
-    join tiers t_user on t_user.id = p.tier_id
-    join tiers t_content on t_content.id = content.tier_id
-    where p.id = auth.uid()
-    and p.role = 'supporter'
-    and p.subscription_status = 'active'
-    and t_user.active = true
-    and t_content.active = true
-    and (
-      -- Same tier access
-      p.tier_id = content.tier_id
-      OR
-      -- Higher tier (higher sort_order) grants access to lower tier content
-      t_user.sort_order >= t_content.sort_order
+  and public.is_active_supporter()
+  and (
+    -- Same tier access
+    (select tier_id from public.profiles where id = auth.uid()) = content.tier_id
+    OR
+    -- Higher tier (higher sort_order) grants access to lower tier content
+    public.current_user_tier_sort_order() >= (
+      select sort_order from public.tiers where id = content.tier_id
     )
   )
 );
 
--- 4. Admins see everything
+-- 4. Admins see everything (BEZ REKURENCJI)
 create policy "Admins read all content"
 on content for select
-using (
-  exists (
-    select 1 from profiles p
-    where p.id = auth.uid()
-    and p.role = 'admin'
-  )
-);
+using (public.is_admin());
 
 -- 5. Service role for Edge Functions
 create policy "Service role full access to content"
@@ -107,44 +89,19 @@ on content for all
 using (auth.role() = 'service_role')
 with check (auth.role() = 'service_role');
 
--- 6. Authenticated users (subscriber+) can insert/update own content? No - only admins
--- Admins manage content
+-- 6. Admins manage content (BEZ REKURENCJI)
 create policy "Admins insert content"
 on content for insert
-with check (
-  exists (
-    select 1 from profiles p
-    where p.id = auth.uid()
-    and p.role = 'admin'
-  )
-);
+with check (public.is_admin());
 
 create policy "Admins update content"
 on content for update
-using (
-  exists (
-    select 1 from profiles p
-    where p.id = auth.uid()
-    and p.role = 'admin'
-  )
-)
-with check (
-  exists (
-    select 1 from profiles p
-    where p.id = auth.uid()
-    and p.role = 'admin'
-  )
-);
+using (public.is_admin())
+with check (public.is_admin());
 
 create policy "Admins delete content"
 on content for delete
-using (
-  exists (
-    select 1 from profiles p
-    where p.id = auth.uid()
-    and p.role = 'admin'
-  )
-);
+using (public.is_admin());
 
 -- ============================================
 -- COMMENTS: Subscriber+ can read, Subscriber+ can write
@@ -162,22 +119,16 @@ using (
       or (
         c.visibility = 'supporter'
         and auth.uid() is not null
-        and exists (
-          select 1 from profiles p
-          join tiers t_user on t_user.id = p.tier_id
-          join tiers t_content on t_content.id = c.tier_id
-          where p.id = auth.uid()
-          and p.role = 'supporter'
-          and p.subscription_status = 'active'
-          and t_user.active = true
-          and t_content.active = true
-          and (p.tier_id = c.tier_id or t_user.sort_order >= t_content.sort_order)
+        and public.is_active_supporter()
+        and (
+          (select tier_id from public.profiles where id = auth.uid()) = c.tier_id
+          OR
+          public.current_user_tier_sort_order() >= (
+            select sort_order from public.tiers where id = c.tier_id
+          )
         )
       )
-      or exists (
-        select 1 from profiles p
-        where p.id = auth.uid() and p.role = 'admin'
-      )
+      or public.is_admin()
     )
   )
 );
@@ -200,20 +151,8 @@ using (auth.uid() = user_id);
 
 create policy "Admins manage all comments"
 on comments for all
-using (
-  exists (
-    select 1 from profiles p
-    where p.id = auth.uid()
-    and p.role = 'admin'
-  )
-)
-with check (
-  exists (
-    select 1 from profiles p
-    where p.id = auth.uid()
-    and p.role = 'admin'
-  )
-);
+using (public.is_admin())
+with check (public.is_admin());
 
 -- ============================================
 -- PAYMENT_EVENTS: Service role only (audit log)
@@ -224,7 +163,6 @@ on payment_events for all
 using (auth.role() = 'service_role')
 with check (auth.role() = 'service_role');
 
--- Users can see their own payment events (optional, for transparency)
 create policy "Users read own payment events"
 on payment_events for select
 using (auth.uid() = user_id);
