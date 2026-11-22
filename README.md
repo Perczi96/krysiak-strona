@@ -192,6 +192,9 @@ Zdefiniowane w `supabase/migrations/002_rls_policies.sql`:
 3. **Test mode** — `VITE_TEST_MODE=true` simulates supporter access without Stripe
 4. **Deno Edge Functions** — Native TypeScript, web-push works in Deno
 5. **Tier hierarchy in RLS** — Efficient, no client-side logic needed
+   
+
+
 
 ## 📝 License
 
