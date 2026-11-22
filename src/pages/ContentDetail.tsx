@@ -244,7 +244,6 @@ function CommentsSection({ contentId }: { contentId: string }) {
     const avatarUrl = comment.user?.avatar_url;
     return (
       <div className={cn('flex gap-3', depth > 0 && 'ml-8 border-l-2 border-line pl-4')}>
-        {/* @ts-expect-error */}
         <Avatar imgSrc={avatarUrl} name={comment.user?.display_name} size="sm" />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
@@ -309,8 +308,7 @@ function CommentsSection({ contentId }: { contentId: string }) {
     );
   }
 
-  const profileAvatar = profile?.avatar_url;
-    return (
+  return (
     <section className="space-y-6" aria-labelledby="comments-title">
       <h2 id="comments-title" className="text-xl font-serif font-bold text-ink flex items-center gap-2">
         <MessageSquare className="w-6 h-6 text-gold" />
@@ -321,8 +319,7 @@ function CommentsSection({ contentId }: { contentId: string }) {
       {profile && (
         <Card className="p-4">
           <form onSubmit={handleSubmitComment} className="flex gap-3">
-            {/* @ts-expect-error */}
-            <Avatar imgSrc={profileAvatar} name={profile.display_name} size="sm" />
+            <Avatar imgSrc={profile.avatar_url} name={profile.display_name} size="sm" />
             <div className="flex-1">
               <textarea
                 value={newComment}
@@ -374,7 +371,7 @@ function ShareButtons({ content }: { content: Content }) {
     <div className="flex items-center gap-2">
       <span className="text-sm text-muted">Udostępnij:</span>
       <Button variant="ghost" size="sm" onClick={() => handleShare('twitter')} aria-label="Udostępnij na X">
-        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 9.72-1.92 1.794-10.034-11.42L0 16.123l8.847-9.896 1.849 1.787zm-11.002 6.815l1.853-2.011-1.886-2.012h-3.282l2.23 2.438zm12.362 1.358l2.604-2.816h-3.312l-2.089 2.271 2.797 3.307zm-14.878-7.666l-.952 1.033h3.298l-2.076-2.298 1.728-1.761zm15.696 6.543l2.604-2.816h-3.312l-2.089 2.271 2.797 3.307zm-14.878-7.666l-.952 1.033h3.298l-2.076-2.298 1.728-1.761zm15.696 6.543l.951 1.034h-3.297l2.077-2.299-1.731-1.76z"/></svg>
+        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 9.72-1.92 1.794-10.034-11.42L0 16.123l8.847-9.896 1.849 1.787zm-11.002 6.815l1.853-2.011-1.886-2.012h-3.282l2.23 2.438zm12.362 1.358l2.604-2.816h-3.312l-2.089 2.271 2.797 3.307zm-14.878-7.666l-.952 1.033h3.298l-2.076-2.298 1.728-1.761zm15.696 6.543l.951 1.034h-3.297l2.077-2.299-1.731-1.76z"/></svg>
       </Button>
       <Button variant="ghost" size="sm" onClick={() => handleShare('facebook')} aria-label="Udostępnij na Facebook">
         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>

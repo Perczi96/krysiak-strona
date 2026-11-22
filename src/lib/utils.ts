@@ -113,94 +113,68 @@ export function getYouTubeEmbedUrl(videoId: string, params: Record<string, strin
     enablejsapi: '1',
     origin: window.location.origin
   };
+  const searchParams = new URLSearchParams({ ...defaultParams, ...params });
+  return `https://www.youtube-nocookie.com/embed/${videoId}?${searchParams.toString()}`;
+}
 
-  const allParams = { ...defaultParams, ...params };
-  const queryString = new URLSearchParams(allParams).toString();
-  return `https://www.youtube-nocookie.com/embed/${videoId}?${queryString}`;
+export function getYouTubeWatchUrl(videoId: string): string {
+  return `https://www.youtube.com/watch?v=${videoId}`;
 }
 
 // ============================================
-// Text utilities
+// Content type helpers
 // ============================================
 
-export function truncate(text: string, maxLength: number): string {
-  if (text.length <= maxLength) return text;
-  return text.slice(0, maxLength).trim() + '...';
+export type ContentType = 'video' | 'audio' | 'pdf' | 'post' | 'live';
+export type ContentVisibility = 'public' | 'subscriber' | 'supporter';
+
+export interface ContentTypeConfig {
+  label: string;
+  icon: string;
+  color: string;
+  bgColor: string;
 }
 
-export function stripHtml(html: string): string {
-  return html.replace(/<[^>]*>/g, '');
-}
+export const CONTENT_TYPE_CONFIG: Record<ContentType, ContentTypeConfig> = {
+  video: { label: 'Wideo', icon: '▶', color: 'text-red-400', bgColor: 'bg-red-500/10' },
+  audio: { label: 'Audio', icon: '🎧', color: 'text-purple-400', bgColor: 'bg-purple-500/10' },
+  pdf: { label: 'PDF', icon: '📄', color: 'text-blue-400', bgColor: 'bg-blue-500/10' },
+  post: { label: 'Artykuł', icon: '📝', color: 'text-green-400', bgColor: 'bg-green-500/10' },
+  live: { label: 'Na żywo', icon: '🔴', color: 'text-orange-400', bgColor: 'bg-orange-500/10' },
+};
 
-export function capitalizeFirst(text: string): string {
-  return text.charAt(0).toUpperCase() + text.slice(1);
-}
+export const VISIBILITY_CONFIG: Record<ContentVisibility, { label: string; icon: string; color: string }> = {
+  public: { label: 'Publiczne', icon: 'globe', color: 'text-green-400' },
+  subscriber: { label: 'Zalogowani', icon: 'lock-open', color: 'text-blue-400' },
+  supporter: { label: 'Wspierający', icon: 'crown', color: 'text-gold' }
+};
 
 // ============================================
-// Number formatting
+// Tier helpers
 // ============================================
 
-export function formatNumber(num: number): string {
-  return new Intl.NumberFormat('pl-PL').format(num);
+export interface TierWithAccess {
+  id: string;
+  name: string;
+  slug: string;
+  priceMonthly: number;
+  priceYearly: number | null;
+  sortOrder: number;
+  benefits: string[];
 }
 
-export function formatCompactNumber(num: number): string {
-  if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
-  if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
-  return String(num);
+export function getTierAccessLevel(tier: TierWithAccess): number {
+  return tier.sortOrder;
 }
 
-// ============================================
-// URL helpers
-// ============================================
-
-export function getDomain(url: string): string {
-  try {
-    return new URL(url).hostname.replace('www.', '');
-  } catch {
-    return url;
-  }
-}
-
-export function isExternalUrl(url: string): boolean {
-  try {
-    const u = new URL(url);
-    return u.origin !== window.location.origin;
-  } catch {
-    return false;
-  }
-}
-
-export function buildUrl(path: string, params?: Record<string, string>): string {
-  const url = new URL(path, window.location.origin);
-  if (params) {
-    Object.entries(params).forEach(([key, value]) => {
-      url.searchParams.set(key, value);
-    });
-  }
-  return url.toString();
+export function canAccessContent(userTier: TierWithAccess | null, contentTier: TierWithAccess | null): boolean {
+  if (!contentTier) return true; // public content
+  if (!userTier) return false;
+  return userTier.sortOrder >= contentTier.sortOrder;
 }
 
 // ============================================
-// Validation
-// ============================================
-
-export function isValidEmail(email: string): boolean {
-  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return re.test(email);
-}
-
-export function isValidUrl(url: string): boolean {
-  try {
-    new URL(url);
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-// ============================================
-// Debounce / Throttle
+// Debounce
 // ============================================
 
 export function debounce<T extends (...args: any[]) => any>(
@@ -214,18 +188,105 @@ export function debounce<T extends (...args: any[]) => any>(
   };
 }
 
-export function throttle<T extends (...args: any[]) => any>(
-  fn: T,
-  limit: number
-): (...args: Parameters<T>) => void {
-  let inThrottle = false;
-  return (...args: Parameters<T>) => {
-    if (!inThrottle) {
-      fn(...args);
-      inThrottle = true;
-      setTimeout(() => (inThrottle = false), limit);
+// ============================================
+// Local storage helpers
+// ============================================
+
+export function getLocalStorage<T>(key: string, defaultValue: T): T {
+  try {
+    const item = localStorage.getItem(key);
+    return item ? JSON.parse(item) : defaultValue;
+  } catch {
+    return defaultValue;
+  }
+}
+
+export function setLocalStorage<T>(key: string, value: T): void {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (error) {
+    console.error('localStorage set error:', error);
+  }
+}
+
+// ============================================
+// Query string helpers
+// ============================================
+
+export function getQueryParam(param: string): string | null {
+  const params = new URLSearchParams(window.location.search);
+  return params.get(param);
+}
+
+export function setQueryParam(param: string, value: string): void {
+  const params = new URLSearchParams(window.location.search);
+  params.set(param, value);
+  window.history.replaceState({}, '', `${window.location.pathname}?${params.toString()}`);
+}
+
+export function removeQueryParam(param: string): void {
+  const params = new URLSearchParams(window.location.search);
+  params.delete(param);
+  window.history.replaceState({}, '', `${window.location.pathname}?${params.toString()}`);
+}
+
+// ============================================
+// Device detection
+// ============================================
+
+export function isMobile(): boolean {
+  return window.innerWidth < 768;
+}
+
+export function isTablet(): boolean {
+  return window.innerWidth >= 768 && window.innerWidth < 1024;
+}
+
+export function isDesktop(): boolean {
+  return window.innerWidth >= 1024;
+}
+
+// ============================================
+// Copy to clipboard
+// ============================================
+
+export async function copyToClipboard(text: string): Promise<boolean> {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    // Fallback for older browsers
+    try {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      return true;
+    } catch {
+      return false;
     }
-  };
+  }
+}
+
+// ============================================
+// Share API
+// ============================================
+
+export async function shareContent(data: ShareData): Promise<boolean> {
+  if (navigator.share) {
+    try {
+      await navigator.share(data);
+      return true;
+    } catch {
+      return false;
+    }
+  }
+  // Fallback - copy to clipboard
+  return copyToClipboard(data.url || window.location.href);
 }
 
 // ============================================

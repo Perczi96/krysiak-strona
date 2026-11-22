@@ -1,9 +1,9 @@
 import { cn } from '@/lib/utils';
 
 interface AvatarProps {
-  imgSrc: any;
-  alt?: string;
-  name?: string;
+  imgSrc?: string | null;
+  alt?: string | null;
+  name?: string | null;
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   shape?: 'circle' | 'square';
   status?: 'online' | 'offline' | 'busy';
@@ -23,6 +23,9 @@ const Avatar = ({
   className,
   style,
 }: AvatarProps) => {
+  const safeName = name ?? undefined;
+  const safeImgSrc = imgSrc ?? undefined;
+  const safeAlt = alt ?? safeName ?? 'Avatar';
   const sizes = {
     xs: 'w-6 h-6 text-xs',
     sm: 'w-8 h-8 text-sm',
@@ -84,19 +87,19 @@ const Avatar = ({
       )}
       style={style}
     >
-      {imgSrc ? (
+      {safeImgSrc ? (
         <img
-          src={imgSrc}
-          alt={alt || name || 'Avatar'}
+          src={safeImgSrc}
+          alt={safeAlt}
           className="w-full h-full object-cover"
         />
       ) : (
         <div
-          className={cn('w-full h-full flex items-center justify-center', getColorFromName(name || ''))}
+          className={cn('w-full h-full flex items-center justify-center', getColorFromName(safeName || ''))}
           style={{ backgroundColor: undefined }}
         >
-          {name ? (
-            <span>{getInitials(name)}</span>
+          {safeName ? (
+            <span>{getInitials(safeName)}</span>
           ) : (
             <svg className="w-1/2 h-1/2 text-muted" fill="currentColor" viewBox="0 0 24 24">
               <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
