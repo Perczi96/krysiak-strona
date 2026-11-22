@@ -124,40 +124,36 @@ function ContentCard({ content, variant = 'default', priority = false }: { conte
             <h3 className="font-medium text-ink group-hover:text-gold transition-colors line-clamp-2 mb-1">
               {content.title}
             </h3>
-            <p className="text-sm text-muted">{formatRelativePL(content.published_at || content.created_at)}</p>
+            <div className="flex items-center gap-2 text-xs text-muted">
+              <VisibilityBadge visibility={content.visibility} />
+              <span>{formatRelativePL(content.published_at || content.created_at)}</span>
+              {content.duration_seconds && <span>{formatDuration(content.duration_seconds)}</span>}
+            </div>
           </div>
         </div>
       </Link>
     );
   }
 
-  // Default card
+  // Default variant
   return (
     <Link to={`/c/${content.slug}`} className="block group">
-      <Card variant="hover" className="h-full flex flex-col">
-        <div className="relative aspect-video overflow-hidden">
-          {thumbnail ? (
+      <Card className="card-hover h-full flex flex-col overflow-hidden">
+        <div className="relative aspect-video overflow-hidden bg-panel">
+          {thumbnail && (
             <img
               src={thumbnail}
               alt={content.title}
               className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-              loading={priority ? 'eager' : 'lazy'}
             />
-          ) : (
-            <div className="w-full h-full bg-panel-hover flex items-center justify-center text-muted">
-              <span className="text-4xl">📄</span>
-            </div>
           )}
-          <div className="absolute top-3 left-3 flex gap-2">
-            <Badge variant="gold">{typeConfig.label}</Badge>
+          <div className="absolute top-2 left-2 flex gap-1.5">
+            <Badge variant="gold" size="sm">{typeConfig.label}</Badge>
             <VisibilityBadge visibility={content.visibility} />
           </div>
           {!hasAccess && content.visibility !== 'public' && (
             <div className="absolute inset-0 bg-bg/80 backdrop-blur-sm flex items-center justify-center">
-              <div className="text-center">
-                <Crown className="w-8 h-8 text-gold mx-auto mb-2" />
-                <span className="text-sm text-ink font-medium">Dla wspierających</span>
-              </div>
+              <Crown className="w-10 h-10 text-gold" />
             </div>
           )}
         </div>
@@ -166,13 +162,17 @@ function ContentCard({ content, variant = 'default', priority = false }: { conte
             {content.title}
           </h3>
           {content.excerpt && (
-            <p className="text-muted text-sm line-clamp-2 mb-3 flex-1">{content.excerpt}</p>
+            <p className="text-sm text-muted line-clamp-2 mb-3 flex-1">{content.excerpt}</p>
           )}
-          <div className="flex items-center justify-between text-xs text-muted">
-            <span>{formatRelativePL(content.published_at || content.created_at)}</span>
-            {content.view_count && (
+          <div className="flex items-center justify-between text-xs text-muted pt-2 border-t border-line">
+            <span className="flex items-center gap-1">
+              <Clock className="w-3.5 h-3.5" />
+              {formatRelativePL(content.published_at || content.created_at)}
+            </span>
+            {content.duration_seconds && (
               <span className="flex items-center gap-1">
-                <Eye className="w-3.5 h-3.5" /> {content.view_count.toLocaleString('pl-PL')}
+                <Clock className="w-3.5 h-3.5" />
+                {formatDuration(content.duration_seconds)}
               </span>
             )}
           </div>
@@ -182,113 +182,140 @@ function ContentCard({ content, variant = 'default', priority = false }: { conte
   );
 }
 
-function SectionHeader({ title, href, more }: { title: string; href?: string; more?: string }) {
+
+
+function ContentSection({ title, items, variant = 'default', href, showAll = true, emptyMessage }: {
+  title: string;
+  items: Content[];
+  variant?: 'default' | 'featured' | 'compact';
+  href?: string;
+  showAll?: boolean;
+  emptyMessage?: string;
+}) {
+  if (items.length === 0) {
+    return (
+      <Card className="py-12 text-center">
+        <p className="text-muted">{emptyMessage || 'Brak treści do wyświetlenia'}</p>
+      </Card>
+    );
+  }
+
   return (
-    <div className="flex items-center justify-between mb-6">
-      <h2 className="text-2xl md:text-3xl font-serif font-bold text-ink">{title}</h2>
-      {href && (
-        <Link to={href} className="text-gold hover:text-gold-light text-sm font-medium flex items-center gap-1 group">
-          {more || 'Zobacz wszystkie'}
-          <svg className="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </Link>
+    <section className="space-y-4" aria-labelledby={title.toLowerCase().replace(/\s+/g, '-')}>
+      <div className="flex items-center justify-between">
+        <h2 className="text-xl font-serif font-bold text-ink">{title}</h2>
+        {showAll && href && (
+          <Link to={href} className="text-sm text-gold hover:text-gold-light flex items-center gap-1">
+            Zobacz wszystkie <span aria-hidden="true">→</span>
+          </Link>
+        )}
+      </div>
+      {variant === 'compact' ? (
+        <div className="space-y-3">
+          {items.map((item) => <ContentCard key={item.id} content={item} variant="compact" />)}
+        </div>
+      ) : (
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {items.map((item) => <ContentCard key={item.id} content={item} variant={variant} />)}
+        </div>
       )}
-    </div>
+    </section>
   );
 }
 
+
+
 export function IndexPage() {
-  const { featured, latest, videos, posts, supporter } = useLoaderData({ from: '/' }) as IndexLoaderData;
+  // @ts-ignore
+  const { featured, latest, videos, posts, supporter } = useLoaderData({ strict: false }) as unknown as IndexLoaderData;
+  const { profile, isLoading: authLoading } = useAuth();
+  const isSupporter = profile?.role === 'supporter' && profile?.subscription_status === 'active';
 
   return (
-    <div className="pb-8">
-      {/* Featured Hero */}
+    <div className="space-y-12">
+      {/* Hero / Featured */}
       {featured && (
-        <section className="section pt-8 md:pt-12">
-          <div className="container">
-            <ContentCard content={featured} variant="featured" priority />
-          </div>
+        <section className="relative" aria-labelledby="featured-title">
+          <ContentCard content={featured} variant="featured" priority />
         </section>
       )}
 
-      {/* Latest */}
-      <section className="section">
-        <div className="container">
-          <SectionHeader title="Najnowsze" href="/c/wyroznione" />
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {latest.map((content) => (
-              <ContentCard key={content.id} content={content} />
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Latest / Main feed */}
+      <ContentSection
+        title="Najnowsze"
+        items={latest}
+        variant="default"
+        href="/c/filmy"
+        emptyMessage="Brak nowych materiałów"
+      />
 
       {/* Videos */}
-      <section className="section bg-panel/30">
-        <div className="container">
-          <SectionHeader title="Wideo" href="/c/filmy" />
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            {videos.map((content) => (
-              <ContentCard key={content.id} content={content} />
-            ))}
-          </div>
-        </div>
-      </section>
+      {videos.length > 0 && (
+        <ContentSection
+          title="Wideo"
+          items={videos}
+          variant="default"
+          href="/c/filmy"
+        />
+      )}
 
-      {/* Posts/Articles */}
-      <section className="section">
-        <div className="container">
-          <SectionHeader title="Teksty i analizy" href="/c/teksty" />
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {posts.map((content) => (
-              <ContentCard key={content.id} content={content} />
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Posts / Articles */}
+      {posts.length > 0 && (
+        <ContentSection
+          title="Artykuły i teksty"
+          items={posts}
+          variant="compact"
+          href="/c/teksty"
+        />
+      )}
 
-      {/* Supporter-only preview */}
+      {/* Supporter preview */}
       {supporter.length > 0 && (
-        <section className="section">
-          <div className="container">
-            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-              <div>
-                <h2 className="text-2xl md:text-3xl font-serif font-bold text-ink">Dla wspierających</h2>
-                <p className="text-muted mt-1">Ekskluzywne treści dostępne tylko dla wspierających kanał</p>
-              </div>
-              <Link to="/konto" className="btn btn-primary btn-sm self-start md:self-auto">
-                <Crown className="w-4 h-4" /> Zostań wspierającym
+        <section className="space-y-4">
+          <div className="flex items-center justify-between">
+            <h2 className="text-xl font-serif font-bold text-ink flex items-center gap-2">
+              <Crown className="w-6 h-6 text-gold" />
+              Dla wspierających
+            </h2>
+            {isSupporter ? (
+              <Link to="/c/wspierajacy" className="text-sm text-gold hover:text-gold-light">
+                Zobacz wszystko →
               </Link>
-            </div>
-            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-              {supporter.map((content) => (
-                <ContentCard key={content.id} content={content} />
-              ))}
-            </div>
+            ) : (
+              <Link to="/konto" className="btn btn-primary btn-sm">
+                Zostań wspierającym
+              </Link>
+            )}
           </div>
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {supporter.map((item) => (
+              <ContentCard key={item.id} content={item} variant="default" />
+            ))}
+          </div>
+          {!isSupporter && (
+            <Card className="bg-gold/5 border-gold/20 p-6 text-center">
+              <Crown className="w-12 h-12 text-gold mx-auto mb-3" />
+              <h3 className="text-xl font-serif font-bold text-ink mb-2">Odblokuj ekskluzywne treści</h3>
+              <p className="text-muted mb-4">Jako wspierający uzyskasz dostęp do zamkniętych materiałów wideo, audio, PDF oraz wcześniejszego dostępu do nowości.</p>
+              <Link to="/konto" className="btn btn-primary">Wybierz plan wsparcia</Link>
+            </Card>
+          )}
         </section>
       )}
 
-      {/* CTA */}
-      <section className="section bg-panel/30">
-        <div className="container">
-          <Card className="bg-gold/5 border-gold/20 p-6 text-center">
-            <Crown className="w-12 h-12 text-gold mx-auto mb-4" />
-            <h2 className="text-2xl md:text-3xl font-serif font-bold text-ink mb-3">Wspieraj niezależne dziennikarstwo</h2>
-            <p className="text-muted max-w-2xl mx-auto mb-6">
-              Bez Maski to projekt finansowany przez widzów. Twoje wsparcie pozwala mi prowadzić śledztwa,
-              tworzyć materiały i mówić prawdę bez kompromisów.
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link to="/konto" className="btn btn-primary btn-lg">Zostań wspierającym</Link>
-              <a href="https://patronite.pl/krysiak" target="_blank" rel="noopener noreferrer" className="btn btn-secondary btn-lg">
-                Patronite
-              </a>
-            </div>
-          </Card>
-        </div>
-      </section>
+      {/* CTA for non-logged users */}
+      {authLoading || !profile ? (
+        <Card className="bg-panel-hover border-line text-center py-12 px-6">
+          <h2 className="text-xl font-serif font-bold text-ink mb-2">Dołącz do społeczności</h2>
+          <p className="text-muted mb-6 max-w-md mx-auto">
+            Zaloguj się, aby otrzymywać powiadomienia o nowych materiałach, komentować i zapisywać swoje ulubione treści.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <a href="/auth" className="btn btn-primary">Zaloguj się</a>
+            <a href="/auth?mode=register" className="btn btn-secondary">Zarejestruj się</a>
+          </div>
+        </Card>
+      ) : null}
     </div>
   );
 }
