@@ -194,6 +194,7 @@ Zdefiniowane w `supabase/migrations/002_rls_policies.sql`:
 5. **Tier hierarchy in RLS** — Efficient, no client-side logic needed
 
 
+
 ## 📝 License
 
 MIT — Free for personal and commercial use.
