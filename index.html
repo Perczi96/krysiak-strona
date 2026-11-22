@@ -58,6 +58,25 @@
   </head>
   <body>
     <div id="root"></div>
+    <div id="app-error" style="display:none;padding:24px;margin:16px;border-radius:12px;background:#1a1a1a;color:#fff;font:16px/1.5 system-ui, sans-serif;border:1px solid #c8102e;max-width:960px;white-space:pre-wrap;word-break:break-word"></div>
+    <script>
+      (function () {
+        var box = document.getElementById('app-error');
+        function show(title, err) {
+          if (!box) return;
+          box.style.display = 'block';
+          var msg = (err && (err.stack || err.message || String(err))) || String(err || 'Unknown error');
+          box.textContent = title + '\n\n' + msg;
+          box.style.color = '#fff';
+        }
+        window.onerror = function (message, source, lineno, colno, error) {
+          show('Window error:', error || (message + ' @ ' + source + ':' + lineno + ':' + colno));
+        };
+        window.addEventListener('unhandledrejection', function (event) {
+          show('Unhandled promise rejection:', event.reason);
+        });
+      })();
+    </script>
     <script type="module" src="/src/main.tsx"></script>
 
     <!-- Service Worker Registration (handled by vite-plugin-pwa) -->
