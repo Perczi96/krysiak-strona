@@ -1,5 +1,5 @@
 -- ============================================
--- BEZ MASKI - Initial Schema (v1)
+-- BEZ MASKI - Initial Schema (v1) - POPRAWIONY
 -- PostgreSQL 15+ / Supabase
 -- ============================================
 
@@ -143,6 +143,95 @@ create index idx_comments_user on comments(user_id);
 create index idx_payment_events_user on payment_events(user_id);
 create index idx_payment_events_stripe on payment_events(stripe_event_id);
 create index idx_content_clicks_content on content_clicks(content_id);
+
+-- ============================================
+-- HELPER FUNCTIONS (SECURITY DEFINER) - FIX #1
+-- ============================================
+
+-- Funkcja sprawdzająca czy bieżący użytkownik jest adminem
+-- SECURITY DEFINER omija RLS i zapobiega rekurencji
+create or replace function public.is_admin()
+returns boolean
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  return exists (
+    select 1 from public.profiles
+    where id = auth.uid()
+    and role = 'admin'
+  );
+end;
+$$;
+
+-- Funkcja sprawdzająca czy użytkownik ma aktywną subskrypcję supporter
+create or replace function public.is_active_supporter()
+returns boolean
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  return exists (
+    select 1 from public.profiles p
+    join public.tiers t on t.id = p.tier_id
+    where p.id = auth.uid()
+    and p.role = 'supporter'
+    and p.subscription_status = 'active'
+    and t.active = true
+  );
+end;
+$$;
+
+-- Funkcja pobierająca sort_order tieru użytkownika
+create or replace function public.current_user_tier_sort_order()
+returns int
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_sort_order int;
+begin
+  select t.sort_order into v_sort_order
+  from public.profiles p
+  join public.tiers t on t.id = p.tier_id
+  where p.id = auth.uid()
+  and p.role = 'supporter'
+  and p.subscription_status = 'active'
+  and t.active = true;
+  
+  return coalesce(v_sort_order, 0);
+end;
+$$;
+
+-- ============================================
+-- TRIGGER: Auto-create profile on user signup - FIX #2
+-- ============================================
+
+create or replace function public.handle_new_user()
+returns trigger
+language plpgsql
+security definer
+set search_path = public
+as $$
+begin
+  insert into public.profiles (id, email, display_name, role)
+  values (
+    new.id,
+    new.email,
+    coalesce(new.raw_user_meta_data->>'display_name', new.raw_user_meta_data->>'full_name', split_part(new.email, '@', 1)),
+    'subscriber'::user_role  -- domyślna rola po rejestracji
+  )
+  on conflict (id) do nothing;  -- idempotent
+  return new;
+end;
+$$;
+
+create trigger on_auth_user_created
+  after insert on auth.users
+  for each row execute function public.handle_new_user();
 
 -- ============================================
 -- TRIGGERS (updated_at)
