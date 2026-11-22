@@ -162,7 +162,7 @@ export function AuthPage() {
           >
             <Mail className="w-4 h-4 inline mr-2" /> Zaloguj linkiem magicznym (bez hasła)
           </button>
-        )
+        )}
 
         {/* Forms */}
         <Card className="animate-fade-in">
