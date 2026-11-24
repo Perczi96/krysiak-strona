@@ -1,5 +1,6 @@
 import { HTMLAttributes, forwardRef } from 'react';
 import { cn } from '@/lib/utils';
+import { Globe, LockOpen, Crown, User, Bell, Settings } from 'lucide-react';
 
 interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
   variant?: 'default' | 'gold' | 'red' | 'green' | 'blue' | 'muted' | 'new' | 'live' | 'premium' | 'public' | 'subscriber' | 'supporter';
@@ -59,16 +60,17 @@ Badge.displayName = 'Badge';
 // Visibility badge
 export const VisibilityBadge = ({ visibility }: { visibility: 'public' | 'subscriber' | 'supporter' }) => {
   const configs = {
-    public: { label: 'Publiczne', icon: '🌐', variant: 'public' as const },
-    subscriber: { label: 'Zalogowani', icon: '🔓', variant: 'subscriber' as const },
-    supporter: { label: 'Wspierający', icon: '👑', variant: 'supporter' as const }
+    public: { label: 'Publiczne', icon: Globe, variant: 'public' as const },
+    subscriber: { label: 'Zalogowani', icon: LockOpen, variant: 'subscriber' as const },
+    supporter: { label: 'Wspierający', icon: Crown, variant: 'supporter' as const }
   };
 
   const config = configs[visibility];
 
   return (
     <Badge variant={config.variant} dot>
-      {config.icon} {config.label}
+      <config.icon className="w-3 h-3" aria-hidden="true" />
+      {config.label}
     </Badge>
   );
 };
@@ -94,17 +96,18 @@ export const TierBadge = ({ tier }: { tier: { name: string; slug: string; sort_o
 // Role badge
 export const RoleBadge = ({ role }: { role: 'guest' | 'subscriber' | 'supporter' | 'admin' }) => {
   const configs = {
-    guest: { label: 'Gość', variant: 'muted' as const, icon: '👤' },
-    subscriber: { label: 'Subskrybent', variant: 'subscriber' as const, icon: '🔔' },
-    supporter: { label: 'Wspierający', variant: 'supporter' as const, icon: '👑' },
-    admin: { label: 'Admin', variant: 'red' as const, icon: '⚙️' }
+    guest: { label: 'Gość', variant: 'muted' as const, icon: User },
+    subscriber: { label: 'Subskrybent', variant: 'subscriber' as const, icon: Bell },
+    supporter: { label: 'Wspierający', variant: 'supporter' as const, icon: Crown },
+    admin: { label: 'Admin', variant: 'red' as const, icon: Settings }
   };
 
   const config = configs[role];
 
   return (
     <Badge variant={config.variant} dot>
-      {config.icon} {config.label}
+      <config.icon className="w-3 h-3" aria-hidden="true" />
+      {config.label}
     </Badge>
   );
 };
