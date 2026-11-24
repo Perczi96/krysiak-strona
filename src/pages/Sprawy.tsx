@@ -7,6 +7,7 @@ import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import materialyData from '@/data/materialy.json';
 import wyroznioneData from '@/data/wyroznione.json';
+import { presetTagFromContent } from '@/config/contentPresets';
 
 type MaterialJson = {
   slug: string;
@@ -49,6 +50,12 @@ function normTitle(s: string): string {
 }
 
 function toUnifiedFromSupabase(c: Content): UnifiedItem {
+  const preset = presetTagFromContent(c);
+  const badge =
+    preset === 'aktualizacja-sprawy' ? 'Aktualizacja sprawy' :
+    preset === 'sprawa-sadowa' ? 'Sprawa sądowa' :
+    c.visibility !== 'public' ? 'Dla Patronów' :
+    c.type === 'post' ? 'Tekst' : 'Wideo';
   return {
     key: `db:${c.id}`,
     title: c.title,
@@ -57,8 +64,8 @@ function toUnifiedFromSupabase(c: Content): UnifiedItem {
     videoId: c.video_id || undefined,
     thumbnail: c.thumbnail_url || (c.video_id ? getYouTubeThumbnail(c.video_id) : null),
     href: `/c/${c.slug}`,
-    badge: c.visibility !== 'public' ? 'Dla Patronów' : c.type === 'post' ? 'Tekst' : 'Wideo',
-    featured: !!c.is_featured,
+    badge,
+    featured: !!c.is_featured || preset === 'aktualizacja-sprawy',
     durationSeconds: c.duration_seconds,
   };
 }

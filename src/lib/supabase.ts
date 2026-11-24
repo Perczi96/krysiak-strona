@@ -111,19 +111,22 @@ export async function getContentList(params: {
   offset?: number;
   orderBy?: 'published_at' | 'created_at';
   ascending?: boolean;
+  publishedOnly?: boolean;
 } = {}): Promise<Content[]> {
+  const publishedOnly = params.publishedOnly ?? true;
   let query = supabase
     .from('content')
     .select('*')
-    .order(params.orderBy || 'published_at', { ascending: params.ascending ?? false });
+    .order(params.orderBy || (publishedOnly ? 'published_at' : 'created_at'), { ascending: params.ascending ?? false });
 
   if (params.visibility) query = query.eq('visibility', params.visibility);
   if (params.type) query = query.eq('type', params.type);
   if (params.tier_id) query = query.eq('tier_id', params.tier_id);
   if (params.featured !== undefined) query = query.eq('is_featured', params.featured);
 
-  // Only published content
-  query = query.lte('published_at', new Date().toISOString());
+  if (publishedOnly) {
+    query = query.lte('published_at', new Date().toISOString());
+  }
 
   if (params.limit) query = query.limit(params.limit);
   if (params.offset) query = query.range(params.offset, params.offset + (params.limit || 20) - 1);

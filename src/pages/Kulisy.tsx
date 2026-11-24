@@ -5,8 +5,9 @@ import { Card } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { cn, formatRelativePL, getYouTubeThumbnail } from '@/lib/utils';
 import { Link } from '@tanstack/react-router';
+import { getKulisySubtype, presetTagFromContent, type KulisySubtypeId } from '@/config/contentPresets';
 
-type KulisyCategory = 'kulisy-materialu' | 'kulisy-ksiazki' | 'z-warsztatu' | 'po-publikacji' | 'z-archiwum';
+type KulisyCategory = KulisySubtypeId;
 
 const CATEGORIES: { id: KulisyCategory; label: string; icon: LucideIcon; description: string }[] = [
   { id: 'kulisy-materialu', label: 'Kulisy materiału', icon: Clapperboard, description: 'Jak powstają reportaże, rozmowy i materiały śledcze.' },
@@ -17,6 +18,8 @@ const CATEGORIES: { id: KulisyCategory; label: string; icon: LucideIcon; descrip
 ];
 
 function contentCategory(content: Content): KulisyCategory | null {
+  const tag = presetTagFromContent(content);
+  if (tag === 'kulisy') return getKulisySubtype(content) || 'kulisy-materialu';
   const meta = (content.meta && typeof content.meta === 'object' && !Array.isArray(content.meta) ? content.meta : {}) as Record<string, unknown>;
   const raw = String(meta.kulisy_category || meta.category || meta.section || '').toLowerCase();
   if ((CATEGORIES.map((c) => c.id) as string[]).includes(raw)) return raw as KulisyCategory;
@@ -37,7 +40,7 @@ export function KulisyPage() {
   useEffect(() => {
     const load = async () => {
       const [posts, videos] = await Promise.all([
-        getContentList({ type: 'post', limit: 30 }),
+        getContentList({ type: 'post', limit: 60 }),
         getContentList({ type: 'video', limit: 30 }),
       ]);
       const byId = new Map<string, Content>();
@@ -71,13 +74,7 @@ export function KulisyPage() {
           const Icon = cat.icon;
           const selected = active === cat.id;
           return (
-            <button
-              key={cat.id}
-              role="tab"
-              aria-selected={selected}
-              onClick={() => setActive(cat.id)}
-              className={cn('filter-pill', selected && 'active')}
-            >
+            <button key={cat.id} role="tab" aria-selected={selected} onClick={() => setActive(cat.id)} className={cn('filter-pill', selected && 'active')}>
               <Icon className="h-4 w-4" /> {cat.label}
             </button>
           );
@@ -87,11 +84,7 @@ export function KulisyPage() {
       {loading ? (
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {[1, 2, 3].map((i) => (
-            <Card key={i} className="p-6">
-              <div className="h-5 w-1/2 animate-pulse rounded bg-surface-hover" />
-              <div className="mt-3 h-4 w-full animate-pulse rounded bg-surface-hover" />
-              <div className="mt-2 h-4 w-2/3 animate-pulse rounded bg-surface-hover" />
-            </Card>
+            <Card key={i} className="p-6"><div className="h-5 w-1/2 animate-pulse rounded bg-surface-hover" /><div className="mt-3 h-4 w-full animate-pulse rounded bg-surface-hover" /><div className="mt-2 h-4 w-2/3 animate-pulse rounded bg-surface-hover" /></Card>
           ))}
         </div>
       ) : filtered.length > 0 ? (
@@ -101,11 +94,7 @@ export function KulisyPage() {
             return (
               <Link key={item.id} to="/c/$slug" params={{ slug: item.slug }} className="group block">
                 <Card variant="hover" className="h-full overflow-hidden p-0">
-                  {thumb && (
-                    <div className="aspect-video overflow-hidden bg-surface">
-                      <img src={thumb} alt={item.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
-                    </div>
-                  )}
+                  {thumb && <div className="aspect-video overflow-hidden bg-surface"><img src={thumb} alt={item.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" /></div>}
                   <div className="p-5">
                     <p className="mb-2 text-xs text-muted">{formatRelativePL(item.published_at || item.created_at)}</p>
                     <h3 className="line-clamp-2 text-lg font-display font-bold text-ink transition-colors group-hover:text-gold">{item.title}</h3>
@@ -119,14 +108,10 @@ export function KulisyPage() {
       ) : (
         <Card className="p-8 md:p-12">
           <div className="mx-auto max-w-2xl text-center">
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-gold-dim text-gold">
-              <activeMeta.icon className="h-6 w-6" />
-            </div>
+            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-gold-dim text-gold"><activeMeta.icon className="h-6 w-6" /></div>
             <h2 className="text-2xl font-display font-bold text-ink">{activeMeta.label}</h2>
             <p className="mt-3 text-muted">{activeMeta.description}</p>
-            <p className="mt-4 text-sm text-muted">
-              Wpisy z tej rubryki pojawią się tutaj, gdy zostaną opublikowane. Na razie możesz wrócić do spraw lub zajrzeć do najnowszych materiałów.
-            </p>
+            <p className="mt-4 text-sm text-muted">Wpisy z tej rubryki pojawią się tutaj, gdy zostaną opublikowane w panelu admina (preset „Kulisy”).</p>
             <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
               <Link to="/sprawy" className="btn btn-primary">Zobacz sprawy</Link>
               <Link to="/" className="btn btn-secondary">Strona główna</Link>
