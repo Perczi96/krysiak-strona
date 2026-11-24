@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#b89b5e" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#b89b5e" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0A0C0F" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#0A0C0F" media="(prefers-color-scheme: light)" />
 
     <!-- PWA Meta Tags -->
     <link rel="manifest" href="/manifest.json" />
@@ -50,6 +50,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 
+    <!-- Font preconnects for self-hosted fonts -->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
     <!-- Cloudflare Web Analytics (free, privacy-friendly) -->
     <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "YOUR_CLOUDFLARE_ANALYTICS_TOKEN"}'></script>
 
@@ -58,7 +61,7 @@
   </head>
   <body>
     <div id="root"></div>
-    <div id="app-error" style="display:none;padding:24px;margin:16px;border-radius:12px;background:#1a1a1a;color:#fff;font:16px/1.5 system-ui, sans-serif;border:1px solid #c8102e;max-width:960px;white-space:pre-wrap;word-break:break-word"></div>
+    <div id="app-error" style="display:none;padding:24px;margin:16px;border-radius:12px;background:#14171D;color:#F5F7FA;font:16px/1.5 system-ui, sans-serif;border:1px solid #D92D20;max-width:960px;white-space:pre-wrap;word-break:break-word"></div>
     <script>
       (function () {
         var box = document.getElementById('app-error');
@@ -67,7 +70,7 @@
           box.style.display = 'block';
           var msg = (err && (err.stack || err.message || String(err))) || String(err || 'Unknown error');
           box.textContent = title + '\n\n' + msg;
-          box.style.color = '#fff';
+          box.style.color = '#F5F7FA';
         }
         window.onerror = function (message, source, lineno, colno, error) {
           show('Window error:', error || (message + ' @ ' + source + ':' + lineno + ':' + colno));
