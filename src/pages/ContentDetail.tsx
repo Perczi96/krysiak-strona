@@ -38,7 +38,7 @@ function ContentHeader({ content }: { content: Content }) {
         {content.tier_id && <TierBadge tier={{ name: 'Wspierający', slug: 'gold', sort_order: 30 }} />}
       </div>
 
-      <h1 className="text-2xl md:text-3xl lg:text-4xl font-serif font-bold text-ink leading-tight">
+      <h1 className="text-2xl md:text-3xl lg:text-4xl font-display font-bold text-ink leading-tight">
         {content.title}
       </h1>
 
@@ -62,14 +62,14 @@ function ContentHeader({ content }: { content: Content }) {
       </div>
 
       {!hasAccess && content.visibility !== 'public' && (
-        <Card className="bg-gold/5 border-gold/20 p-6 text-center">
+        <Card className="bg-gold-dim border-gold/30 p-6 text-center">
           <Crown className="w-12 h-12 text-gold mx-auto mb-3" />
-          <h3 className="text-xl font-serif font-bold text-ink mb-2">Treść dla wspierających</h3>
+          <h3 className="text-xl font-display font-bold text-ink mb-2">Treść dla wspierających</h3>
           <p className="text-muted mb-4">
             Ta treść jest dostępna tylko dla wspierających kanał.
             {content.tier_id && ' Wymagany tier: Złoty lub wyższy.'}
           </p>
-          <Link to="/konto" className="btn btn-primary inline-block">Zostań wspierającym</Link>
+          <Link to="/konto" className="btn btn-gold inline-block">Zostań wspierającym</Link>
         </Card>
       )}
     </article>
@@ -84,7 +84,7 @@ function VideoPlayerWrapper({ content }: { content: Content }) {
 
   if (provider === 'youtube') {
     return (
-      <div className="aspect-video rounded-xl overflow-hidden bg-panel">
+      <div className="aspect-video rounded-xl overflow-hidden bg-surface">
         <iframe
           src={getYouTubeEmbedUrl(videoId, { autoplay: '0' })}
           title={content.title}
@@ -99,7 +99,7 @@ function VideoPlayerWrapper({ content }: { content: Content }) {
 
   // Bunny Stream / Vimeo - would use their respective players
   return (
-    <div className="aspect-video rounded-xl bg-panel flex items-center justify-center">
+    <div className="aspect-video rounded-xl bg-surface flex items-center justify-center">
       <p className="text-muted">Odtwarzacz {provider} - wymaga konfiguracji</p>
     </div>
   );
@@ -116,7 +116,7 @@ function ContentBody({ content }: { content: Content }) {
 
   if (content.type === 'pdf' && content.file_url) {
     return (
-      <div className="aspect-video rounded-xl bg-panel flex items-center justify-center">
+      <div className="aspect-video rounded-xl bg-surface flex items-center justify-center">
         <iframe
           src={`https://docs.google.com/viewer?url=${encodeURIComponent(content.file_url)}&embedded=true`}
           className="w-full h-full rounded-xl"
@@ -128,7 +128,7 @@ function ContentBody({ content }: { content: Content }) {
 
   if (content.type === 'audio') {
     return (
-      <div className="bg-panel rounded-xl p-4">
+      <div className="bg-surface rounded-xl p-4">
         <audio controls className="w-full" src={content.file_url ?? ''} />
       </div>
     );
@@ -243,8 +243,7 @@ function CommentsSection({ contentId }: { contentId: string }) {
 
     const avatarUrl = comment.user?.avatar_url;
     return (
-      <div className={cn('flex gap-3', depth > 0 && 'ml-8 border-l-2 border-line pl-4')}>
-        <Avatar imgSrc={avatarUrl} name={comment.user?.display_name} size="sm" />
+      <div className={cn('flex gap-3', depth > 0 && 'ml-8 border-l-2 border-border pl-4')}>n        <Avatar imgSrc={avatarUrl} name={comment.user?.display_name} size="sm" />
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 mb-1">
             <span className="font-medium text-ink">{comment.user?.display_name || 'Użytkownik'}</span>
@@ -310,7 +309,7 @@ function CommentsSection({ contentId }: { contentId: string }) {
 
   return (
     <section className="space-y-6" aria-labelledby="comments-title">
-      <h2 id="comments-title" className="text-xl font-serif font-bold text-ink flex items-center gap-2">
+      <h2 id="comments-title" className="text-xl font-display font-bold text-ink flex items-center gap-2">
         <MessageSquare className="w-6 h-6 text-gold" />
         Komentarze ({comments.length})
       </h2>
@@ -357,7 +356,7 @@ function ShareButtons({ content }: { content: Content }) {
         window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank', 'width=550,height=420');
         break;
       case 'linkedin':
-        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank', 'width=550,height=420');
+        window.open(`https://www.linkedin.com/sharing/share-offsite/?u=${encodeURIComponent(url)}`, '_blank', 'width=550,height=420');
         break;
       case 'copy':
         await navigator.clipboard.writeText(url);
@@ -410,12 +409,12 @@ export function ContentDetailPage() {
     return (
       <div className="container py-12">
         <div className="animate-pulse space-y-6">
-          <div className="h-8 bg-panel-hover rounded w-1/3" />
-          <div className="aspect-video bg-panel-hover rounded-xl" />
+          <div className="h-8 bg-surface-hover rounded w-1/3" />
+          <div className="aspect-video bg-surface-hover rounded-xl" />
           <div className="space-y-4">
-            <div className="h-4 bg-panel-hover rounded w-1/2" />
-            <div className="h-4 bg-panel-hover rounded w-1/3" />
-            <div className="h-4 bg-panel-hover rounded w-1/4" />
+            <div className="h-4 bg-surface-hover rounded w-1/2" />
+            <div className="h-4 bg-surface-hover rounded w-1/3" />
+            <div className="h-4 bg-surface-hover rounded w-1/4" />
           </div>
         </div>
       </div>
@@ -425,7 +424,7 @@ export function ContentDetailPage() {
   if (!content) {
     return (
       <div className="container py-12 text-center">
-        <h1 className="text-2xl font-serif font-bold text-ink mb-4">Nie znaleziono materiału</h1>
+        <h1 className="text-2xl font-display font-bold text-ink mb-4">Nie znaleziono materiału</h1>
         <p className="text-muted mb-6">Ten materiał nie istnieje lub został usunięty.</p>
         <Link to="/" className="btn btn-primary">Wróć na stronę główną</Link>
       </div>
@@ -470,11 +469,11 @@ export function ContentDetailPage() {
           {content.visibility !== 'supporter' || hasAccess ? (
             <CommentsSection contentId={content.id} />
           ) : (
-            <Card className="bg-gold/5 border-gold/20 p-6 text-center">
+            <Card className="bg-gold-dim border-gold/30 p-6 text-center">
               <MessageSquare className="w-12 h-12 text-gold mx-auto mb-3" />
-              <h3 className="text-xl font-serif font-bold text-ink mb-2">Komentarze dla wspierających</h3>
+              <h3 className="text-xl font-display font-bold text-ink mb-2">Komentarze dla wspierających</h3>
               <p className="text-muted mb-4">Zostań wspierającym, aby uczestniczyć w dyskusji.</p>
-              <Link to="/konto" className="btn btn-primary">Wybierz plan wsparcia</Link>
+              <Link to="/konto" className="btn btn-gold">Wybierz plan wsparcia</Link>
             </Card>
           )}
         </div>
