@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from '@tanstack/react-router';
-import { Plus, Search, Edit, Trash2, Eye, Save, Image, Video, FileText, Music, Radio, Globe, Lock, Crown, ArrowLeft } from 'lucide-react';
+import { Plus, Search, Edit, Trash2, Eye, Save, Image, Video, FileText, Music, Radio, Globe, Lock, Crown, ArrowLeft, Inbox, Archive, RotateCcw, CheckCircle2, Mail } from 'lucide-react';
 import { useAuth } from '@/features/auth/useAuth';
 import { supabase, getContentList, type Content } from '@/lib/supabase';
 import { formatDatePL, formatRelativePL, CONTENT_TYPE_CONFIG, slugify, cn } from '@/lib/utils';
@@ -35,6 +35,16 @@ const contentSchema = z.object({
 });
 
 type ContentFormData = z.infer<typeof contentSchema>;
+
+type InformatorStatus = 'new' | 'read' | 'archived';
+interface InformatorMessage {
+  id: string;
+  subject: string;
+  message: string;
+  contact: string | null;
+  status: InformatorStatus;
+  created_at: string;
+}
 
 const TYPE_OPTIONS = [
   { value: 'video', label: 'Wideo', icon: Video },
@@ -552,6 +562,29 @@ export function AdminPage() {
   const [deletingContent, setDeletingContent] = useState<Content | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
 
+  // Informator messages
+  const [activeTab, setActiveTab] = useState<'content' | 'messages'>('content');
+  const [messages, setMessages] = useState<InformatorMessage[]>([]);
+  const [messagesLoading, setMessagesLoading] = useState(true);
+  const [messageFilter, setMessageFilter] = useState<'all' | InformatorStatus>('all');
+  const [updatingMessageId, setUpdatingMessageId] = useState<string | null>(null);
+
+  const loadMessages = async () => {
+    setMessagesLoading(true);
+    const { data, error } = await (supabase as any)
+      .from('informator_messages')
+      .select('id, subject, message, contact, status, created_at')
+      .order('created_at', { ascending: false });
+    if (error) {
+      console.error('loadMessages error', error);
+      toast({ type: 'error', title: 'Błąd', message: 'Nie udało się pobrać zgłoszeń.' });
+      setMessages([]);
+    } else {
+      setMessages((data || []) as InformatorMessage[]);
+    }
+    setMessagesLoading(false);
+  };
+
   // Load data
   useEffect(() => {
     const loadData = async () => {
@@ -563,8 +596,27 @@ export function AdminPage() {
       setTiers(tierData.data || []);
       setLoading(false);
     };
-    loadData();
+    void loadData();
+    void loadMessages();
   }, []);
+
+  const unreadMessagesCount = messages.filter((m) => m.status === 'new').length;
+  const filteredMessages = messageFilter === 'all' ? messages : messages.filter((m) => m.status === messageFilter);
+
+  const updateMessageStatus = async (id: string, status: InformatorStatus) => {
+    setUpdatingMessageId(id);
+    const { error } = await (supabase as any)
+      .from('informator_messages')
+      .update({ status })
+      .eq('id', id);
+    setUpdatingMessageId(null);
+    if (error) {
+      console.error('updateMessageStatus error', error);
+      toast({ type: 'error', title: 'Błąd', message: 'Nie udało się zmienić statusu zgłoszenia.' });
+      return;
+    }
+    setMessages((prev) => prev.map((m) => (m.id === id ? { ...m, status } : m)));
+  };
 
   const filteredContents = contents.filter(c => {
     const matchesSearch = c.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -670,55 +722,199 @@ export function AdminPage() {
     );
   }
 
+  const statusBadge = (status: InformatorStatus) => {
+    if (status === 'new') return <Badge variant="red" dot>Nowe</Badge>;
+    if (status === 'read') return <Badge variant="green">Przeczytane</Badge>;
+    return <Badge variant="gold">Archiwum</Badge>;
+  };
+
   return (
     <div className="container py-8">
       <AdminHeader />
 
-      {/* Toolbar */}
-      <Card className="mb-6 p-4">
-        <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-          <Button onClick={openCreate} leftIcon={<Plus className="w-4 h-4" />}>
-            Dodaj treść
-          </Button>
-
-          <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted" />
-              <input
-                type="text"
-                placeholder="Szukaj po tytule lub slugu..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="input pl-10"
-              />
-            </div>
-            <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)} className="input w-auto">
-              <option value="all">Wszystkie typy</option>
-              {TYPE_OPTIONS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-            </select>
-            <select value={visibilityFilter} onChange={(e) => setVisibilityFilter(e.target.value)} className="input w-auto">
-              <option value="all">Wszystkie dostępności</option>
-              {VISIBILITY_OPTIONS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
-            </select>
-          </div>
-        </div>
-      </Card>
-
-      {/* Content Table */}
-      <Card>
-        <ContentTable
-          contents={filteredContents}
-          onEdit={openEdit}
-          onDelete={openDelete}
-          onView={openView}
-          loading={loading}
-        />
-      </Card>
-
-      {/* Pagination info */}
-      <div className="mt-4 text-sm text-muted text-center">
-        Wyświetlano {filteredContents.length} z {contents.length} treści
+      <div className="mb-6 flex flex-wrap gap-2">
+        <button
+          type="button"
+          onClick={() => setActiveTab('content')}
+          className={cn('filter-pill', activeTab === 'content' && 'active')}
+        >
+          <FileText className="h-4 w-4" /> Treści
+        </button>
+        <button
+          type="button"
+          onClick={() => setActiveTab('messages')}
+          className={cn('filter-pill inline-flex items-center gap-2', activeTab === 'messages' && 'active')}
+        >
+          <Inbox className="h-4 w-4" /> Zgłoszenia
+          {unreadMessagesCount > 0 && (
+            <span className="inline-flex min-w-5 items-center justify-center rounded-full bg-accent px-1.5 py-0.5 text-[11px] font-bold text-white">
+              {unreadMessagesCount}
+            </span>
+          )}
+        </button>
       </div>
+
+      {activeTab === 'content' ? (
+        <>
+          <Card className="mb-6 p-4">
+            <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+              <Button onClick={openCreate} leftIcon={<Plus className="w-4 h-4" />}>
+                Dodaj treść
+              </Button>
+
+              <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted" />
+                  <input
+                    type="text"
+                    placeholder="Szukaj po tytule lub slugu..."
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    className="input pl-10"
+                  />
+                </div>
+                <select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value)} className="input w-auto">
+                  <option value="all">Wszystkie typy</option>
+                  {TYPE_OPTIONS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+                </select>
+                <select value={visibilityFilter} onChange={(e) => setVisibilityFilter(e.target.value)} className="input w-auto">
+                  <option value="all">Wszystkie dostępności</option>
+                  {VISIBILITY_OPTIONS.map(opt => <option key={opt.value} value={opt.value}>{opt.label}</option>)}
+                </select>
+              </div>
+            </div>
+          </Card>
+
+          <Card>
+            <ContentTable
+              contents={filteredContents}
+              onEdit={openEdit}
+              onDelete={openDelete}
+              onView={openView}
+              loading={loading}
+            />
+          </Card>
+
+          <div className="mt-4 text-sm text-muted text-center">
+            Wyświetlano {filteredContents.length} z {contents.length} treści
+          </div>
+        </>
+      ) : (
+        <>
+          <Card className="mb-6 p-4">
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h2 className="text-lg font-display font-bold text-ink">Zgłoszenia (Informator)</h2>
+                <p className="text-sm text-muted">Wiadomości z formularza `/informator`. Najnowsze na górze.</p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {([
+                  ['all', 'Wszystkie'],
+                  ['new', 'Nowe'],
+                  ['read', 'Przeczytane'],
+                  ['archived', 'Archiwum'],
+                ] as const).map(([value, label]) => (
+                  <button
+                    key={value}
+                    type="button"
+                    onClick={() => setMessageFilter(value)}
+                    className={cn('filter-pill', messageFilter === value && 'active')}
+                  >
+                    {label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </Card>
+
+          {messagesLoading ? (
+            <div className="space-y-4">
+              {[1, 2, 3].map((i) => (
+                <Card key={i} className="p-6">
+                  <div className="h-5 w-1/3 animate-pulse rounded bg-surface-hover" />
+                  <div className="mt-3 h-4 w-full animate-pulse rounded bg-surface-hover" />
+                  <div className="mt-2 h-4 w-2/3 animate-pulse rounded bg-surface-hover" />
+                </Card>
+              ))}
+            </div>
+          ) : filteredMessages.length === 0 ? (
+            <Card className="p-8 text-center">
+              <Inbox className="mx-auto mb-3 h-10 w-10 text-muted" />
+              <h3 className="text-lg font-display font-bold text-ink">Brak zgłoszeń</h3>
+              <p className="mt-2 text-sm text-muted">
+                {messageFilter === 'all'
+                  ? 'Nie ma jeszcze żadnych wiadomości z Informatora.'
+                  : 'Brak zgłoszeń w wybranym filtrze.'}
+              </p>
+            </Card>
+          ) : (
+            <div className="space-y-4">
+              {filteredMessages.map((msg) => (
+                <Card key={msg.id} className="p-5 md:p-6">
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                    <div className="min-w-0">
+                      <div className="flex flex-wrap items-center gap-2">
+                        {statusBadge(msg.status)}
+                        <span className="text-xs text-muted">{formatDatePL(msg.created_at, 'd MMMM yyyy, HH:mm')}</span>
+                      </div>
+                      <h3 className="mt-2 break-words text-lg font-display font-bold text-ink">{msg.subject}</h3>
+                    </div>
+                  </div>
+
+                  <div className="mt-4 rounded-lg border border-border bg-bg/30 p-4">
+                    <p className="whitespace-pre-wrap break-words text-sm leading-relaxed text-muted">{msg.message}</p>
+                  </div>
+
+                  <div className="mt-4 flex flex-col gap-3 border-t border-border pt-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="text-sm text-muted">
+                      {msg.contact ? (
+                        <span className="inline-flex items-center gap-2 break-all"><Mail className="h-4 w-4 text-gold" /> {msg.contact}</span>
+                      ) : (
+                        <span className="inline-flex items-center gap-2"><Lock className="h-4 w-4 text-muted" /> Zgłoszenie anonimowe</span>
+                      )}
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {msg.status !== 'read' && (
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          onClick={() => void updateMessageStatus(msg.id, 'read')}
+                          loading={updatingMessageId === msg.id}
+                          leftIcon={<CheckCircle2 className="h-4 w-4" />}
+                        >
+                          Oznacz jako przeczytane
+                        </Button>
+                      )}
+                      {msg.status !== 'archived' && (
+                        <Button
+                          variant="secondary"
+                          size="sm"
+                          onClick={() => void updateMessageStatus(msg.id, 'archived')}
+                          loading={updatingMessageId === msg.id}
+                          leftIcon={<Archive className="h-4 w-4" />}
+                        >
+                          Archiwizuj
+                        </Button>
+                      )}
+                      {msg.status !== 'new' && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => void updateMessageStatus(msg.id, 'new')}
+                          loading={updatingMessageId === msg.id}
+                          leftIcon={<RotateCcw className="h-4 w-4" />}
+                        >
+                          Przywróć jako nowe
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          )}
+        </>
+      )}
 
       {/* Modals */}
       <ContentFormModal

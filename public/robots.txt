@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bezmaski.pl/sitemap.xml

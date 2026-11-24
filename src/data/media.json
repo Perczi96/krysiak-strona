@@ -1,0 +1,128 @@
+{
+  "instrukcja": "Ręczna lista materiałów, w których występuje Piotr. Dopisz obiekt do tablicy pozycje. Pole tytul przepisuj dosłownie. url: pełny adres https. medium: nazwa redakcji lub kanału. kanalUrl: opcjonalny adres kanału. kategoria: wywiad (materiał o Piotrze), komentarz (Piotr jako komentator w innych mediach) albo rozmowa. etykieta: Wywiad, Komentarz albo Rozmowa (na stronie widać ją jako wersaliki). typ: short dla pionowego filmu. data: opcjonalnie RRRR-MM-DD. miniaturka: opcjonalny adres obrazka; przy filmie z YouTube można pominąć. wyrozniony: true daje dużą miniaturę i odtwarzacz po kliknięciu.",
+  "pozycje": [
+    {
+      "tytul": "TO ON ODKRYŁ \"DZIEWCZYNY Z DUBAJU\". JEDYNY TAKI WYWIAD",
+      "url": "https://www.youtube.com/watch?v=2JblbkWF_UU",
+      "medium": "Goniec",
+      "kanalUrl": "https://www.youtube.com/@goniecredakcja",
+      "kategoria": "wywiad",
+      "etykieta": "Wywiad",
+      "wyrozniony": true
+    },
+    {
+      "tytul": "WYWIAD Z „DZIEWCZYNĄ Z DUBAJU”. PIERWSZY RAZ PRZED KAMERĄ. WSTRZĄSAJĄCE WYZNANIE",
+      "url": "https://www.youtube.com/watch?v=OmOxLvCjvkY",
+      "medium": "Goniec",
+      "kanalUrl": "https://www.youtube.com/@goniecredakcja",
+      "kategoria": "wywiad",
+      "etykieta": "Wywiad"
+    },
+    {
+      "tytul": "Jak Piotr Krysiak poznał ks. Wojciecha G.?",
+      "url": "https://www.youtube.com/watch?v=RXpckIr_x0g",
+      "medium": "Radio TOK FM",
+      "kanalUrl": "https://www.youtube.com/@RadioTOKFM",
+      "kategoria": "wywiad",
+      "etykieta": "Wywiad"
+    },
+    {
+      "tytul": "OK, BOOMER #6 - PIOTR KRYSIAK, POCZĄTKI KOMERCYJNYCH MEDIÓW I UPADEK TVP",
+      "url": "https://www.youtube.com/watch?v=oPrHkPBvtjg",
+      "medium": "Goniec",
+      "kanalUrl": "https://www.youtube.com/@goniecredakcja",
+      "kategoria": "wywiad",
+      "etykieta": "Wywiad"
+    },
+    {
+      "tytul": "PIOTR KRYSIAK ODSŁANIA KULISY POLSKIEGO SHOW-BIZNESU",
+      "url": "https://www.youtube.com/watch?v=aHh7RWd8bzk",
+      "medium": "BartoszBoruciakTV",
+      "kanalUrl": "https://www.youtube.com/@BartoszBoruciakTV",
+      "kategoria": "wywiad",
+      "etykieta": "Wywiad"
+    },
+    {
+      "tytul": "AUTOR „DZIEWCZYN Z DUBAJU” UJAWNIA KULISY AFERY EPSTEINA",
+      "url": "https://www.youtube.com/watch?v=fXwVGl1yAWs",
+      "medium": "Kulisy Spraw",
+      "kanalUrl": "https://www.youtube.com/@kulisyspraw",
+      "kategoria": "komentarz",
+      "etykieta": "Komentarz"
+    },
+    {
+      "tytul": "Krysiak o sprawie Wojciecha G: Zamiatanie pod dywan jest obrzydliwe",
+      "url": "https://www.youtube.com/watch?v=VkjY2RTQPKg",
+      "medium": "Radio TOK FM",
+      "kanalUrl": "https://www.youtube.com/@RadioTOKFM",
+      "kategoria": "komentarz",
+      "etykieta": "Komentarz"
+    },
+    {
+      "tytul": "Co kryją akta Epsteina? Trump, Clinton i polskie tropy | Janusz Schwertner i Piotr Krysiak",
+      "url": "https://www.youtube.com/watch?v=tEr8Nc4QmHs",
+      "medium": "Polskie Radio",
+      "kanalUrl": "https://www.youtube.com/@PolskieradioPL",
+      "kategoria": "komentarz",
+      "etykieta": "Komentarz"
+    },
+    {
+      "tytul": "Piotr Krysiak o sprawie księdza Gila (Dziś wieczorem TVP Info, 24.10.2013)",
+      "url": "https://www.youtube.com/watch?v=L9AA9o8Rgs8",
+      "medium": "TVP Info",
+      "kanalUrl": "https://www.youtube.com/@tvpinfo",
+      "kategoria": "komentarz",
+      "etykieta": "Komentarz",
+      "data": "2013-10-24"
+    },
+    {
+      "tytul": "Jakimowicz kontra Krysiak. Kto mówi prawdę?",
+      "url": "https://www.youtube.com/watch?v=FLLFzCgkQ50",
+      "medium": "SEKIELSKI",
+      "kanalUrl": "https://www.youtube.com/@sekielski",
+      "kategoria": "komentarz",
+      "etykieta": "Komentarz"
+    },
+    {
+      "tytul": "Prawnik Omeny kontra zdrowy rozsądek, czyli efekt Streisand po polsku",
+      "url": "https://www.youtube.com/watch?v=VmbK9ihMEC4",
+      "medium": "SEKIELSKI",
+      "kanalUrl": "https://www.youtube.com/@sekielski",
+      "kategoria": "komentarz",
+      "etykieta": "Komentarz"
+    },
+    {
+      "tytul": "KTO TAK NAPRAWDĘ STAŁ ZA \"KARIERĄ\" KRZYSZTOFA BOSAKA?",
+      "url": "https://www.youtube.com/watch?v=u29koP2hSD4",
+      "medium": "Goniec",
+      "kanalUrl": "https://www.youtube.com/@goniecredakcja",
+      "kategoria": "komentarz",
+      "etykieta": "Komentarz"
+    },
+    {
+      "tytul": "UJAWNIAMY: TAK KOŁODZIEJCZAK KUPIŁ SOBIE DYPLOM. AFERA COLLEGIUM HUMANUM",
+      "url": "https://www.youtube.com/watch?v=9-aTEenM4KY",
+      "medium": "Goniec",
+      "kanalUrl": "https://www.youtube.com/@goniecredakcja",
+      "kategoria": "komentarz",
+      "etykieta": "Komentarz"
+    },
+    {
+      "tytul": "Moontalk - Piotr Krysiak",
+      "url": "https://www.youtube.com/shorts/cBxiCvIkP8s",
+      "medium": "Active Family",
+      "kanalUrl": "https://www.youtube.com/@Telewizja_Active_Family",
+      "kategoria": "rozmowa",
+      "etykieta": "Rozmowa",
+      "typ": "short"
+    },
+    {
+      "tytul": "Kto stoi za podsłuchami w domu dziennikarza? Piotr Krysiak, Tomasz Sekielski",
+      "url": "https://www.youtube.com/watch?v=USkdreqtTpc",
+      "medium": "SEKIELSKI",
+      "kanalUrl": "https://www.youtube.com/@sekielski",
+      "kategoria": "rozmowa",
+      "etykieta": "Rozmowa"
+    }
+  ]
+}

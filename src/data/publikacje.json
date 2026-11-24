@@ -1,0 +1,854 @@
+{
+  "instrukcja": "Pola: typ (ksiazka, wpis, tekst), tytul, medium, data (RRRR-MM-DD albo sam rok), url. doPotwierdzenia: true zostaje w pliku, ale strona tego nie pokazuje, dopóki Piotr nie potwierdzi.",
+  "pozycje": [
+    {
+      "typ": "ksiazka",
+      "tytul": "Dziewczyny z Dubaju 2",
+      "medium": "Deadline",
+      "data": "2023-04-12",
+      "url": "https://lubimyczytac.pl/ksiazka/5062108/dziewczyny-z-dubaju-2"
+    },
+    {
+      "typ": "ksiazka",
+      "tytul": "Chłopaki z Dubaju",
+      "medium": "Deadline",
+      "data": "2021-04-28",
+      "url": "https://lubimyczytac.pl/ksiazka/4967662/chlopaki-z-dubaju"
+    },
+    {
+      "typ": "ksiazka",
+      "tytul": "Diler gwiazd",
+      "medium": "Deadline",
+      "data": "2018-10-29",
+      "url": "https://lubimyczytac.pl/ksiazka/4867384/diler-gwiazd"
+    },
+    {
+      "typ": "ksiazka",
+      "tytul": "Dziewczyny z Dubaju",
+      "medium": "Deadline",
+      "data": "2018-04-18",
+      "url": "https://lubimyczytac.pl/ksiazka/4995314/dziewczyny-z-dubaju"
+    },
+    {
+      "typ": "ksiazka",
+      "tytul": "Wyspa Ślepców",
+      "medium": "Deadline",
+      "data": "2017-05-17",
+      "url": "https://lubimyczytac.pl/ksiazka/4590329/wyspa-slepcow"
+    },
+    {
+      "typ": "ksiazka",
+      "tytul": "Agent Tomek: Spowiedź",
+      "medium": "Wydawnictwo Akapit",
+      "data": "2010",
+      "url": "https://lubimyczytac.pl/ksiazka/81516/agent-tomek-spowiedz"
+    },
+    {
+      "typ": "ksiazka",
+      "tytul": "Edyta Górniak: bez cenzury",
+      "medium": "Akapit Press",
+      "data": "2005",
+      "url": "https://bibliotekapiosenki.pl/publikacje/Krysiak_Piotr_Edyta_Gorniak_bez_cenzury",
+      "doPotwierdzenia": false
+    },
+    {
+      "typ": "wpis",
+      "tytul": "Gwiazdor TVP gwałcicielem?",
+      "medium": "Facebook",
+      "data": "2021-01-18",
+      "url": "https://www.facebook.com/pkrysiak.96.f/posts/3722564894430487",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "ABW już bada wariografem uczestników akcji u Blidy",
+      "medium": "Wprost",
+      "data": "2007-05-04",
+      "url": "https://www.wprost.pl/tylko-u-nas/105856/ABW-juz-bada-wariografem-uczestnikow-akcji-u-Blidy.html"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Idole na haju",
+      "medium": "Wprost",
+      "data": "2007-05-13",
+      "url": "https://www.wprost.pl/tygodnik/106343/Idole-na-haju.html"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Kuba Wojewódzki przesłuchany przez ABW",
+      "medium": "Wprost",
+      "data": "2007-05-13",
+      "url": "https://www.wprost.pl/tylko-u-nas/106409/Kuba-Wojewodzki-przesluchany-przez-ABW.html"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Szemrany detektyw",
+      "medium": "Wprost",
+      "data": "2007-06-10",
+      "url": "https://www.wprost.pl/tygodnik/108042/Szemrany-detektyw.html"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Twardy skruszony",
+      "medium": "Wprost",
+      "data": "2007-07-01",
+      "url": "https://www.wprost.pl/tygodnik/109364/Twardy-skruszony.html"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Reporterzy z Samoobrony",
+      "medium": "Wprost",
+      "data": "2007-09-23",
+      "url": "https://www.wprost.pl/tygodnik/114399/Reporterzy-z-Samoobrony.html"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Sprawiedliwość ekspresowa",
+      "medium": "Wprost",
+      "data": "2007-09-30",
+      "url": "https://www.wprost.pl/tygodnik/114822/Sprawiedliwosc-ekspresowa.html"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Adwokat generalny",
+      "medium": "Wprost",
+      "data": "2008-01-06",
+      "url": "https://www.wprost.pl/tygodnik/121148/Adwokat-generalny.html"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Tani lot premiera",
+      "medium": "Wprost",
+      "data": "2008-03-10",
+      "url": "https://www.wprost.pl/kraj/125376/tani-lot-premiera.html"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Kret w rządzie",
+      "medium": "Wprost",
+      "data": "2008-03-16",
+      "url": "https://www.wprost.pl/tygodnik/125757/Kret-w-rzadzie.html"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "WCZORAJ WSZYSCY BYLIŚMY W KRAKOWIE. I Z KRAKOWEM",
+      "medium": "Pressmania",
+      "data": "2026-11-08",
+      "url": "https://pressmania.pl/wczoraj-wszyscy-bylismy-w-krakowie-i-z-krakowem/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "W ZOMO OKAZAŁ SIĘ NIEPRZYDATNY. Tajne akta Rutkowskiego",
+      "medium": "Pressmania",
+      "data": "2026-07-13",
+      "url": "https://pressmania.pl/w-zomo-okazal-sie-nieprzydatny-tajne-akta-rutkowskiego/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Jak miliarder ze Szczecina przygotował plan ucieczki dla Epsteina",
+      "medium": "Pressmania",
+      "data": "2026-06-26",
+      "url": "https://pressmania.pl/jak-miliarder-ze-szczecina-przygotowal-plan-ucieczki-dla-epsteina/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "AFERA PODKARPACKA: BEZ MUNDURU",
+      "medium": "Pressmania",
+      "data": "2026-06-18",
+      "url": "https://pressmania.pl/afera-podkarpacka-bez-munduru/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Czy bracia Rysicz byli podwójnymi agentami?",
+      "medium": "Pressmania",
+      "data": "2026-06-15",
+      "url": "https://pressmania.pl/czy-bracia-rysicz-byli-podwojnymi-agentami/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Polański i Epstein – przypadek czy zaplanowany scenariusz?",
+      "medium": "Pressmania",
+      "data": "2026-05-24",
+      "url": "https://pressmania.pl/polanski-i-epstein-przypadek-czy-zaplanowany-scenariusz/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "NIE MA JAK BRYTYJSKIE POCZUCIE HUMORU",
+      "medium": "Pressmania",
+      "data": "2026-02-19",
+      "url": "https://pressmania.pl/nie-ma-jak-brytyjskie-poczucie-humoru/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Książe Andrzej pogrąża Monarchie",
+      "medium": "Pressmania",
+      "data": "2025-10-21",
+      "url": "https://pressmania.pl/ksiaze-andrzej-pograza-monarchie/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "I KTO TO MÓWI?",
+      "medium": "Pressmania",
+      "data": "2025-10-19",
+      "url": "https://pressmania.pl/i-kto-to-mowi/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "KSIĄŻE ANDRZEJ REZYGNUJE",
+      "medium": "Pressmania",
+      "data": "2025-10-19",
+      "url": "https://pressmania.pl/ksiaze-andrzej-rezygnuje/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Royal Family musi przygotować się na kolejne wstrząsy i kolejne upokorzenia",
+      "medium": "Pressmania",
+      "data": "2025-10-14",
+      "url": "https://pressmania.pl/royal-family-musi-przygotowac-sie-na-kolejne-wstrzasy-i-kolejne-upokorzenia/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "JAK WYJŚĆ Z BIDULA i POTRAFIĆ ŻYĆ",
+      "medium": "Pressmania",
+      "data": "2025-10-03",
+      "url": "https://pressmania.pl/jak-wyjsc-z-bidula-i-potrafic-zyc/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "COLLEGIUM HUMANUM PO FRANCUSKU",
+      "medium": "Pressmania",
+      "data": "2025-09-30",
+      "url": "https://pressmania.pl/collegium-humanum-po-francusku/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Liroy przerywa milczenie w podcaście Bez maski",
+      "medium": "Pressmania",
+      "data": "2025-09-29",
+      "url": "https://pressmania.pl/liroy-przerywa-milczenie-w-podcascie-bez-maski/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Kim naprawdę był Jeffrey Epstein i dlaczego wciąż nie znamy całej prawdy?",
+      "medium": "Pressmania",
+      "data": "2025-09-27",
+      "url": "https://pressmania.pl/kim-naprawde-byl-jeffrey-epstein-i-dlaczego-wciaz-nie-znamy-calej-prawdy/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "POLSKA MODELKA Z GHISLAINE MAXWELL. CZY TO PRZYPADKOWE SPOTKANIE CZY MA ZWIĄZEK Z AFERĄ EPSTEINA?",
+      "medium": "Pressmania",
+      "data": "2025-09-21",
+      "url": "https://pressmania.pl/polska-modelka-z-ghislaine-maxwell-czy-to-przypadkowe-spotkanie-czy-ma-zwiazek-z-afera-epsteina/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Kulisy afery Epsteina",
+      "medium": "Pressmania",
+      "data": "2025-09-21",
+      "url": "https://pressmania.pl/kulisy-afery-epsteina/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Czego boi się Donald Trump?",
+      "medium": "Pressmania",
+      "data": "2025-09-07",
+      "url": "https://pressmania.pl/czego-boi-sie-donald-trump/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Operacja „Enigma”: kiedy państwo powiedziało mafii „dość”",
+      "medium": "Pressmania",
+      "data": "2025-09-02",
+      "url": "https://pressmania.pl/operacja-enigma-kiedy-panstwo-powiedzialo-mafii-dosc/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Z traktorów do dyplomów? Historia, która może zakończyć polityczną karierę Kołodziejczaka!",
+      "medium": "Pressmania",
+      "data": "2025-08-27",
+      "url": "https://pressmania.pl/z-traktorow-do-dyplomow-historia-ktora-moze-zakonczyc-polityczna-kariere-kolodziejczaka/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Bez Maski na granicy",
+      "medium": "Pressmania",
+      "data": "2025-08-01",
+      "url": "https://pressmania.pl/bez-maski-na-granicy/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Śledztwo Gońca: Podejrzane dyplomy likwidatora TVP. Profesorski układ oplótł polską edukację",
+      "medium": "Pressmania",
+      "data": "2025-07-18",
+      "url": "https://pressmania.pl/sledztwo-gonca-podejrzane-dyplomy-likwidatora-tvp-profesorski-uklad-oplotl-polska-edukacje/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Michał Kołodziejczak nie jest już wiceministrem rolnictwem. Dlaczego?",
+      "medium": "Pressmania",
+      "data": "2025-06-18",
+      "url": "https://pressmania.pl/michal-kolodziejczak-nie-jest-juz-wiceministrem-rolnictwem-dlaczego/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "„Bez maski”: Odważny głos lekarza, który walczy o pacjentów",
+      "medium": "Pressmania",
+      "data": "2025-06-12",
+      "url": "https://pressmania.pl/bez-maski-odwazny-glos-lekarza-ktory-walczy-o-pacjentow/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "AFERA DYPLOMOWA W RZĄDZIE",
+      "medium": "Pressmania",
+      "data": "2025-06-10",
+      "url": "https://pressmania.pl/afera-dyplomowa-w-rzadzie/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Fatalne błędy Trzaskowskiego",
+      "medium": "Pressmania",
+      "data": "2025-06-04",
+      "url": "https://pressmania.pl/fatalne-bledy-trzaskowskiego/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Ujawniamy kulisy operacji fałszowania podpisów na listach poparcia dla Marka Jakubiaka",
+      "medium": "Pressmania",
+      "data": "2025-05-16",
+      "url": "https://pressmania.pl/ujawniamy-kulisy-operacji-falszowania-podpisow-na-listach-poparcia-dla-marka-jakubiaka/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "E-Marysia",
+      "medium": "Pressmania",
+      "data": "2025-04-11",
+      "url": "https://pressmania.pl/e-marysia/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Po dyplomy Collegium Humanum pędzili nie tylko politycy",
+      "medium": "Pressmania",
+      "data": "2025-03-19",
+      "url": "https://pressmania.pl/po-dyplomy-collegium-humanum-pedzili-nie-tylko-politycy/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "OPERACJA „ŻABKI”",
+      "medium": "Pressmania",
+      "data": "2025-03-15",
+      "url": "https://pressmania.pl/operacja-zabki/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "EMIL S. I DODA W PRZEKRĘCIE „NA ŻABKĘ”",
+      "medium": "Pressmania",
+      "data": "2025-03-15",
+      "url": "https://pressmania.pl/emil-s-i-doda-w-przekrecie-na-zabke/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Polacy na podsłuchu!",
+      "medium": "Pressmania",
+      "data": "2025-02-12",
+      "url": "https://pressmania.pl/polacy-na-podsluchu/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Doda pozbywa się majątku",
+      "medium": "Pressmania",
+      "data": "2025-01-30",
+      "url": "https://pressmania.pl/doda-pozbywa-sie-majatku/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "NIE MIAŁ NIC WSPÓLNEGO Z COLLEGIUM HUMANUM",
+      "medium": "Pressmania",
+      "data": "2024-12-21",
+      "url": "https://pressmania.pl/nie-mial-nic-wspolnego-z-collegium-humanum/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Szemrany biznesmen z zarzutami",
+      "medium": "Pressmania",
+      "data": "2024-12-08",
+      "url": "https://pressmania.pl/szemrany-biznesmen-z-zarzutami/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "STYPENDYŚCI COLLEGIUM HUMANUM",
+      "medium": "Pressmania",
+      "data": "2024-12-07",
+      "url": "https://pressmania.pl/stypendysci-collegium-humanum/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Prawdziwe kłamstwa Hołowni",
+      "medium": "Pressmania",
+      "data": "2024-11-30",
+      "url": "https://pressmania.pl/prawdziwe-klamstwa-holowni/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Student rotacyjny Szymon Hołownia",
+      "medium": "Pressmania",
+      "data": "2024-11-28",
+      "url": "https://pressmania.pl/student-rotacyjny-szymon-holownia/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "FAMILIADA W INFO",
+      "medium": "Pressmania",
+      "data": "2024-11-13",
+      "url": "https://pressmania.pl/familiada-w-info/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Dramatyczna sytuacja Grzegorza Rzeczkowskiego",
+      "medium": "Pressmania",
+      "data": "2024-11-01",
+      "url": "https://pressmania.pl/dramatyczna-sytuacja-grzegorza-rzeczkowskiego/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "UJAWNIAMY. KRZYSZTOF RUTKOWSKI OSZUKAŁ 250 OSÓB. WSTRZĄSAJĄCE ZEZNANIA",
+      "medium": "Pressmania",
+      "data": "2024-10-30",
+      "url": "https://pressmania.pl/ujawniamy-krzysztof-rutkowski-oszukal-250-osob-wstrzasajace-zeznania/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Tajemnice Antoniego i „Zbynia”",
+      "medium": "Pressmania",
+      "data": "2024-10-27",
+      "url": "https://pressmania.pl/tajemnice-antoniego-i-zbynia/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Wpadła Królowa Śniegu",
+      "medium": "Pressmania",
+      "data": "2024-10-15",
+      "url": "https://pressmania.pl/wpadla-krolowa-sniegu/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Bawił się w detektywa",
+      "medium": "Pressmania",
+      "data": "2024-10-09",
+      "url": "https://pressmania.pl/bawil-sie-w-detektywa/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Psi detektyw",
+      "medium": "Pressmania",
+      "data": "2024-10-04",
+      "url": "https://pressmania.pl/psi-detektyw/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Hipokryzja Stonogi. Podkast: Bez Maski",
+      "medium": "Pressmania",
+      "data": "2024-09-18",
+      "url": "https://pressmania.pl/hipokryzja-stonogi-podkast-bez-maski/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Operation Sheikh. „Dziewczyny z Dubaju” idą w świat!",
+      "medium": "Pressmania",
+      "data": "2024-09-14",
+      "url": "https://pressmania.pl/operation-sheikh-dziewczyny-z-dubaju-ida-w-swiat/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Filantropka i dziennikarka. Historia prawdziwa",
+      "medium": "Pressmania",
+      "data": "2024-06-23",
+      "url": "https://pressmania.pl/filantropka-i-dziennikarka-historia-prawdziwa/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Poznajecie Pana Tomasza Mraza?",
+      "medium": "Pressmania",
+      "data": "2024-06-11",
+      "url": "https://pressmania.pl/poznajecie-pana-tomasza-mraza/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "ANNA POPEK MIAŻDŻY FESTIWAL W OPOLU KTÓREGO NAWET… NIE OGLĄDAŁA!",
+      "medium": "Pressmania",
+      "data": "2024-06-06",
+      "url": "https://pressmania.pl/anna-popek-miazdzy-festiwal-w-opolu-ktorego-nawet-nie-ogladala/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "WOLNOŚĆ, BEZ SŁÓW I ZMARNOWANYCH SZANS",
+      "medium": "Pressmania",
+      "data": "2024-06-03",
+      "url": "https://pressmania.pl/wolnosc-bez-slow-i-zmarnowanych-szans/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Sprawa Asunty",
+      "medium": "Pressmania",
+      "data": "2024-05-12",
+      "url": "https://pressmania.pl/sprawa-asunty/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Kto stoi za podsłuchami w domu dziennikarza?",
+      "medium": "Pressmania",
+      "data": "2024-04-25",
+      "url": "https://pressmania.pl/kto-stoi-za-podsluchami-w-domu-dziennikarza/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Taki stan sądownictwa dziś w Polszy!",
+      "medium": "Pressmania",
+      "data": "2024-03-02",
+      "url": "https://pressmania.pl/taki-stan-sadownictwa-dzis-w-polszy/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "ZATRZYMANIA W COLLEGIUM HUMANUM (Tumanum)",
+      "medium": "Pressmania",
+      "data": "2025-05-15",
+      "url": "https://pressmania.pl/zatrzymania-w-collegium-humanum-tumanum/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "„SYLWESTRY MARZEŃ” T. Klimka w TVP",
+      "medium": "Pressmania",
+      "data": "2024-02-19",
+      "url": "https://pressmania.pl/sylwestry-marzen-t-klimka-w-tvp/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "ŻEBRAK",
+      "medium": "Pressmania",
+      "data": "2024-01-19",
+      "url": "https://pressmania.pl/zebrak/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "JAK KIEROWCA AUTOBUSU MIEJSKIEGO WSADZIŁ KAMIŃSKIEGO I WĄSIKA DO WIĘZIENIA",
+      "medium": "Pressmania",
+      "data": "2024-01-10",
+      "url": "https://pressmania.pl/jak-kierowca-autobusu-miejskiego-wsadzil-kaminskiego-i-wasika-do-wiezienia/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Straszne rzeczy!",
+      "medium": "Pressmania",
+      "data": "2023-10-29",
+      "url": "https://pressmania.pl/straszne-rzeczy/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Może morze",
+      "medium": "Pressmania",
+      "data": "2023-08-06",
+      "url": "https://pressmania.pl/moze-morze/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "50 TWARZY SENATORA! „DZIEWCZYNY Z DUBAJU 2” ZA DARMO DLA WSZYSTKICH!",
+      "medium": "Pressmania",
+      "data": "2023-08-04",
+      "url": "https://pressmania.pl/50-twarzy-senatora-dziewczyny-z-dubaju-2-za-darmo-dla-wszystkich/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "HIPOKRYTKI. DZIEWCZYNY Z DUBAJU 2 ZA DARMO. DLA WSZYSTKICH!",
+      "medium": "Pressmania",
+      "data": "2023-08-04",
+      "url": "https://pressmania.pl/hipokrytki-dziewczyny-z-dubaju-2-za-darmo-dla-wszystkich/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "PIENIĄDZE TO NIE WSZYSTKO. „DZIEWCZYNY Z DUBAJU 2” za DARMO. DLA WSZYSTKICH!",
+      "medium": "Pressmania",
+      "data": "2023-08-03",
+      "url": "https://pressmania.pl/pieniadze-to-nie-wszystko-dziewczyny-z-dubaju-2-za-darmo-dla-wszystkich/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "„DZIEWCZYNY Z DUBAJU 2” ZA DARMO DLA WSZYSTKICH",
+      "medium": "Pressmania",
+      "data": "2023-08-02",
+      "url": "https://pressmania.pl/dziewczyny-z-dubaju-2-za-darmo-dla-wszystkich/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "I was raped by „Star TVP”!",
+      "medium": "Pressmania",
+      "data": "2023-07-27",
+      "url": "https://pressmania.pl/i-was-raped-by-star-tvp/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Zostałam zgwałcona przez „Gwiazdora TVP”!",
+      "medium": "Pressmania",
+      "data": "2023-07-27",
+      "url": "https://pressmania.pl/zostalam-zgwalcona-przez-gwiazdora-tvp/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Danusiu, naprawdę?",
+      "medium": "Pressmania",
+      "data": "2023-07-23",
+      "url": "https://pressmania.pl/danusiu-naprawde/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "APEL DO MINISTRA ZBIGNIEWA ZIOBRO!!!",
+      "medium": "Pressmania",
+      "data": "2023-07-18",
+      "url": "https://pressmania.pl/apel-do-ministra-zbigniewa-ziobro/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "JAROSŁAW JAKIMOWICZ NIE WEJDZIE JUŻ DO TVP!",
+      "medium": "Pressmania",
+      "data": "2023-07-17",
+      "url": "https://pressmania.pl/jaroslaw-jakimowicz-nie-wejdzie-juz-do-tvp/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "HAT TRICK „DZIEWCZYN Z DUBAJU 2” (3:0)",
+      "medium": "Pressmania",
+      "data": "2023-07-12",
+      "url": "https://pressmania.pl/hat-trick-dziewczyn-z-dubaju-2-30/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "„GWIAZDOR” BĘDZIE PRZESŁUCHANY W ŚLEDZTWIE O GWAŁT!",
+      "medium": "Pressmania",
+      "data": "2023-07-07",
+      "url": "https://pressmania.pl/gwiazdor-bedzie-przesluchany-w-sledztwie-o-gwalt/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "OŚWIADCZENIE W SPRAWIE PANI OMENY MENSAH",
+      "medium": "Pressmania",
+      "data": "2023-06-29",
+      "url": "https://pressmania.pl/oswiadczenie-w-sprawie-pani-omeny-mensah/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Kim jest Patrycja P. Dlaczego Anna M. chce zablokowania książki Dziewczyny z Dubaju 2?",
+      "medium": "Pressmania",
+      "data": "2023-06-28",
+      "url": "https://pressmania.pl/kim-jest-patrycja-p-dlaczego-anna-m-chce-zablokowania-ksiazki-dziewczyny-z-dubaju-2/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Pieniądze to nie wszystko! Dziewczyny z Dubaju 2",
+      "medium": "Pressmania",
+      "data": "2023-04-16",
+      "url": "https://pressmania.pl/pieniadze-to-nie-wszystko-dziewczyny-z-dubaju-2/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Dziewczyny z Dubaju 2 w księgarniach",
+      "medium": "Pressmania",
+      "data": "2023-04-11",
+      "url": "https://pressmania.pl/dziewczyny-z-dubaju-2-w-ksiegarniach/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "PIĘTROWY” NADZÓR NAD SPRAWĄ „GWIAZDORA” TVP",
+      "medium": "Pressmania",
+      "data": "2023-01-24",
+      "url": "https://pressmania.pl/pietrowy-nadzor-nad-sprawa-gwiazdora-tvp/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "DODA POZBYŁA SIĘ MAJĄTKU",
+      "medium": "Pressmania",
+      "data": "2023-01-20",
+      "url": "https://pressmania.pl/doda-pozbyla-sie-majatku/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "DODA: DOSTAŁAM JAKIEŚ GROSZE JAK RUSZALIŚMY",
+      "medium": "Pressmania",
+      "data": "2023-01-16",
+      "url": "https://pressmania.pl/doda-dostalam-jakies-grosze-jak-ruszalismy/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "DODA MUSIAŁA ODDAĆ ROLEXA",
+      "medium": "Pressmania",
+      "data": "2022-11-07",
+      "url": "https://pressmania.pl/doda-musiala-oddac-rolexa/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "MALTAŃSKIE „POLYWOOD” CELEBRYTÓW",
+      "medium": "Pressmania",
+      "data": "2022-11-05",
+      "url": "https://pressmania.pl/maltanskie-polywood-celebrytow/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Sadowska zeznawała w prokuraturze w sprawie oszustw Emila S.",
+      "medium": "Pressmania",
+      "data": "2022-09-28",
+      "url": "https://pressmania.pl/sadowska-zeznawala-w-prokuraturze-w-sprawie-oszustw-emila-s/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Putin wpuści „Dziewczyny z Dubaju”… do kin",
+      "medium": "Pressmania",
+      "data": "2022-04-17",
+      "url": "https://pressmania.pl/putin-wpusci-dziewczyny-z-dubaju-do-kin/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Żabka nie polecam!",
+      "medium": "Pressmania",
+      "data": "2022-01-03",
+      "url": "https://pressmania.pl/zabka-nie-polecam/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Aktorka wykorzystana seksualnie na planie filmowym przerywa milczenie!",
+      "medium": "Pressmania",
+      "data": "2021-12-13",
+      "url": "https://pressmania.pl/aktorka-wykorzystana-seksualnie-na-planie-filmowym-przerywa-milczenie/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Piotr Krysiak recenzuje „Dziewczyny z Dubaju”: Komercja zabiła fakty!",
+      "medium": "Pressmania",
+      "data": "2021-12-10",
+      "url": "https://pressmania.pl/piotr-krysiak-recenzuje-dziewczyny-z-dubaju-komercja-zabila-fakty/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "„Aktywny” producent. Polowanie w sieci",
+      "medium": "Pressmania",
+      "data": "2021-10-26",
+      "url": "https://pressmania.pl/aktywny-producent-polowanie-w-sieci/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "JESZCZE PRODUCENT CZY JUŻ GANGSTER?",
+      "medium": "Pressmania",
+      "data": "2021-10-22",
+      "url": "https://pressmania.pl/jeszcze-producent-czy-juz-gangster/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "PRODU(P)CENT!",
+      "medium": "Pressmania",
+      "data": "2021-10-11",
+      "url": "https://pressmania.pl/produpcent/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "UJAWNIAMY! List Pana Emila Stępnia do inwestorów po zakończeniu produkcji filmu „dziewczyny z Dubaju”!",
+      "medium": "Pressmania",
+      "data": "2021-10-10",
+      "url": "https://pressmania.pl/ujawniamy-list-pana-emila-stepnia-do-inwestorow-po-zakonczeniu-produkcji-filmu-dziewczyny-z-dubaju/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Piotr Krysiak: Z raportów Pana Emila Stępnia do inwestorów cz.2",
+      "medium": "Pressmania",
+      "data": "2021-10-08",
+      "url": "https://pressmania.pl/piotr-krysiak-z-raportow-pana-emila-stepnia-do-inwestorow-cz-2/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Piotr Krysiak: Dotarłem do raportów Pana Emila z produkcji!",
+      "medium": "Pressmania",
+      "data": "2021-10-07",
+      "url": "https://pressmania.pl/piotr-krysiak-dotarlem-do-raportow-pana-emila-z-produkcji/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Tanie Państwo PiS",
+      "medium": "Pressmania",
+      "data": "2021-07-11",
+      "url": "https://pressmania.pl/tanie-panstwo-pis/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Rodzinna akcja „Indyjska ewakuacja”",
+      "medium": "Pressmania",
+      "data": "2021-05-08",
+      "url": "https://pressmania.pl/rodzinna-akcja-indyjska-ewakuacja/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Piotr Krysiak: „WYDAWCA +” zapraszam do współpracy z wydawnictwem Deadline Unlimited",
+      "medium": "Pressmania",
+      "data": "2021-05-06",
+      "url": "https://pressmania.pl/piotr-krysiak-wydawca-zapraszam-do-wspolpracy-z-wydawnictwem-deadline-unlimited/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "SKANDAL w Covidowym Szpitalu Tymczasowym na Stadionie Narodowym!",
+      "medium": "Pressmania",
+      "data": "2021-04-04",
+      "url": "https://pressmania.pl/skandal-w-covidowym-szpitalu-tymczasowym-na-stadionie-narodowym/"
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Gwałt w Orlenie?",
+      "medium": "Pressmania",
+      "data": "2021-04-04",
+      "url": "https://pressmania.pl/gwalt-w-orlenie/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "„Gwiazdor TVP” molestował mnie na planie „Zenka”!",
+      "medium": "Pressmania",
+      "data": "2021-04-04",
+      "url": "https://pressmania.pl/gwiazdor-tvp-molestowal-mnie-na-planie-zenka/",
+      "doPotwierdzenia": true
+    },
+    {
+      "typ": "tekst",
+      "tytul": "Gwiazdor TVP gwałcicielem?",
+      "medium": "Pressmania",
+      "data": "2021-04-04",
+      "url": "https://pressmania.pl/gwiazdor-tvp-gwalcicielem/",
+      "doPotwierdzenia": true
+    }
+  ]
+}
