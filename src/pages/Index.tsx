@@ -1,6 +1,6 @@
 import { Link, useLoaderData } from '@tanstack/react-router';
 import { useState } from 'react';
-import { Clock, Eye, Crown, Play } from 'lucide-react';
+import { Clock, Eye, Crown, Play, Headphones, FileText, Lock } from 'lucide-react';
 import { useAuth } from '@/features/auth/useAuth';
 import { getContentList, type Content } from '@/lib/supabase';
 import { formatRelativePL, formatDuration, getYouTubeThumbnail, CONTENT_TYPE_CONFIG } from '@/lib/utils';
@@ -47,52 +47,71 @@ function ContentCard({ content, variant = 'default', priority = false }: { conte
   if (variant === 'featured') {
     return (
       <Link to={`/c/${content.slug}`} className="block group" aria-label={content.title}>
-        <div className="relative aspect-video rounded-2xl overflow-hidden bg-surface">
-          {thumbnail && (
-            <img
-              src={thumbnail}
-              alt=""
-              className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-              loading={priority ? 'eager' : 'lazy'}
-            />
-          )}
-          <div className="absolute inset-0 bg-gradient-to-r from-bg/90 via-bg/40 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-t from-bg/90 via-bg/10 to-transparent" />
-          <div className="absolute bottom-0 left-0 right-0 p-6 md:p-8">
-            <div className="flex flex-wrap items-center gap-2 mb-4">
-              <Badge variant={isPremium ? 'premium' : 'new'} dot>
-                {isPremium ? 'LOCK Dla Patronów' : 'NEW NOWY MATERIAŁ'}
-              </Badge>
-              <VisibilityBadge visibility={content.visibility} />
-              {content.tier_id && <TierBadge tier={{ name: 'Wspierający', slug: 'gold', sort_order: 30 }} />}
+        <div className="bg-surface border border-border rounded-2xl overflow-hidden">
+          <div className="lg:grid lg:grid-cols-12 lg:items-center">
+            {/* Left column - content */}
+            <div className="lg:col-span-6 p-6 md:p-8 lg:p-10">
+              <div className="absolute inset-0 bg-gradient-to-r from-accent/5 via-transparent to-transparent opacity-30 pointer-events-none lg:hidden" />
+              <div className="relative z-10">
+                <div className="flex flex-wrap items-center gap-2 mb-4">
+                  <Badge variant={isPremium ? 'premium' : 'new'} dot>
+                    {isPremium ? (
+                      <>
+                        <Lock className="w-3.5 h-3.5" /> Dla Patronów
+                      </>
+                    ) : (
+                      'NOWY MATERIAŁ'
+                    )}
+                  </Badge>
+                  {content.visibility !== 'public' && <VisibilityBadge visibility={content.visibility} />}
+                  {content.tier_id && <TierBadge tier={{ name: 'Wspierający', slug: 'gold', sort_order: 30 }} />}
+                </div>
+                <h2 className="text-2xl md:text-3xl lg:text-4xl font-display font-bold text-ink mb-3 group-hover:text-gold transition-colors line-clamp-2 max-w-2xl">
+                  {content.title}
+                </h2>
+                {content.excerpt && (
+                  <p className="text-muted text-base md:text-lg line-clamp-2 mb-6 max-w-xl">{content.excerpt}</p>
+                )}
+                <div className="flex items-center gap-4">
+                  <Button variant="primary" size="lg" leftIcon={<Play className="w-4 h-4 fill-current" />}>
+                    Oglądaj
+                  </Button>
+                  {content.duration_seconds && (
+                    <span className="flex items-center gap-1 text-sm text-muted hidden sm:flex">
+                      <Clock className="w-4 h-4" /> {formatDuration(content.duration_seconds)}
+                    </span>
+                  )}
+                </div>
+              </div>
             </div>
-            <h2 className="text-2xl md:text-3xl lg:text-4xl font-display font-bold text-ink mb-3 group-hover:text-gold transition-colors line-clamp-2 max-w-2xl">
-              {content.title}
-            </h2>
-            {content.excerpt && (
-              <p className="text-muted text-base md:text-lg line-clamp-2 mb-6 max-w-xl">{content.excerpt}</p>
-            )}
-            <div className="flex items-center gap-4">
-              <Button variant="primary" size="lg" leftIcon={<Play className="w-5 h-5" />}>
-                ▶ Oglądaj
-              </Button>
-              {content.duration_seconds && (
-                <span className="flex items-center gap-1 text-sm text-muted hidden sm:flex">
-                  <Clock className="w-4 h-4" /> {formatDuration(content.duration_seconds)}
-                </span>
+
+            {/* Right column - thumbnail */}
+            <div className="lg:col-span-6 relative">
+              {thumbnail && (
+                <img
+                  src={thumbnail}
+                  alt=""
+                  className="w-full h-full object-cover aspect-video lg:h-full lg:min-h-[380px] max-h-[440px] object-center"
+                  loading={priority ? 'eager' : 'lazy'}
+                />
+              )}
+              {!hasAccess && content.visibility !== 'public' && (
+                <div className="absolute inset-0 bg-bg/80 backdrop-blur-sm flex items-center justify-center">
+                  <div className="text-center p-6">
+                    <Crown className="w-12 h-12 text-gold mx-auto mb-3" />
+                    <h3 className="text-xl font-display font-bold text-ink mb-2">Treść dla wspierających</h3>
+                    <p className="text-muted mb-4">Ta treść jest dostępna tylko dla wspierających kanał.</p>
+                    <button 
+                      onClick={(e) => { e.preventDefault(); window.location.href = '/konto'; }}
+                      className="btn btn-primary inline-block"
+                    >
+                      Zostań wspierającym
+                    </button>
+                  </div>
+                </div>
               )}
             </div>
           </div>
-          {!hasAccess && content.visibility !== 'public' && (
-            <div className="absolute inset-0 bg-bg/80 backdrop-blur-sm flex items-center justify-center">
-              <div className="text-center p-6">
-                <Crown className="w-12 h-12 text-gold mx-auto mb-3" />
-                <h3 className="text-xl font-display font-bold text-ink mb-2">Treść dla wspierających</h3>
-                <p className="text-muted mb-4">Ta treść jest dostępna tylko dla wspierających kanał.</p>
-                <Link to="/konto" className="btn btn-primary inline-block">Zostań wspierającym</Link>
-              </div>
-            </div>
-          )}
         </div>
       </Link>
     );
@@ -139,7 +158,7 @@ function ContentCard({ content, variant = 'default', priority = false }: { conte
   // Default variant - cinematic card
   return (
     <Link to={`/c/${content.slug}`} className="block group" aria-label={content.title}>
-      <Card variant="hover" className="h-full flex flex-col overflow-hidden">
+      <Card variant="hover" className="h-full flex flex-col overflow-hidden p-0">
         <div className="relative aspect-video overflow-hidden bg-surface">
           {thumbnail ? (
             <img
@@ -162,14 +181,10 @@ function ContentCard({ content, variant = 'default', priority = false }: { conte
           {/* Premium lock badge */}
           {isPremium && (
             <span className="premium-badge">
-              <Crown className="w-3.5 h-3.5" /> Premium
+              <Lock className="w-3 h-3" /> Dla Patronów
             </span>
           )}
-          {/* Type badge */}
-          <div className="absolute top-2 left-2 flex gap-1.5">
-            <Badge variant="gold" size="sm">{typeConfig.label}</Badge>
-            <VisibilityBadge visibility={content.visibility} />
-          </div>
+          {/* Type label moved to footer */}
           {!hasAccess && content.visibility !== 'public' && (
             <div className="absolute inset-0 bg-bg/80 backdrop-blur-sm flex items-center justify-center">
               <Crown className="w-10 h-10 text-gold" />
@@ -177,7 +192,12 @@ function ContentCard({ content, variant = 'default', priority = false }: { conte
           )}
         </div>
         <div className="p-4 flex-1 flex flex-col">
-          <h3 className="font-display font-bold text-lg text-ink group-hover:text-gold transition-colors line-clamp-2 mb-2">
+          <div className="flex items-center gap-2 text-xs text-muted mb-1.5">
+            <span className="font-medium text-muted">{typeConfig.label}</span>
+            <span className="text-muted/50">·</span>
+            <span>{formatRelativePL(content.published_at || content.created_at)}</span>
+          </div>
+          <h3 className="font-display font-bold text-lg text-ink group-hover:text-gold transition-colors line-clamp-2 mb-2 flex-1">
             {content.title}
           </h3>
           {content.excerpt && (
@@ -202,26 +222,26 @@ function ContentCard({ content, variant = 'default', priority = false }: { conte
 
 
 export function IndexPage() {
-  const [activeFilter, setActiveFilter] = useState<'all' | 'video' | 'audio' | 'post' | 'live'>('all');
+  const [activeFilter, setActiveFilter] = useState<'all' | 'video' | 'audio' | 'post' | 'supporter'>('all');
   // @ts-ignore
   const { featured, latest, videos, posts, supporter } = useLoaderData({ strict: false }) as unknown as IndexLoaderData;
   const { profile, isLoading: authLoading } = useAuth();
   const isSupporter = profile?.role === 'supporter' && profile?.subscription_status === 'active';
 
   // Filter content based on active filter
-  const getFilteredContent = (type: 'video' | 'audio' | 'post' | 'live') => {
+  const getFilteredContent = (type: 'video' | 'audio' | 'post' | 'supporter') => {
     switch (type) {
       case 'video': return videos;
-      case 'audio': return []; // placeholder
+      case 'audio': return latest.filter(item => item.type === 'audio');
       case 'post': return posts;
-      case 'live': return []; // placeholder
+      case 'supporter': return supporter;
     }
   };
 
   const filteredContent = activeFilter === 'all' ? latest : getFilteredContent(activeFilter);
 
   return (
-    <div className="space-y-12">
+    <div className="pt-4 md:pt-6 pb-16 space-y-8">
       {/* Hero / Featured */}
       {featured && (
         <section className="relative" aria-labelledby="featured-title">
@@ -230,69 +250,65 @@ export function IndexPage() {
       )}
 
       {/* Filter Bar */}
-      <section className="section pt-0" aria-label="Filtry treści">
-        <div className="container">
-          <div className="flex flex-wrap gap-2" role="tablist">
+      <section className="container" aria-label="Filtry treści">
+        <div className="flex flex-wrap gap-2" role="tablist">
+          <button
+            role="tab"
+            aria-selected={activeFilter === 'all'}
+            onClick={() => setActiveFilter('all')}
+            className={cn('filter-pill', activeFilter === 'all' && 'active')}
+          >
+            Wszystkie
+          </button>
+          <button
+            role="tab"
+            aria-selected={activeFilter === 'video'}
+            onClick={() => setActiveFilter('video')}
+            className={cn('filter-pill', activeFilter === 'video' && 'active')}
+          >
+            <Play className="w-4 h-4" /> Wideo
+          </button>
+          <button
+            role="tab"
+            aria-selected={activeFilter === 'audio'}
+            onClick={() => setActiveFilter('audio')}
+            className={cn('filter-pill', activeFilter === 'audio' && 'active')}
+          >
+            <Headphones className="w-4 h-4" /> Podcast
+          </button>
+          <button
+            role="tab"
+            aria-selected={activeFilter === 'post'}
+            onClick={() => setActiveFilter('post')}
+            className={cn('filter-pill', activeFilter === 'post' && 'active')}
+          >
+            <FileText className="w-4 h-4" /> Teksty
+          </button>
+          {supporter.length > 0 && (
             <button
               role="tab"
-              aria-selected={activeFilter === 'all'}
-              onClick={() => setActiveFilter('all')}
-              className={cn('filter-pill', activeFilter === 'all' && 'active')}
+              aria-selected={activeFilter === 'supporter'}
+              onClick={() => setActiveFilter('supporter')}
+              className={cn('filter-pill', activeFilter === 'supporter' && 'active')}
             >
-              Wszystkie
+              <Crown className="w-4 h-4" /> Premium
             </button>
-            <button
-              role="tab"
-              aria-selected={activeFilter === 'video'}
-              onClick={() => setActiveFilter('video')}
-              className={cn('filter-pill', activeFilter === 'video' && 'active')}
-            >
-              <Play className="w-4 h-4" /> Wideo
-            </button>
-            <button
-              role="tab"
-              aria-selected={activeFilter === 'audio'}
-              onClick={() => setActiveFilter('audio')}
-              className={cn('filter-pill', activeFilter === 'audio' && 'active')}
-            >
-              PODCAST Podcast
-            </button>
-            <button
-              role="tab"
-              aria-selected={activeFilter === 'post'}
-              onClick={() => setActiveFilter('post')}
-              className={cn('filter-pill', activeFilter === 'post' && 'active')}
-            >
-              TEXT Teksty
-            </button>
-            {supporter.length > 0 && (
-              <button
-                role="tab"
-                aria-selected={activeFilter === 'live'}
-                onClick={() => setActiveFilter('live')}
-                className={cn('filter-pill', activeFilter === 'live' && 'active')}
-              >
-                <Crown className="w-4 h-4" /> Premium
-              </button>
-            )}
-          </div>
+          )}
         </div>
       </section>
 
       {/* Content Grid */}
-      <section className="section pt-0" aria-labelledby="content-grid-title">
-        <div className="container">
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-            {filteredContent.map((item) => (
-              <ContentCard key={item.id} content={item} variant="default" />
-            ))}
-          </div>
-          {filteredContent.length === 0 && (
-            <div className="col-span-full text-center py-12">
-              <p className="text-muted">Brak treści w tej kategorii</p>
-            </div>
-          )}
+      <section className="container" aria-labelledby="content-grid-title">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {filteredContent.map((item) => (
+            <ContentCard key={item.id} content={item} variant="default" />
+          ))}
         </div>
+        {filteredContent.length === 0 && (
+          <div className="col-span-full text-center py-12">
+            <p className="text-muted">Brak treści w tej kategorii</p>
+          </div>
+        )}
       </section>
 
       {/* Supporter preview */}
@@ -314,7 +330,7 @@ export function IndexPage() {
                 </Link>
               )}
             </div>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {supporter.map((item) => (
                 <ContentCard key={item.id} content={item} variant="default" />
               ))}
@@ -333,19 +349,17 @@ export function IndexPage() {
 
       {/* CTA for non-logged users */}
       {authLoading || !profile ? (
-        <section className="section">
-          <div className="container">
-            <Card className="bg-surface-hover border-border text-center py-12 px-6">
-              <h2 className="text-xl font-display font-bold text-ink mb-2">Dołącz do społeczności</h2>
-              <p className="text-muted mb-6 max-w-md mx-auto">
-                Zaloguj się, aby otrzymywać powiadomienia o nowych materiałach, komentować i zapisywać swoje ulubione treści.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <a href="/auth" className="btn btn-primary">Zaloguj się</a>
-                <a href="/auth?mode=register" className="btn btn-secondary">Zarejestruj się</a>
-              </div>
-            </Card>
-          </div>
+        <section className="container">
+          <Card className="bg-surface-hover border-border text-center py-12 px-6">
+            <h2 className="text-xl font-display font-bold text-ink mb-2">Dołącz do społeczności</h2>
+            <p className="text-muted mb-6 max-w-md mx-auto">
+              Zaloguj się, aby otrzymywać powiadomienia o nowych materiałach, komentować i zapisywać swoje ulubione treści.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <a href="/auth" className="btn btn-primary">Zaloguj się</a>
+              <a href="/auth?mode=register" className="btn btn-secondary">Zarejestruj się</a>
+            </div>
+          </Card>
         </section>
       ) : null}
     </div>
