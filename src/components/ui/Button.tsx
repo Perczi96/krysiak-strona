@@ -2,7 +2,7 @@ import { forwardRef, ButtonHTMLAttributes } from 'react';
 import { cn } from '@/lib/utils';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'danger' | 'ghost';
+  variant?: 'primary' | 'secondary' | 'danger' | 'ghost' | 'gold';
   size?: 'sm' | 'md' | 'lg';
   loading?: boolean;
   leftIcon?: React.ReactNode;
@@ -23,19 +23,20 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     disabled,
     ...props
   }, ref) => {
-    const baseClasses = 'inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-bg disabled:opacity-50 disabled:cursor-not-allowed';
+    const baseClasses = 'inline-flex items-center justify-center gap-2 font-body font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-bg disabled:opacity-50 disabled:cursor-not-allowed';
 
     const variants = {
-      primary: 'bg-gold text-bg hover:bg-gold-light focus:ring-gold',
-      secondary: 'bg-panel-hover text-ink border border-line hover:bg-panel hover:border-gold/50 focus:ring-gold',
-      danger: 'bg-red text-white hover:bg-red-hover focus:ring-red',
-      ghost: 'bg-transparent text-muted hover:text-ink hover:bg-panel-hover focus:ring-gold'
+      primary: 'btn btn-primary',
+      secondary: 'btn btn-secondary',
+      danger: 'btn btn-danger',
+      ghost: 'btn btn-ghost',
+      gold: 'btn btn-gold',
     };
 
     const sizes = {
-      sm: 'px-3 py-1.5 text-sm',
-      md: 'px-4 py-2.5 text-base',
-      lg: 'px-6 py-3 text-lg'
+      sm: 'btn-sm',
+      md: 'btn-md',
+      lg: 'btn-lg',
     };
 
     return (
