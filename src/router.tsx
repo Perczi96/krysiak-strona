@@ -1,4 +1,4 @@
-import { createRouter, createRootRoute, createRoute } from '@tanstack/react-router';
+import { createRouter, createRootRoute, createRoute, redirect } from '@tanstack/react-router';
 import { Layout } from '@/components/layout/Layout';
 import { IndexPage, loader as indexLoader } from '@/pages/Index';
 import { AuthPage } from '@/pages/Auth';
@@ -6,92 +6,163 @@ import { ContentDetailPage } from '@/pages/ContentDetail';
 import { AccountPage } from '@/pages/Account';
 import { AdminPage } from '@/pages/Admin';
 import { NotFoundPage } from '@/pages/NotFound';
-import { useAuth } from '@/features/auth/useAuth';
+import { SprawyPage } from '@/pages/Sprawy';
+import { KulisyPage } from '@/pages/Kulisy';
+import { KsiazkiPage } from '@/pages/Ksiazki';
+import { SprawySadowePage } from '@/pages/SprawySadowe';
+import { PoznajMniePage } from '@/pages/PoznajMnie';
+import { KlubPage } from '@/pages/Klub';
+import { InformatorPage } from '@/pages/Informator';
 
-// Root route with layout
 const rootRoute = createRootRoute({
-  component: Layout
+  component: Layout,
 });
 
-// Public routes
 export const indexRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/',
   component: IndexPage,
-  loader: indexLoader
+  loader: indexLoader,
 });
 
 const authRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/auth',
-  component: AuthPage
+  component: AuthPage,
 });
 
-// Content detail route (dynamic slug)
 const contentDetailRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/c/$slug',
   component: ContentDetailPage,
-  validateSearch: () => ({})
+  validateSearch: () => ({}),
 });
 
-// Explicit content category routes (for TypeScript route matching)
-const contentCategories = [
-  'wyroznione', 'seriale', 'filmy', 'media', 'teksty',
-  'kariera', 'ksiazki', 'tematy', 'dzialalnosc', 'powiedzieli',
-  'o-mnie', 'informator', 'wspierajacy'
-];
+const sprawyRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/sprawy',
+  component: SprawyPage,
+});
 
-const contentCategoryRoutes = contentCategories.map(category =>
-  createRoute({
-    getParentRoute: () => rootRoute,
-    path: `/c/${category}`,
-    component: ContentDetailPage,
-    validateSearch: () => ({})
-  })
-);
+const kulisyRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/kulisy',
+  component: KulisyPage,
+});
 
-// Protected routes (require auth)
+const ksiazkiRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/ksiazki',
+  component: KsiazkiPage,
+});
+
+const sprawySadoweRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/sprawy-sadowe',
+  component: SprawySadowePage,
+});
+
+const poznajMnieRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/poznaj-mnie',
+  component: PoznajMniePage,
+});
+
+const klubRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/klub',
+  component: KlubPage,
+});
+
+const informatorRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/informator',
+  component: InformatorPage,
+});
+
+// Legacy aliases
+const karieraAliasRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/c/kariera',
+  beforeLoad: () => {
+    throw redirect({ to: '/poznaj-mnie' });
+  },
+  component: () => null,
+});
+
+const oMnieAliasRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/c/o-mnie',
+  beforeLoad: () => {
+    throw redirect({ to: '/poznaj-mnie' });
+  },
+  component: () => null,
+});
+
+const informatorAliasRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/c/informator',
+  beforeLoad: () => {
+    throw redirect({ to: '/informator' });
+  },
+  component: () => null,
+});
+
+const ksiazkiAliasRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/c/ksiazki',
+  beforeLoad: () => {
+    throw redirect({ to: '/ksiazki' });
+  },
+  component: () => null,
+});
+
+const wspierajacyAliasRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/c/wspierajacy',
+  beforeLoad: () => {
+    throw redirect({ to: '/klub' });
+  },
+  component: () => null,
+});
+
 const accountRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/konto',
   component: AccountPage,
-  beforeLoad: async () => {
-    const { user } = useAuth();
-    if (!user) {
-      throw { redirect: '/auth?redirect=/konto' };
-    }
-  }
 });
 
-// Admin route (require admin role)
 const adminRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/admin',
   component: AdminPage,
-  beforeLoad: async () => {
-    const { profile } = useAuth();
-    if (!profile || profile.role !== 'admin') {
-      throw { redirect: '/' };
-    }
-  }
 });
 
-// 404
 const notFoundRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/404',
-  component: NotFoundPage
+  component: NotFoundPage,
 });
 
 const routeTree = rootRoute.addChildren([
   indexRoute,
   authRoute,
   contentDetailRoute,
-  ...contentCategoryRoutes,
+  sprawyRoute,
+  kulisyRoute,
+  ksiazkiRoute,
+  sprawySadoweRoute,
+  poznajMnieRoute,
+  klubRoute,
+  informatorRoute,
+  karieraAliasRoute,
+  oMnieAliasRoute,
+  informatorAliasRoute,
+  ksiazkiAliasRoute,
+  wspierajacyAliasRoute,
   accountRoute,
   adminRoute,
-  notFoundRoute
+  notFoundRoute,
 ]);
 
 export const router = createRouter({ routeTree });

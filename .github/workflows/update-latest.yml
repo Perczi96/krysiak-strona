@@ -17,10 +17,10 @@ jobs:
         with:
           python-version: "3.12"
       - name: Pobierz najnowszy film z RSS YouTube
-        run: python .github/workflows/scripts/update_latest.py
+        run: python3 scripts/update_latest.py
       - name: Zapisz zmiany
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add latest.json
+          git add public/latest-youtube.json
           git diff --cached --quiet || (git commit -m "Aktualizacja najnowszego filmu (RSS)" && git push)

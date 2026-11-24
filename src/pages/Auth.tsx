@@ -137,10 +137,10 @@ export function AuthPage() {
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="text-center mb-8">
-          <Link to="/" className="inline-flex items-center gap-2 font-serif font-bold text-3xl text-ink mb-4">
+          <Link to="/" className="inline-flex items-center gap-2 font-display font-bold text-3xl text-ink mb-4">
             <span className="text-gold">▶</span> Bez Maski
           </Link>
-          <h1 className="text-2xl font-serif font-bold text-ink">
+          <h1 className="text-2xl font-display font-bold text-ink">
             {mode === 'login' ? 'Zaloguj się' : mode === 'register' ? 'Zarejestruj się' : 'Logowanie linkiem'}
           </h1>
           <p className="mt-2 text-muted">
@@ -158,7 +158,7 @@ export function AuthPage() {
         {mode !== 'magic' && (
           <button
             onClick={() => switchMode('magic')}
-            className="w-full mb-6 p-3 rounded-lg bg-panel-hover border border-line text-sm text-muted hover:border-gold/50 hover:text-ink transition-colors"
+            className="w-full mb-6 p-3 rounded-lg bg-surface-hover border border-border text-sm text-muted hover:border-gold/50 hover:text-ink transition-colors"
           >
             <Mail className="w-4 h-4 inline mr-2" /> Zaloguj linkiem magicznym (bez hasła)
           </button>
@@ -201,7 +201,7 @@ export function AuthPage() {
 
               <div className="flex items-center justify-between">
                 <label className="flex items-center gap-2 text-sm text-muted cursor-pointer">
-                  <input type="checkbox" className="w-4 h-4 rounded border-line bg-panel text-gold focus:ring-gold" />
+                  <input type="checkbox" className="w-4 h-4 rounded border-border bg-panel text-gold focus:ring-gold" />
                   Zapamiętaj mnie
                 </label>
                 <a href="/auth?reset=true" className="text-sm text-gold hover:text-gold-light">
@@ -300,7 +300,7 @@ export function AuthPage() {
         {/* Divider */}
         <div className="my-6 relative">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-line" />
+            <div className="w-full border-t border-border" />
           </div>
           <div className="relative flex justify-center text-sm">
             <span className="px-4 bg-bg text-muted">lub</span>

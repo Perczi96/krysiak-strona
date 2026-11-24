@@ -7,7 +7,7 @@ export function NotFoundPage() {
         <div className="mb-8">
           <span className="text-8xl font-bold text-gold/20">404</span>
         </div>
-        <h1 className="text-3xl font-serif font-bold text-ink mb-4">Strona nie znaleziona</h1>
+        <h1 className="text-3xl font-display font-bold text-ink mb-4">Strona nie znaleziona</h1>
         <p className="text-muted mb-8">
           Przepraszamy, ale strona, której szukasz, nie istnieje lub została przeniesiona.
           Sprawdź adres URL lub skorzystaj z wyszukiwania poniżej.
@@ -41,7 +41,7 @@ export function NotFoundPage() {
           </div>
         </div>
 
-        <div className="mt-12 pt-8 border-t border-line">
+        <div className="mt-12 pt-8 border-t border-border">
           <p className="text-xs text-muted">
             Myślisz, że to błąd? <a href="/c/informator" className="text-gold hover:underline">Napisz do nas</a> przez Informatora.
           </p>

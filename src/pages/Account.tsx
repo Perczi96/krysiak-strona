@@ -1,5 +1,5 @@
 import { Link } from '@tanstack/react-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Crown, CreditCard, Shield, LogOut, Settings, CheckCircle, AlertCircle, ArrowLeft } from 'lucide-react';
 import { useAuth } from '@/features/auth/useAuth';
 import { getActiveTiers, createStripeCheckout, createStripePortalSession, enableTestSupporterMode, disableTestSupporterMode, isTestMode } from '@/lib/supabase';
@@ -20,7 +20,7 @@ function AccountHeader({ profile }: { profile: any }) {
         <Avatar imgSrc={avatarUrl as any} name={profile?.display_name} size="xl" />
         <div className="flex-1">
           <div className="flex items-center gap-3">
-            <h1 className="text-2xl font-serif font-bold text-ink">{profile?.display_name || 'Użytkownik'}</h1>
+            <h1 className="text-2xl font-display font-bold text-ink">{profile?.display_name || 'Użytkownik'}</h1>
             <RoleBadge role={profile?.role || 'guest'} />
           </div>
           <p className="text-muted mt-1">{profile?.email}</p>
@@ -69,7 +69,7 @@ function TierCard({ tier, currentTierId, isLoading, onSelect }: {
 
       <div className="mb-4">
         <div className="flex items-baseline gap-2 mb-1">
-          <span className="text-3xl font-serif font-bold text-ink">{formatPricePLN(tier.price_monthly_pln)}</span>
+          <span className="text-3xl font-display font-bold text-ink">{formatPricePLN(tier.price_monthly_pln)}</span>
           <span className="text-muted">/ miesiąc</span>
         </div>
         {tier.price_yearly_pln && (
@@ -131,7 +131,7 @@ function SettingsSection({ profile }: { profile: any }) {
   };
 
   return (
-    <Card>
+    <Card className="p-6">
       <h2 className="text-lg font-semibold text-ink mb-4 flex items-center gap-2">
         <Settings className="w-5 h-5 text-gold" />
         Ustawienia konta
@@ -157,7 +157,7 @@ function SettingsSection({ profile }: { profile: any }) {
               onChange={(e) => setEmailNotifications(e.target.checked)}
               className="sr-only peer"
             />
-            <div className="w-11 h-6 bg-line peer-focus:ring-2 peer-focus:ring-gold rounded-full peer peer-checked:bg-gold peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:w-5 after:h-5 after:rounded-full after:transition-all" />
+            <div className="w-11 h-6 bg-border peer-focus:ring-2 peer-focus:ring-gold rounded-full peer peer-checked:bg-gold peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:w-5 after:h-5 after:rounded-full after:transition-all" />
           </label>
         </div>
 
@@ -173,7 +173,7 @@ function SettingsSection({ profile }: { profile: any }) {
               onChange={(e) => setPushNotifications(e.target.checked)}
               className="sr-only peer"
             />
-            <div className="w-11 h-6 bg-line peer-focus:ring-2 peer-focus:ring-gold rounded-full peer peer-checked:bg-gold peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:w-5 after:h-5 after:rounded-full after:transition-all" />
+            <div className="w-11 h-6 bg-border peer-focus:ring-2 peer-focus:ring-gold rounded-full peer peer-checked:bg-gold peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:w-5 after:h-5 after:rounded-full after:transition-all" />
           </label>
         </div>
 
@@ -201,7 +201,7 @@ function BillingSection({ profile }: { profile: any }) {
   };
 
   return (
-    <Card>
+    <Card className="p-6">
       <h2 className="text-lg font-semibold text-ink mb-4 flex items-center gap-2">
         <CreditCard className="w-5 h-5 text-gold" />
         Rozliczenia i płatności
@@ -211,7 +211,7 @@ function BillingSection({ profile }: { profile: any }) {
         {profile?.stripe_customer_id ? (
           <>
             <p className="text-muted text-sm">
-              Twoje konto Stripe: <code className="bg-panel-hover px-2 py-0.5 rounded text-xs">{profile.stripe_customer_id}</code>
+              Twoje konto Stripe: <code className="bg-surface-hover px-2 py-0.5 rounded text-xs">{profile.stripe_customer_id}</code>
             </p>
             <Button variant="secondary" onClick={handlePortal} loading={portalLoading} className="w-full sm:w-auto">
               <Settings className="w-4 h-4" /> Zarządzaj subskrypcją w portalu Stripe
@@ -222,7 +222,7 @@ function BillingSection({ profile }: { profile: any }) {
         )}
 
         {profile?.subscription_status && (
-          <div className="p-3 bg-panel-hover rounded-lg space-y-2">
+          <div className="p-3 bg-surface-hover rounded-lg space-y-2">
             <div className="flex justify-between">
               <span className="text-muted">Status</span>
               <Badge variant={profile.subscription_status === 'active' ? 'green' : 'red'} dot>
@@ -278,7 +278,7 @@ function TestModeSection() {
   if (!isTestMode()) return null;
 
   return (
-    <Card className="border-gold/30 bg-gold/5">
+    <Card className="p-6 border-gold/30 bg-gold/5">
       <h2 className="text-lg font-semibold text-ink mb-4 flex items-center gap-2">
         <AlertCircle className="w-5 h-5 text-gold" />
         Tryb deweloperski (VITE_TEST_MODE=true)
@@ -309,14 +309,14 @@ export function AccountPage() {
   const [selectedTierLoading, setSelectedTierLoading] = useState<string | null>(null);
 
   // Load tiers
-  useState(() => {
+  useEffect(() => {
     const loadTiers = async () => {
       const data = await getActiveTiers();
       setTiers(data);
       setTiersLoading(false);
     };
-    loadTiers();
-  });
+    void loadTiers();
+  }, []);
 
   const handleTierSelect = async (tierId: string) => {
     setSelectedTierLoading(tierId);
@@ -331,9 +331,9 @@ export function AccountPage() {
     return (
       <div className="container py-12">
         <div className="animate-pulse space-y-6 max-w-2xl mx-auto">
-          <div className="h-24 bg-panel-hover rounded-xl" />
-          <div className="h-24 bg-panel-hover rounded-xl" />
-          <div className="h-24 bg-panel-hover rounded-xl" />
+          <div className="h-24 bg-surface-hover rounded-xl" />
+          <div className="h-24 bg-surface-hover rounded-xl" />
+          <div className="h-24 bg-surface-hover rounded-xl" />
         </div>
       </div>
     );
@@ -342,7 +342,7 @@ export function AccountPage() {
   if (!profile) {
     return (
       <div className="container py-12 text-center">
-        <h1 className="text-2xl font-serif font-bold text-ink mb-4">Wymagane logowanie</h1>
+        <h1 className="text-2xl font-display font-bold text-ink mb-4">Wymagane logowanie</h1>
         <p className="text-muted mb-6">Zaloguj się, aby zarządzać swoim kontem i wsparciem.</p>
         <a href="/auth?redirect=/konto" className="btn btn-primary">Zaloguj się</a>
       </div>
@@ -355,7 +355,7 @@ export function AccountPage() {
         <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted hover:text-gold mb-4">
           <ArrowLeft className="w-4 h-4" /> Powrót
         </Link>
-        <h1 className="text-3xl font-serif font-bold text-ink">Twoje konto</h1>
+        <h1 className="text-3xl font-display font-bold text-ink">Twoje konto</h1>
       </div>
 
       <div className="space-y-6">
@@ -365,7 +365,7 @@ export function AccountPage() {
         {/* Supporter Tiers */}
         {(profile.role !== 'supporter' || profile.subscription_status !== 'active') && (
           <section>
-            <h2 className="text-xl font-serif font-bold text-ink mb-4 flex items-center gap-2">
+            <h2 className="text-xl font-display font-bold text-ink mb-4 flex items-center gap-2">
               <Crown className="w-6 h-6 text-gold" />
               Wspieraj kanał
             </h2>
@@ -378,13 +378,13 @@ export function AccountPage() {
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {[1,2,3].map(i => (
                   <Card key={i} className="p-6 animate-pulse">
-                    <div className="h-8 bg-panel-hover rounded w-1/2 mb-4" />
-                    <div className="h-4 bg-panel-hover rounded w-3/4 mb-2" />
-                    <div className="h-4 bg-panel-hover rounded w-1/2 mb-4" />
+                    <div className="h-8 bg-surface-hover rounded w-1/2 mb-4" />
+                    <div className="h-4 bg-surface-hover rounded w-3/4 mb-2" />
+                    <div className="h-4 bg-surface-hover rounded w-1/2 mb-4" />
                     <div className="space-y-2">
-                      <div className="h-4 bg-panel-hover rounded w-3/4" />
-                      <div className="h-4 bg-panel-hover rounded w-full" />
-                      <div className="h-4 bg-panel-hover rounded w-1/2" />
+                      <div className="h-4 bg-surface-hover rounded w-3/4" />
+                      <div className="h-4 bg-surface-hover rounded w-full" />
+                      <div className="h-4 bg-surface-hover rounded w-1/2" />
                     </div>
                   </Card>
                 ))}
@@ -429,9 +429,9 @@ export function AccountPage() {
         <TestModeSection />
 
         {/* Danger Zone */}
-        <Card className="border-red/30">
+        <Card className="p-6 border-accent/30">
           <h2 className="text-lg font-semibold text-ink mb-4 flex items-center gap-2">
-            <Shield className="w-5 h-5 text-red" />
+            <Shield className="w-5 h-5 text-accent" />
             Strefa niebezpieczna
           </h2>
           <Button variant="danger" onClick={async () => { await signOut(); toast({ type: 'info', title: 'Wylogowano' }); }} className="w-full sm:w-auto">

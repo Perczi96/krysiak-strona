@@ -100,7 +100,7 @@ export function InstallBanner() {
                   <Smartphone className="w-6 h-6 text-gold" />
                 </div>
                 <div>
-                  <h3 className="font-serif font-bold text-ink">Zainstaluj aplikację</h3>
+                  <h3 className="font-display font-bold text-ink">Zainstaluj aplikację</h3>
                   <p className="text-sm text-muted">
                     Mieć Bez Maski zawsze pod ręką — jak natywna aplikacja, bez App Store
                   </p>
@@ -112,11 +112,11 @@ export function InstallBanner() {
                   {iOSSteps.map((s, i) => (
                     <div key={i} className={cn(
                         'flex items-start gap-3 p-3 rounded-xl transition-colors',
-                        i <= step ? 'bg-gold/5 border border-gold/20' : 'bg-panel-hover'
+                        i <= step ? 'bg-gold/5 border border-gold/20' : 'bg-surface-hover'
                       )} role="listitem" aria-current={i === step ? 'step' : undefined}>
                       <div className={cn(
                           'flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center',
-                          i <= step ? 'bg-gold text-bg' : 'bg-line text-muted'
+                          i <= step ? 'bg-gold text-bg' : 'bg-border text-muted'
                         )}>
                         {i < step ? (
                           <CheckCircle className="w-5 h-5" />
@@ -147,14 +147,14 @@ export function InstallBanner() {
 
             <button
               onClick={handleDismiss}
-              className="flex-shrink-0 p-1 rounded-lg text-muted hover:text-ink hover:bg-panel-hover transition-colors"
+              className="flex-shrink-0 p-1 rounded-lg text-muted hover:text-ink hover:bg-surface-hover transition-colors"
               aria-label="Zamknij"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
 
-          <div className="flex items-center gap-2 pt-2 border-t border-line">
+          <div className="flex items-center gap-2 pt-2 border-t border-border">
             {deferredPrompt && (
               <Button onClick={handleInstall} className="flex-1" fullWidth>
                 Zainstaluj teraz

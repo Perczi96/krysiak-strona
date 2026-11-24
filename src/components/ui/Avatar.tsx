@@ -165,7 +165,7 @@ export const AvatarGroup = ({ avatars, max = 5, size = 'md', className }: Avatar
       {remaining > 0 && (
         <div
           className={cn(
-            'flex items-center justify-center bg-line text-muted font-medium border-2 border-bg',
+            'flex items-center justify-center bg-border text-muted font-medium border-2 border-bg',
             sizes[size]
           )}
           style={{ borderRadius: '50%' }}

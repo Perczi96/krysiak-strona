@@ -57,7 +57,7 @@ function AdminHeader() {
         <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted hover:text-gold mb-2">
           <ArrowLeft className="w-4 h-4" /> Powrót do strony
         </Link>
-        <h1 className="text-3xl font-serif font-bold text-ink">Panel administracyjny</h1>
+        <h1 className="text-3xl font-display font-bold text-ink">Panel administracyjny</h1>
         <p className="text-muted mt-1">Zarządzaj treściami, kategoriami i ustawieniami</p>
       </div>
     </div>
@@ -76,7 +76,7 @@ function ContentTable({ contents, onEdit, onDelete, onView, loading }: {
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-line">
+            <tr className="border-b border-border">
               <th className="text-left p-3 font-medium text-muted">Tytuł</th>
               <th className="text-left p-3 font-medium text-muted">Typ</th>
               <th className="text-left p-3 font-medium text-muted">Dostęp</th>
@@ -87,13 +87,13 @@ function ContentTable({ contents, onEdit, onDelete, onView, loading }: {
           </thead>
           <tbody>
             {[1,2,3,4,5].map(i => (
-              <tr key={i} className="border-b border-line animate-pulse">
-                <td className="p-3"><div className="h-5 bg-panel-hover rounded w-3/4" /></td>
-                <td className="p-3"><div className="h-5 bg-panel-hover rounded w-1/2" /></td>
-                <td className="p-3"><div className="h-5 bg-panel-hover rounded w-1/3" /></td>
-                <td className="p-3"><div className="h-5 bg-panel-hover rounded w-1/4" /></td>
-                <td className="p-3"><div className="h-5 bg-panel-hover rounded w-1/2" /></td>
-                <td className="p-3 text-right"><div className="h-5 bg-panel-hover rounded w-24 mx-auto" /></td>
+              <tr key={i} className="border-b border-border animate-pulse">
+                <td className="p-3"><div className="h-5 bg-surface-hover rounded w-3/4" /></td>
+                <td className="p-3"><div className="h-5 bg-surface-hover rounded w-1/2" /></td>
+                <td className="p-3"><div className="h-5 bg-surface-hover rounded w-1/3" /></td>
+                <td className="p-3"><div className="h-5 bg-surface-hover rounded w-1/4" /></td>
+                <td className="p-3"><div className="h-5 bg-surface-hover rounded w-1/2" /></td>
+                <td className="p-3 text-right"><div className="h-5 bg-surface-hover rounded w-24 mx-auto" /></td>
               </tr>
             ))}
           </tbody>
@@ -114,7 +114,7 @@ function ContentTable({ contents, onEdit, onDelete, onView, loading }: {
     <div className="overflow-x-auto">
       <table className="w-full">
         <thead>
-          <tr className="border-b border-line">
+          <tr className="border-b border-border">
             <th className="text-left p-3 font-medium text-muted">Tytuł</th>
             <th className="text-left p-3 font-medium text-muted">Typ</th>
             <th className="text-left p-3 font-medium text-muted">Dostęp</th>
@@ -130,7 +130,7 @@ function ContentTable({ contents, onEdit, onDelete, onView, loading }: {
             const isScheduled = content.scheduled_at && new Date(content.scheduled_at) > new Date();
 
             return (
-              <tr key={content.id} className="border-b border-line hover:bg-panel-hover/50 transition-colors">
+              <tr key={content.id} className="border-b border-border hover:bg-surface-hover/50 transition-colors">
                 <td className="p-3">
                   <div className="max-w-xs">
                     <p className="font-medium text-ink truncate">{content.title}</p>
@@ -307,7 +307,7 @@ function ContentFormModal({ isOpen, onClose, content, onSubmit, loading, tiers }
                 return (
                   <label key={opt.value} className={cn(
                     'relative cursor-pointer p-3 rounded-lg border-2 transition-all',
-                    checked ? 'border-gold bg-gold/5' : 'border-line hover:border-gold/30'
+                    checked ? 'border-gold bg-gold/5' : 'border-border hover:border-gold/30'
                   )}>
                     <input
                       type="radio"
@@ -336,7 +336,7 @@ function ContentFormModal({ isOpen, onClose, content, onSubmit, loading, tiers }
                 return (
                   <label key={opt.value} className={cn(
                     'relative cursor-pointer p-3 rounded-lg border-2 transition-all',
-                    checked ? 'border-gold bg-gold/5' : 'border-line hover:border-gold/30'
+                    checked ? 'border-gold bg-gold/5' : 'border-border hover:border-gold/30'
                   )}>
                     <input
                       type="radio"
@@ -384,7 +384,7 @@ function ContentFormModal({ isOpen, onClose, content, onSubmit, loading, tiers }
 
         {/* Video fields */}
         {(watchedType === 'video' || watchedType === 'live') && (
-          <div className="space-y-4 border-t border-line pt-6">
+          <div className="space-y-4 border-t border-border pt-6">
             <h3 className="font-medium text-ink">Ustawienia wideo</h3>
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
@@ -417,7 +417,7 @@ function ContentFormModal({ isOpen, onClose, content, onSubmit, loading, tiers }
 
         {/* File fields for audio/pdf */}
         {(watchedType === 'audio' || watchedType === 'pdf') && (
-          <div className="space-y-4 border-t border-line pt-6">
+          <div className="space-y-4 border-t border-border pt-6">
             <h3 className="font-medium text-ink">Plik</h3>
             <Input
               label="URL pliku *"
@@ -435,7 +435,7 @@ function ContentFormModal({ isOpen, onClose, content, onSubmit, loading, tiers }
 
         {/* Markdown body for posts */}
         {watchedType === 'post' && (
-          <div className="border-t border-line pt-6">
+          <div className="border-t border-border pt-6">
             <Label>Treść (Markdown) *</Label>
             <Textarea
               {...form.register('body_markdown')}
@@ -447,7 +447,7 @@ function ContentFormModal({ isOpen, onClose, content, onSubmit, loading, tiers }
         )}
 
         {/* Publishing options */}
-        <div className="grid gap-4 sm:grid-cols-3 border-t border-line pt-6">
+        <div className="grid gap-4 sm:grid-cols-3 border-t border-border pt-6">
           <div>
             <Label>Data publikacji</Label>
             <input
@@ -471,7 +471,7 @@ function ContentFormModal({ isOpen, onClose, content, onSubmit, loading, tiers }
               <input
                 type="checkbox"
                 {...form.register('is_featured')}
-                className="w-4 h-4 rounded border-line bg-panel text-gold focus:ring-gold"
+                className="w-4 h-4 rounded border-border bg-panel text-gold focus:ring-gold"
               />
               <span className="text-sm font-medium text-ink">Oznacz jako polecane</span>
             </label>
@@ -479,7 +479,7 @@ function ContentFormModal({ isOpen, onClose, content, onSubmit, loading, tiers }
         </div>
 
         {/* Meta JSON (advanced) */}
-        <details className="border-t border-line pt-4">
+        <details className="border-t border-border pt-4">
           <summary className="cursor-pointer font-medium text-muted">Metadane JSON (zaawansowane)</summary>
           <Textarea
             value={form.watch('meta') ? JSON.stringify(form.watch('meta'), null, 2) : ''}
@@ -497,7 +497,7 @@ function ContentFormModal({ isOpen, onClose, content, onSubmit, loading, tiers }
         </details>
 
         {/* Actions */}
-        <div className="flex justify-end gap-3 border-t border-line pt-4">
+        <div className="flex justify-end gap-3 border-t border-border pt-4">
           <Button type="button" variant="secondary" onClick={onClose}>Anuluj</Button>
           <Button type="submit" loading={loading}>
             <Save className="w-4 h-4" /> {content ? 'Zapisz zmiany' : 'Utwórz'}
@@ -533,7 +533,7 @@ function DeleteConfirmModal({ isOpen, onClose, content, onConfirm, loading }: {
 }
 
 export function AdminPage() {
-  const { isLoading: authLoading } = useAuth();
+  const { profile, isLoading: authLoading } = useAuth();
   const { toast } = useToast();
   const [contents, setContents] = useState<Content[]>([]);
   const [loading, setLoading] = useState(true);
@@ -653,9 +653,19 @@ export function AdminPage() {
     return (
       <div className="container py-12">
         <div className="animate-pulse space-y-6">
-          <div className="h-12 bg-panel-hover rounded" />
-          <div className="h-64 bg-panel-hover rounded" />
+          <div className="h-12 bg-surface-hover rounded" />
+          <div className="h-64 bg-surface-hover rounded" />
         </div>
+      </div>
+    );
+  }
+
+  if (!profile || profile.role !== 'admin') {
+    return (
+      <div className="container py-12 text-center">
+        <h1 className="mb-4 text-2xl font-display font-bold text-ink">Brak dostępu</h1>
+        <p className="mb-6 text-muted">Ta sekcja jest dostępna wyłącznie dla administratorów.</p>
+        <Link to="/" className="btn btn-primary">Wróć na stronę główną</Link>
       </div>
     );
   }

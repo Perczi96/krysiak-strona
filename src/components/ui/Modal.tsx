@@ -93,7 +93,7 @@ export function Modal({
   };
 
   const variantStyles = {
-    default: 'border-line',
+    default: 'border-border',
     danger: 'border-red/50'
   };
 
@@ -121,10 +121,10 @@ export function Modal({
         )}
       >
         {(title || showCloseButton) && (
-          <div className="flex items-start justify-between p-6 border-b border-line">
+          <div className="flex items-start justify-between p-6 border-b border-border">
             <div>
               {title && (
-                <h2 id="modal-title" className="text-xl font-serif font-bold text-ink">
+                <h2 id="modal-title" className="text-xl font-display font-bold text-ink">
                   {title}
                 </h2>
               )}
@@ -137,7 +137,7 @@ export function Modal({
             {showCloseButton && (
               <button
                 onClick={onClose}
-                className="p-1 rounded-lg text-muted hover:text-ink hover:bg-panel-hover transition-colors"
+                className="p-1 rounded-lg text-muted hover:text-ink hover:bg-surface-hover transition-colors"
                 aria-label="Zamknij"
               >
                 <X className="w-5 h-5" />
