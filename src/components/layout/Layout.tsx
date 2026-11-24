@@ -1,11 +1,11 @@
 import { Outlet, Link } from '@tanstack/react-router';
 import { Header } from './Header';
-import { BottomNav, FloatingActionButton } from './BottomNav';
+import { BottomNav } from './BottomNav';
 import { InstallBanner } from './InstallBanner';
 
 export function Layout() {
   return (
-    <div className="min-h-screen bg-bg font-sans">
+    <div className="min-h-screen bg-bg font-body">
       {/* Skip link for accessibility */}
       <a href="#main-content" className="skip-link">
         Przejdź do treści
@@ -21,13 +21,12 @@ export function Layout() {
 
       {/* Bottom Navigation (Mobile PWA) */}
       <BottomNav />
-      <FloatingActionButton />
 
       {/* Install Banner */}
       <InstallBanner />
 
       {/* Footer */}
-      <footer className="border-t border-line bg-panel/50">
+      <footer className="border-t border-border bg-surface/50">
         <div className="container py-8 md:py-12">
           <div className="grid gap-8 md:grid-cols-4">
             <div className="md:col-span-2">
@@ -72,7 +71,7 @@ export function Layout() {
             </div>
           </div>
 
-          <div className="mt-8 pt-8 border-t border-line flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="mt-8 pt-8 border-t border-border flex flex-col md:flex-row items-center justify-between gap-4">
             <p className="text-muted text-sm">
               © {new Date().getFullYear()} Bez Maski. Wszelkie prawa zastrzeżone.
             </p>
