@@ -1,26 +1,18 @@
 import { Link, useLocation } from '@tanstack/react-router';
-import { Menu, X, Crown, User, LogOut, Settings, HelpCircle } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { Menu, X, Crown, User, LogOut, Settings, HelpCircle, Play } from 'lucide-react';
+import { useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { Avatar } from '@/components/ui/Avatar';
 import { useAuth } from '@/features/auth/useAuth';
-import { Modal } from '@/components/ui/Modal';
 
 export function Header() {
   const { user, profile, signOut } = useAuth();
   const avatarUrl = profile?.avatar_url;
   const location = useLocation();
-  const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [installPromptOpen, setInstallPromptOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 20);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const navigation = [
     { href: '/c/wyroznione', label: 'Śledztwa' },
@@ -35,17 +27,14 @@ export function Header() {
     <>
       <header className={cn(
         'fixed top-0 left-0 right-0 z-40 transition-all duration-300',
-        isScrolled ? 'bg-surface/95 backdrop-blur-md border-b border-border' : 'bg-transparent'
+        'bg-bg/90 backdrop-blur-md border-b border-border/80'
       )}>
         <div className="container">
           <div className="flex items-center justify-between h-16 md:h-14">
             {/* Logo */}
             <Link to="/" className="flex items-center gap-2 font-display font-bold text-xl text-ink hover:text-gold transition-colors" aria-label="Bez Maski - Strona główna">
-              <span className="relative">
-                <span className="text-accent">▶</span>
-                <span className="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-6 bg-accent/50 rounded-full" aria-hidden="true" />
-              </span>
-              <span className="hidden sm:inline tracking-tight">BEZ MASKI</span>
+              <Play className="w-5 h-5 text-accent fill-accent" aria-hidden="true" />
+              <span className="tracking-tight border-b-2 border-accent pb-0.5">BEZ MASKI</span>
             </Link>
 
             {/* Desktop Navigation */}
@@ -114,10 +103,10 @@ export function Header() {
                                 profile?.role === 'admin' && 'bg-red/20 text-red',
                                 profile?.role === 'guest' && 'bg-muted/20 text-muted'
                               )}>
-                              {profile?.role === 'supporter' && '👑 Wspierający'}
-                              {profile?.role === 'subscriber' && '🔔 Subskrybent'}
-                              {profile?.role === 'admin' && '⚙️ Admin'}
-                              {profile?.role === 'guest' && '👤 Gość'}
+                              {profile?.role === 'supporter' && 'Wspierający'}
+                              {profile?.role === 'subscriber' && 'Subskrybent'}
+                              {profile?.role === 'admin' && 'Admin'}
+                              {profile?.role === 'guest' && 'Gość'}
                             </span>
                           </div>
                         </div>
@@ -139,8 +128,8 @@ export function Header() {
                   )}
                 </div>
               ) : (
-                <Link to="/auth" className="btn btn-primary btn-sm hidden sm:inline-flex">
-                  Zaloguj / Zarejestruj
+                <Link to="/auth" className="btn btn-secondary btn-sm hidden sm:inline-flex">
+                  Zaloguj się
                 </Link>
               )}
 
@@ -166,7 +155,7 @@ export function Header() {
             <div className="flex flex-col h-full">
               <div className="p-4 border-b border-border">
                 <Link to="/" className="flex items-center gap-2 font-display font-bold text-xl text-ink">
-                  <span className="text-accent">▶</span> BEZ MASKI
+                  <Play className="w-5 h-5 text-accent fill-accent" /> BEZ MASKI
                 </Link>
               </div>
               <nav className="flex-1 overflow-y-auto p-4 space-y-1" aria-label="Nawigacja mobilna">
@@ -206,7 +195,7 @@ export function Header() {
                   </div>
                 ) : (
                   <Link to="/auth" className="btn btn-primary btn-sm w-full" onClick={() => setMobileMenuOpen(false)}>
-                    Zaloguj / Zarejestruj
+                    Zaloguj się
                   </Link>
                 )}
               </div>
@@ -215,30 +204,6 @@ export function Header() {
         </>
       )}
 
-      {/* User Menu Modal for desktop (alternative to dropdown) */}
-      <Modal
-        isOpen={userMenuOpen}
-        onClose={() => setUserMenuOpen(false)}
-        size="sm"
-        closeOnOverlayClick
-        showCloseButton={false}
-      >
-        <div className="space-y-2">
-          <Link to="/konto" className="flex items-center gap-3 px-3 py-3 rounded-lg text-muted hover:text-ink hover:bg-surface-hover" onClick={() => setUserMenuOpen(false)}>
-            <User className="w-5 h-5" /> Konto i wsparcie
-          </Link>
-          <Link to="/c/informator" className="flex items-center gap-3 px-3 py-3 rounded-lg text-muted hover:text-ink hover:bg-surface-hover" onClick={() => setUserMenuOpen(false)}>
-            <HelpCircle className="w-5 h-5" /> Kontakt / Informator
-          </Link>
-          <hr className="border-border" />
-          <button
-            onClick={async () => { await signOut(); setUserMenuOpen(false); }}
-            className="flex items-center gap-3 w-full px-3 py-3 rounded-lg text-accent hover:bg-accent/10"
-          >
-            <LogOut className="w-5 h-5" /> Wyloguj się
-          </button>
-        </div>
-      </Modal>
     </>
   );
 }
