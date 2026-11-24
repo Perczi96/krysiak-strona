@@ -9,7 +9,7 @@
 // This service worker will be replaced by Workbox at build time
 // The following is a minimal fallback for development
 
-const CACHE_NAME = 'bezmaski-dev-v1';
+const CACHE_NAME = 'bezmaski-dev-v2';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
@@ -112,7 +112,7 @@ self.addEventListener('push', (event) => {
   try {
     const data = event.data.json();
 
-    const options = {
+    const options: NotificationOptions = {
       body: data.body,
       icon: data.icon || '/icons/icon-192.png',
       badge: data.badge || '/icons/badge-72.png',
