@@ -13,6 +13,7 @@ import { Modal } from '@/components/ui/Modal';
 import { MarkdownRenderer } from '@/components/content/MarkdownRenderer';
 import { DossierView } from '@/components/dossier/DossierView';
 import { isDossierContent } from '@/types/dossier';
+import { ReadingProgressBar } from '@/components/ui/ReadingProgressBar';
 
 interface CommentWithUser extends Comment {
   user?: { display_name: string | null; avatar_url: string | null; role: 'guest' | 'subscriber' | 'supporter' | 'admin'; };
@@ -233,6 +234,7 @@ export function ContentDetailPage() {
   if (dossier) {
     return (
       <div className="container py-6 md:py-10">
+        <ReadingProgressBar />
         {isDraft && isAdmin && (
           <div className="mb-6 flex flex-col gap-3 rounded-xl border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-amber-200 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex items-center gap-2"><Shield className="h-4 w-4" /><span className="font-semibold">TRYB PODGLĄDU SZKICU — widoczny tylko dla administratora</span></div>
@@ -246,6 +248,7 @@ export function ContentDetailPage() {
 
   return (
     <div className="container">
+      <ReadingProgressBar />
       {isDraft && isAdmin && (
         <div className="mb-6 mt-6 flex flex-col gap-3 rounded-xl border border-amber-500/40 bg-amber-500/10 p-4 text-sm text-amber-200 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2"><Shield className="h-4 w-4" /><span className="font-semibold">TRYB PODGLĄDU SZKICU — widoczny tylko dla administratora</span></div>

@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/Card';
 import { SocialBar } from '@/components/home/SocialBar';
 import { DailyBriefingSection } from '@/components/home/DailyBriefingSection';
 import { FeaturedHeroSection } from '@/components/home/FeaturedHeroSection';
+import { ActiveDossiersSection } from '@/components/home/ActiveDossiersSection';
 import { CaseUpdatesSection } from '@/components/home/CaseUpdatesSection';
 import { AuthorNoteSection } from '@/components/home/AuthorNoteSection';
 import { LatestKulisySection } from '@/components/home/LatestKulisySection';
@@ -53,6 +54,7 @@ export function IndexPage() {
       <SocialBar />
       <DailyBriefingSection contents={allRecent} />
       <FeaturedHeroSection featured={featured} />
+      <ActiveDossiersSection />
       <CaseUpdatesSection contents={allRecent} />
       <AuthorNoteSection contents={allRecent} />
       <LatestKulisySection contents={allRecent} />
