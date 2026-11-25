@@ -466,22 +466,36 @@
 .dossier-cover-shadow {
   box-shadow: 0 24px 60px -20px rgba(0,0,0,.65), inset 0 1px 0 rgba(255,255,255,.04);
 }
-.dossier-paper-edge {
-  box-shadow: 1px 0 0 rgba(229,211,179,.18), 2px 1px 0 rgba(229,211,179,.08);
+.dossier-stamp { transform: rotate(-3deg); }
+
+.dossier-paper {
+  background-color: #EFE9DC;
+  color: #1E2026;
 }
-.dossier-stamp {
-  transform: rotate(-3deg);
+.dossier-paper::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='.5'/%3E%3C/svg%3E");
 }
-.dossier-sheet-enter {
-  animation: dossier-sheet-in 220ms ease-out;
-}
+.dossier-paper .prose { color: #272A30; }
+.dossier-paper .prose h1, .dossier-paper .prose h2, .dossier-paper .prose h3, .dossier-paper .prose h4 { color: #181A1F; }
+.dossier-paper .prose p, .dossier-paper .prose li, .dossier-paper .prose strong, .dossier-paper .prose em, .dossier-paper .prose blockquote { color: #272A30; }
+.dossier-paper .prose a { color: #991B1B; text-decoration-color: rgba(153,27,27,0.4); }
+.dossier-paper .prose a:hover { color: #7F1D1D; }
+.dossier-paper .prose blockquote { border-left-color: #B91C1C; color: #3A3D45; background: transparent; }
+.dossier-paper .prose code { background-color: #E3DAC6; color: #181A1F; }
+.dossier-paper .prose pre { background-color: #E7DECC; border-color: #CFC5B0; color: #181A1F; }
+.dossier-paper .prose hr { border-color: #CFC5B0; }
+
+.dossier-sheet-enter { animation: dossier-sheet-in 220ms ease-out; }
 @keyframes dossier-sheet-in {
   from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
-.dossier-open-enter {
-  animation: dossier-open-in 380ms cubic-bezier(.2,.8,.2,1);
-}
+.dossier-open-enter { animation: dossier-open-in 380ms cubic-bezier(.2,.8,.2,1); }
 @keyframes dossier-open-in {
   from { opacity: 0; transform: translateY(12px) scale(0.995); }
   to { opacity: 1; transform: translateY(0) scale(1); }
