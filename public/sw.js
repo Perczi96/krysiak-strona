@@ -9,7 +9,7 @@
 // This service worker will be replaced by Workbox at build time
 // The following is a minimal fallback for development
 
-const CACHE_NAME = 'bezmaski-dev-v6';
+const CACHE_NAME = 'bezmaski-dev-v7';
 const STATIC_ASSETS = [
   '/',
   '/index.html',

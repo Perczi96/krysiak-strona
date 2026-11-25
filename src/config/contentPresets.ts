@@ -1,8 +1,8 @@
 import type { LucideIcon } from 'lucide-react';
-import { CalendarDays, Video, RefreshCw, Clapperboard, Mic, Scale } from 'lucide-react';
+import { CalendarDays, Video, RefreshCw, Clapperboard, Mic, Scale, FolderSearch } from 'lucide-react';
 import type { Content } from '@/lib/supabase';
 
-export type PresetId = 'dzis' | 'wideo' | 'aktualizacja-sprawy' | 'kulisy' | 'od-autora' | 'sprawa-sadowa';
+export type PresetId = 'dzis' | 'wideo' | 'aktualizacja-sprawy' | 'kulisy' | 'od-autora' | 'sprawa-sadowa' | 'teczka-sprawy';
 
 export type ContentFormField =
   | 'title'
@@ -12,7 +12,8 @@ export type ContentFormField =
   | 'duration'
   | 'kulisySubtype'
   | 'caseStage'
-  | 'authorComment';
+  | 'authorComment'
+  | 'dossierEditor';
 
 export type VisibilityOption = 'public' | 'subscriber' | 'supporter';
 
@@ -103,6 +104,17 @@ export const CONTENT_PRESETS: ContentPreset[] = [
     tag: 'sprawa-sadowa',
     defaultVisibility: 'public',
     fields: ['title', 'caseStage', 'excerpt', 'authorComment', 'body'],
+    showAdvanced: true,
+  },
+  {
+    id: 'teczka-sprawy',
+    label: 'Teczka sprawy',
+    shortDescription: 'Pełne śledztwo: skrót, aktualizacje, oś czasu, dokumenty i stanowiska.',
+    icon: FolderSearch,
+    dbType: 'post',
+    tag: 'teczka-sprawy',
+    defaultVisibility: 'public',
+    fields: ['title', 'excerpt', 'youtubeUrl', 'dossierEditor', 'body'],
     showAdvanced: true,
   },
 ];

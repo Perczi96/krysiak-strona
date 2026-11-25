@@ -23,6 +23,9 @@ function toPayload(values: AdminContentFormValues, userId: string) {
     meta.case_stage = values.caseStage;
     meta.author_comment = values.authorComment;
   }
+  if (values.presetId === 'teczka-sprawy') {
+    meta.dossier = values.dossier;
+  }
   if (values.presetId === 'od-autora' && values.duration_seconds) {
     // duration stored in column too
   }

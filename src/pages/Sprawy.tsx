@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Link } from '@tanstack/react-router';
-import { ArrowRight, Clock, ExternalLink, Play, Search } from 'lucide-react';
+import { ArrowRight, Clock, ExternalLink, FolderSearch, Play, Search } from 'lucide-react';
 import { getContentList, type Content } from '@/lib/supabase';
 import { formatRelativePL, formatDuration, getYouTubeThumbnail } from '@/lib/utils';
 import { Card } from '@/components/ui/Card';
@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/Badge';
 import materialyData from '@/data/materialy.json';
 import wyroznioneData from '@/data/wyroznione.json';
 import { presetTagFromContent } from '@/config/contentPresets';
+import { DOSSIER_STATUS_LABELS, isDossierContent, parseDossierMeta } from '@/types/dossier';
 
 type MaterialJson = {
   slug: string;
@@ -140,6 +141,7 @@ function ItemCard({ item }: { item: UnifiedItem }) {
 
 export function SprawyPage() {
   const [dbItems, setDbItems] = useState<Content[]>([]);
+  const [dossiers, setDossiers] = useState<Content[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<'all' | 'featured' | 'video'>('all');
 
@@ -148,11 +150,13 @@ export function SprawyPage() {
       const [featured, videos, posts] = await Promise.all([
         getContentList({ featured: true, limit: 20 }),
         getContentList({ type: 'video', limit: 30 }),
-        getContentList({ type: 'post', limit: 20 }),
+        getContentList({ type: 'post', limit: 40 }),
       ]);
       const byId = new Map<string, Content>();
       [...featured, ...videos, ...posts].forEach((item) => byId.set(item.id, item));
-      setDbItems(Array.from(byId.values()));
+      const all = Array.from(byId.values());
+      setDbItems(all);
+      setDossiers(all.filter((c) => isDossierContent(c)).sort((a, b) => (b.published_at || b.created_at).localeCompare(a.published_at || a.created_at)));
       setLoading(false);
     };
     void load();
@@ -220,6 +224,43 @@ export function SprawyPage() {
           Materiały śledcze, reportaże i sprawy, które wymagają czasu, dokumentów i cierpliwości. Archiwum łączy najnowsze publikacje z bazy z wyróżnionymi materiałami i sprawami.
         </p>
       </div>
+
+      {dossiers.length > 0 && (
+        <section className="mb-12">
+          <div className="mb-5 flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gold-dim text-gold"><FolderSearch className="h-5 w-5" /></div>
+            <div>
+              <h2 className="text-2xl font-display font-bold text-ink">Teczki spraw</h2>
+              <p className="text-sm text-muted">Najważniejsze śledztwa w jednym miejscu — z aktualizacjami, osią czasu i dokumentami.</p>
+            </div>
+          </div>
+          <div className="grid gap-6 md:grid-cols-2">
+            {dossiers.map((c) => {
+              const d = parseDossierMeta(c.meta);
+              return (
+                <Link key={c.id} to="/c/$slug" params={{ slug: c.slug }} className="group block">
+                  <Card variant="hover" className="h-full overflow-hidden border-gold/20 p-0">
+                    <div className="bg-gradient-to-b from-accent/[0.08] via-surface to-surface p-6">
+                      <div className="flex flex-wrap items-center gap-2 text-xs">
+                        <span className="font-mono tracking-widest text-gold">{d.caseCode || 'TECZKA ŚLEDCZA'}</span>
+                        <span className="rounded-full border border-accent/30 bg-accent-dim px-2.5 py-0.5 font-semibold text-accent">{DOSSIER_STATUS_LABELS[d.caseStatus]}</span>
+                      </div>
+                      <h3 className="mt-3 text-xl font-display font-bold text-ink transition-colors group-hover:text-gold">{c.title}</h3>
+                      {c.excerpt && <p className="mt-2 line-clamp-2 text-sm text-muted">{c.excerpt}</p>}
+                      <div className="mt-4 flex flex-wrap gap-4 text-xs text-muted">
+                        <span><span className="tabular-nums text-ink">{d.updates.length}</span> aktualizacji</span>
+                        <span><span className="tabular-nums text-ink">{d.documents.length}</span> dokumentów</span>
+                        <span><span className="tabular-nums text-ink">{d.statements.length}</span> stanowisk</span>
+                      </div>
+                      <span className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-gold">Otwórz teczkę <ArrowRight className="h-4 w-4" /></span>
+                    </div>
+                  </Card>
+                </Link>
+              );
+            })}
+          </div>
+        </section>
+      )}
 
       {featuredItems.length > 0 && (
         <section className="mb-12">

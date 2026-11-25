@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AlertTriangle, Lock, Send, ShieldCheck } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { Card } from '@/components/ui/Card';
@@ -11,6 +11,12 @@ export function InformatorPage() {
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
   const [contact, setContact] = useState('');
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const temat = params.get('temat');
+    if (temat && !subject) setSubject(temat.slice(0, 140));
+  }, []);
   const [loading, setLoading] = useState(false);
   const [sent, setSent] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);

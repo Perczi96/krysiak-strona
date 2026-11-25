@@ -71,8 +71,8 @@ export function Layout() {
           <div className="mt-8 flex flex-col items-center justify-between gap-4 border-t border-border pt-8 md:flex-row">
             <p className="text-sm text-muted">© {new Date().getFullYear()} Bez Maski. Wszelkie prawa zastrzeżone.</p>
             <nav className="flex items-center gap-6 text-sm">
-              <a href="/regulamin" className="text-muted hover:text-gold">Regulamin</a>
-              <a href="/polityka-prywatnosci" className="text-muted hover:text-gold">Polityka prywatności</a>
+              <Link to="/regulamin" className="text-muted hover:text-gold">Regulamin</Link>
+              <Link to="/polityka-prywatnosci" className="text-muted hover:text-gold">Polityka prywatności</Link>
               <Link to="/informator" className="text-muted hover:text-gold">Kontakt</Link>
             </nav>
           </div>

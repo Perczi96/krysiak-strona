@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/Button';
 import { cn } from '@/lib/utils';
 import type { Content, Tier } from '@/lib/supabase';
 import { CONTENT_PRESETS, KULISY_SUBTYPES, detectPreset, extractYouTubeId, getAuthorComment, getCaseStage, getKulisySubtype, getPresetById, slugifyPl, type PresetId } from '@/config/contentPresets';
+import { DossierEditorFields } from '@/components/admin/DossierEditorFields';
+import { emptyDossier, parseDossierMeta, type DossierData } from '@/types/dossier';
 
 export interface AdminContentFormValues {
   title: string;
@@ -24,6 +26,7 @@ export interface AdminContentFormValues {
   kulisySubtype: string;
   caseStage: string;
   authorComment: string;
+  dossier: DossierData;
 }
 
 function useIsMobile() {
@@ -59,6 +62,7 @@ function toValues(content: Content | null, presetId: PresetId): AdminContentForm
     kulisySubtype: (getKulisySubtype(content || ({ meta: {} } as Content)) as string) || (String(meta.kulisy_subtype || 'kulisy-materialu')),
     caseStage: content ? getCaseStage(content) : '',
     authorComment: content ? getAuthorComment(content) : '',
+    dossier: content ? parseDossierMeta(content.meta) : emptyDossier(),
   };
 }
 
@@ -200,6 +204,19 @@ export function AdminContentForm({
           <label className="mb-2 block text-sm font-medium text-muted">Komentarz autora</label>
           <textarea className={cn(fieldClass, 'min-h-[120px] py-3')} value={values.authorComment} onChange={(e) => set('authorComment', e.target.value)} placeholder="Kontekst, komentarz, wyjaśnienie..." />
         </div>
+      )}
+
+      {show('dossierEditor') && (
+        <DossierEditorFields
+          value={values.dossier}
+          onChange={(dossier) => set('dossier', dossier)}
+          onFillSample={() => setValues((v) => ({
+            ...v,
+            title: v.title || '[SZABLON] Przykładowa teczka śledcza — test układu',
+            excerpt: v.excerpt || 'To jest przykładowy szkic teczki sprawy służący do sprawdzenia układu i prezentacji danych. Zastąp treść prawdziwymi, zweryfikowanymi informacjami.',
+            published: false,
+          }))}
+        />
       )}
 
       {show('body') && (

@@ -13,6 +13,8 @@ import { SprawySadowePage } from '@/pages/SprawySadowe';
 import { PoznajMniePage } from '@/pages/PoznajMnie';
 import { KlubPage } from '@/pages/Klub';
 import { InformatorPage } from '@/pages/Informator';
+import { RegulaminPage } from '@/pages/Regulamin';
+import { PolitykaPrywatnosciPage } from '@/pages/PolitykaPrywatnosci';
 
 const rootRoute = createRootRoute({
   component: Layout,
@@ -138,6 +140,18 @@ const adminRoute = createRoute({
   component: AdminPage,
 });
 
+const regulaminRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/regulamin',
+  component: RegulaminPage,
+});
+
+const politykaRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: '/polityka-prywatnosci',
+  component: PolitykaPrywatnosciPage,
+});
+
 const notFoundRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: '/404',
@@ -155,6 +169,8 @@ const routeTree = rootRoute.addChildren([
   poznajMnieRoute,
   klubRoute,
   informatorRoute,
+  regulaminRoute,
+  politykaRoute,
   karieraAliasRoute,
   oMnieAliasRoute,
   informatorAliasRoute,
@@ -165,7 +181,7 @@ const routeTree = rootRoute.addChildren([
   notFoundRoute,
 ]);
 
-export const router = createRouter({ routeTree });
+export const router = createRouter({ routeTree, defaultNotFoundComponent: NotFoundPage });
 
 declare module '@tanstack/react-router' {
   interface Register {
