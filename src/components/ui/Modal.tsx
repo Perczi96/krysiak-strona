@@ -28,7 +28,7 @@ export function Modal({
   closeOnOverlayClick = true,
   closeOnEscape = true,
   showCloseButton = true,
-  className
+  className,
 }: ModalProps) {
   const overlayRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -38,9 +38,10 @@ export function Modal({
     if (!isOpen) return;
 
     previousActiveElement.current = document.activeElement as HTMLElement;
+    const prevOverflow = document.body.style.overflow;
+    const prevTouchAction = document.body.style.touchAction;
     document.body.style.overflow = 'hidden';
 
-    // Focus trap
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && closeOnEscape) {
         onClose();
@@ -66,7 +67,6 @@ export function Modal({
 
     document.addEventListener('keydown', handleKeyDown);
 
-    // Focus first element after render
     const timer = setTimeout(() => {
       const focusableElements = contentRef.current?.querySelectorAll<HTMLElement>(
         'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
@@ -76,7 +76,8 @@ export function Modal({
 
     return () => {
       clearTimeout(timer);
-      document.body.style.overflow = '';
+      document.body.style.overflow = prevOverflow;
+      document.body.style.touchAction = prevTouchAction;
       document.removeEventListener('keydown', handleKeyDown);
       previousActiveElement.current?.focus();
     };
@@ -85,22 +86,22 @@ export function Modal({
   if (!isOpen) return null;
 
   const sizes = {
-    sm: 'max-w-sm',
-    md: 'max-w-md',
-    lg: 'max-w-lg',
-    xl: 'max-w-xl',
-    full: 'max-w-4xl'
+    sm: 'sm:max-w-sm',
+    md: 'sm:max-w-md',
+    lg: 'sm:max-w-2xl',
+    xl: 'sm:max-w-4xl',
+    full: 'sm:max-w-5xl',
   };
 
   const variantStyles = {
     default: 'border-border',
-    danger: 'border-red/50'
+    danger: 'border-accent/50',
   };
 
   const modalContent = (
     <div
       ref={overlayRef}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-black/60 p-0 backdrop-blur-sm animate-fade-in sm:items-center sm:p-4"
       onClick={(e) => {
         if (closeOnOverlayClick && e.target === overlayRef.current) {
           onClose();
@@ -114,17 +115,18 @@ export function Modal({
       <div
         ref={contentRef}
         className={cn(
-          'relative w-full bg-panel rounded-2xl shadow-2xl animate-slide-up',
+          'relative flex w-full min-h-0 flex-col overflow-hidden border bg-surface shadow-2xl animate-slide-up',
+          'max-h-[92dvh] rounded-t-2xl sm:max-h-[88dvh] sm:rounded-2xl',
           sizes[size],
           variantStyles[variant || 'default'],
           className
         )}
       >
         {(title || showCloseButton) && (
-          <div className="flex items-start justify-between p-6 border-b border-border">
-            <div>
+          <div className="flex shrink-0 items-start justify-between gap-4 border-b border-border p-4 sm:p-6">
+            <div className="min-w-0">
               {title && (
-                <h2 id="modal-title" className="text-xl font-display font-bold text-ink">
+                <h2 id="modal-title" className="text-lg font-display font-bold text-ink sm:text-xl">
                   {title}
                 </h2>
               )}
@@ -137,15 +139,18 @@ export function Modal({
             {showCloseButton && (
               <button
                 onClick={onClose}
-                className="p-1 rounded-lg text-muted hover:text-ink hover:bg-surface-hover transition-colors"
+                className="shrink-0 rounded-lg p-1 text-muted transition-colors hover:bg-surface-hover hover:text-ink"
                 aria-label="Zamknij"
               >
-                <X className="w-5 h-5" />
+                <X className="h-5 w-5" />
               </button>
             )}
           </div>
         )}
-        <div className="p-6">
+        <div
+          className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-4 pb-safe sm:p-6"
+          style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-y' }}
+        >
           {children}
         </div>
       </div>
@@ -157,7 +162,6 @@ export function Modal({
   return createPortal(modalContent, document.body);
 }
 
-// Confirmation modal
 interface ConfirmModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -179,24 +183,15 @@ export function ConfirmModal({
   confirmText = 'Potwierdź',
   cancelText = 'Anuluj',
   variant = 'primary',
-  loading = false
+  loading = false,
 }: ConfirmModalProps) {
   return (
     <Modal isOpen={isOpen} onClose={onClose} title={title} size="sm" variant={variant === 'danger' ? 'danger' : 'default'}>
-      <p className="text-muted mb-6">{message}</p>
+      <p className="mb-6 text-muted">{message}</p>
       <div className="flex justify-end gap-3">
+        <button onClick={onClose} disabled={loading} className="btn btn-secondary">{cancelText}</button>
         <button
-          onClick={onClose}
-          disabled={loading}
-          className="btn btn-secondary"
-        >
-          {cancelText}
-        </button>
-        <button
-          onClick={() => {
-            onConfirm();
-            onClose();
-          }}
+          onClick={() => { onConfirm(); onClose(); }}
           disabled={loading}
           className={variant === 'danger' ? 'btn btn-danger' : 'btn btn-primary'}
         >

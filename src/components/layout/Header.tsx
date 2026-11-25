@@ -1,6 +1,6 @@
 import { Link, useLocation } from '@tanstack/react-router';
 import { Crown, LogOut, Menu, Play, Settings, User, X } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { Avatar } from '@/components/ui/Avatar';
 import { useAuth } from '@/features/auth/useAuth';
@@ -19,6 +19,13 @@ export function Header() {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+
+  useEffect(() => {
+    if (!mobileMenuOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = prev; };
+  }, [mobileMenuOpen]);
 
   const isActive = (href: string) => location.pathname === href || (href !== '/' && location.pathname.startsWith(href));
 
@@ -132,9 +139,9 @@ export function Header() {
       {mobileMenuOpen && (
         <>
           <div className="fixed inset-0 z-40 bg-black/50 lg:hidden" onClick={() => setMobileMenuOpen(false)} />
-          <div className="fixed bottom-0 right-0 top-0 z-50 w-80 max-w-[calc(100vw-2rem)] border-l border-border bg-surface shadow-xl lg:hidden animate-slide-up">
-            <div className="flex h-full flex-col">
-              <div className="flex items-center justify-between border-b border-border p-4">
+          <div className="fixed inset-y-0 right-0 z-50 h-[100dvh] w-80 max-w-[calc(100vw-2rem)] border-l border-border bg-surface shadow-xl lg:hidden animate-slide-up">
+            <div className="flex h-full min-h-0 flex-col">
+              <div className="flex shrink-0 items-center justify-between border-b border-border p-4">
                 <Link to="/" className="flex items-center gap-2 font-display font-bold text-xl text-ink" onClick={() => setMobileMenuOpen(false)}>
                   <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-accent text-white"><Play className="h-4 w-4 fill-current" /></span>
                   BEZ MASKI
@@ -143,7 +150,7 @@ export function Header() {
                   <X className="h-5 w-5" />
                 </button>
               </div>
-              <nav className="flex-1 overflow-y-auto p-4 space-y-1" aria-label="Nawigacja mobilna">
+              <nav className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-4 space-y-1" style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-y' }} aria-label="Nawigacja mobilna">
                 {NAV_ITEMS.map((item) => (
                   <Link
                     key={item.href}

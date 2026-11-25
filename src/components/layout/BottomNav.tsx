@@ -1,6 +1,6 @@
 import { Link, useLocation } from '@tanstack/react-router';
 import { BookOpen, Crown, FileText, Home, LogIn, MoreHorizontal, Scale, Search, User, X } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/features/auth/useAuth';
 
@@ -8,6 +8,13 @@ export function BottomNav() {
   const location = useLocation();
   const { user } = useAuth();
   const [moreOpen, setMoreOpen] = useState(false);
+
+  useEffect(() => {
+    if (!moreOpen) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = prev; };
+  }, [moreOpen]);
 
   const items = [
     { href: '/', label: 'Dziś', icon: Home },
@@ -64,7 +71,7 @@ export function BottomNav() {
       {moreOpen && (
         <>
           <div className="fixed inset-0 z-50 bg-black/55 md:hidden" onClick={() => setMoreOpen(false)} />
-          <div className="fixed inset-x-0 bottom-0 z-50 rounded-t-2xl border-t border-border bg-surface p-4 pb-safe shadow-2xl md:hidden animate-slide-up" role="dialog" aria-label="Więcej">
+          <div className="fixed inset-x-0 bottom-0 z-50 max-h-[85dvh] overflow-y-auto overscroll-contain rounded-t-2xl border-t border-border bg-surface p-4 pb-safe shadow-2xl md:hidden animate-slide-up" style={{ WebkitOverflowScrolling: 'touch', touchAction: 'pan-y' }} role="dialog" aria-label="Więcej">
             <div className="mb-4 flex items-center justify-between">
               <div>
                 <p className="text-sm font-semibold text-ink">Więcej</p>
