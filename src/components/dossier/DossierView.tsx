@@ -1,10 +1,12 @@
 import { useMemo, useState } from 'react';
 import { Link } from '@tanstack/react-router';
-import { Crown, Lock } from 'lucide-react';
+import { Crown, Lock, Share2, X } from 'lucide-react';
 import { Card } from '@/components/ui/Card';
+import { Button } from '@/components/ui/Button';
+import { useToast } from '@/components/ui/Toaster';
 import type { Content } from '@/lib/supabase';
 import { cn } from '@/lib/utils';
-import { parseDossierMeta, type DossierData } from '@/types/dossier';
+import { DOSSIER_STATUS_LABELS, dossierCountLabel, parseDossierMeta, type DossierData } from '@/types/dossier';
 import { DossierHeader } from './DossierHeader';
 import { DossierSummaryTab } from './DossierSummaryTab';
 import { DossierUpdatesTab } from './DossierUpdatesTab';
@@ -14,10 +16,26 @@ import { DossierStatementsTab } from './DossierStatementsTab';
 
 type TabId = 'summary' | 'updates' | 'timeline' | 'documents' | 'statements';
 
+function StatusStampSmall({ status }: { status: DossierData['caseStatus'] }) {
+  const styles: Record<DossierData['caseStatus'], string> = {
+    'w-toku': 'border-accent/70 text-accent',
+    'nowa-aktualizacja': 'border-accent/80 text-accent',
+    'w-sadzie': 'border-amber-400/70 text-amber-400',
+    'zakonczona': 'border-emerald-500/60 text-emerald-400',
+  };
+  return (
+    <span className={`dossier-stamp inline-flex rounded border px-2 py-1 font-mono text-[10px] font-bold tracking-[0.18em] ${styles[status]}`}>
+      {DOSSIER_STATUS_LABELS[status].toUpperCase()}
+    </span>
+  );
+}
+
 export function DossierView({ content, hasFullAccess }: { content: Content; hasFullAccess: boolean }) {
   const dossier: DossierData = useMemo(() => parseDossierMeta(content.meta), [content.meta]);
+  const [isOpen, setIsOpen] = useState(false);
   const [tab, setTab] = useState<TabId>('summary');
   const [videoOpen, setVideoOpen] = useState(false);
+  const { toast } = useToast();
 
   const tabs: { id: TabId; label: string; count?: number }[] = [
     { id: 'summary', label: 'W skrócie' },
@@ -28,95 +46,180 @@ export function DossierView({ content, hasFullAccess }: { content: Content; hasF
   ];
 
   const locked = !hasFullAccess && tab !== 'statements' && tab !== 'summary';
+  const shareUrl = typeof window !== 'undefined' ? `${window.location.origin}/c/${content.slug}` : `/c/${content.slug}`;
+
+  const onShare = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: content.title, text: content.excerpt || 'Teczka sprawy — Bez Maski', url: shareUrl });
+        return;
+      }
+    } catch { /* fallback */ }
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      toast({ type: 'success', title: 'Skopiowano link', message: 'Link do teczki został skopiowany.' });
+    } catch {
+      toast({ type: 'error', title: 'Nie udało się skopiować', message: shareUrl });
+    }
+  };
+
+  const openDossier = (targetTab: TabId = 'summary') => {
+    setTab(targetTab);
+    setIsOpen(true);
+    window.requestAnimationFrame(() => {
+      document.getElementById('dossier-open')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  };
+
+  const caseCode = dossier.caseCode?.trim() || 'AKTA SPRAWY';
 
   return (
     <div className="space-y-8">
-      <DossierHeader content={content} dossier={dossier} />
-
-      {content.video_id ? (
-        <div className="overflow-hidden rounded-2xl border border-border bg-black">
-          {videoOpen ? (
-            <div className="aspect-video">
-              <iframe
-                src={`https://www.youtube-nocookie.com/embed/${content.video_id}?autoplay=1&rel=0`}
-                title={content.title}
-                className="h-full w-full"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                allowFullScreen
-              />
-            </div>
-          ) : (
-            <button type="button" onClick={() => setVideoOpen(true)} className="group relative block aspect-video w-full">
-              <img src={content.thumbnail_url || `https://i.ytimg.com/vi/${content.video_id}/hqdefault.jpg`} alt={content.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]" loading="lazy" />
-              <div className="absolute inset-0 bg-black/35 transition-colors group-hover:bg-black/45" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent text-white shadow-lg"><svg className="ml-1 h-6 w-6 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+      {!isOpen ? (
+        <DossierHeader content={content} dossier={dossier} onOpen={() => openDossier('summary')} onOpenLatest={() => openDossier('updates')} />
+      ) : (
+        <div id="dossier-open" className="dossier-open-enter space-y-0">
+          <div className="relative pt-8">
+            <div className="absolute left-5 top-0 z-20 sm:left-8">
+              <div className="rounded-t-md border border-[#c9b28c] bg-[#E5D3B3] px-4 py-2 shadow-[0_1px_0_rgba(255,255,255,0.35)_inset]">
+                <p className="font-mono text-[11px] font-bold tracking-[0.24em] text-[#1A1815]">{caseCode.toUpperCase()}</p>
               </div>
-            </button>
-          )}
-        </div>
-      ) : content.thumbnail_url ? (
-        <div className="overflow-hidden rounded-2xl border border-border"><img src={content.thumbnail_url} alt={content.title} className="aspect-video w-full object-cover" loading="lazy" /></div>
-      ) : null}
-
-      {dossier.latestUpdate && (dossier.latestUpdate.title || dossier.latestUpdate.summary) && (
-        <Card className="border-l-2 border-l-accent p-5 md:p-6">
-          <p className="text-xs font-bold uppercase tracking-[0.18em] text-accent">Najnowsze w sprawie</p>
-          <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted">
-            {dossier.latestUpdate.date && <span className="font-mono tabular-nums text-gold">{dossier.latestUpdate.date}</span>}
-          </div>
-          {dossier.latestUpdate.title && <h2 className="mt-2 text-lg font-display font-bold text-ink">{dossier.latestUpdate.title}</h2>}
-          {dossier.latestUpdate.summary && <p className="mt-2 text-sm leading-relaxed text-muted">{dossier.latestUpdate.summary}</p>}
-          <button type="button" onClick={() => setTab('updates')} className="mt-4 text-sm font-semibold text-gold hover:text-gold-light">Zobacz wszystkie aktualizacje →</button>
-        </Card>
-      )}
-
-      <div className="-mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0">
-        <div className="flex min-w-max gap-2 border-b border-border pb-px">
-          {tabs.map((t) => (
-            <button key={t.id} type="button" onClick={() => setTab(t.id)}
-              className={cn('inline-flex items-center gap-2 whitespace-nowrap border-b-2 px-3 py-3 text-sm font-medium transition-colors', tab === t.id ? 'border-gold text-ink' : 'border-transparent text-muted hover:text-ink')}>
-              {t.label}
-              {typeof t.count === 'number' && <span className={cn('rounded-full px-2 py-0.5 text-[11px] tabular-nums', tab === t.id ? 'bg-gold-dim text-gold' : 'bg-surface-hover text-muted')}>{t.count}</span>}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <div>
-        {tab === 'summary' && <DossierSummaryTab dossier={dossier} bodyMarkdown={content.body_markdown} />}
-        {tab === 'statements' && <DossierStatementsTab statements={dossier.statements} />}
-        {locked ? (
-          <Card className="border-gold/20 bg-gold-dim/10 p-8 text-center">
-            <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-gold-dim"><Lock className="h-6 w-6 text-gold" /></div>
-            <h3 className="text-xl font-display font-bold text-ink">Ta część teczki jest dla Klubu Bez Maski</h3>
-            <p className="mx-auto mt-3 max-w-xl text-sm text-muted">Wspieraj niezależne dziennikarstwo śledcze, aby uzyskać pełny dostęp do aktualizacji, osi czasu i dokumentów. Stanowiska i odpowiedzi pozostają zawsze publiczne.</p>
-            <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
-              <Link to="/klub" className="btn btn-primary inline-flex items-center gap-2"><Crown className="h-4 w-4" /> Poznaj Klub</Link>
-              <button type="button" onClick={() => setTab('statements')} className="btn btn-secondary">Zobacz stanowiska</button>
             </div>
-          </Card>
-        ) : (
-          <>
-            {tab === 'updates' && <DossierUpdatesTab updates={dossier.updates} />}
-            {tab === 'timeline' && <DossierTimelineTab timeline={dossier.timeline} />}
-            {tab === 'documents' && <DossierDocumentsTab documents={dossier.documents} />}
-          </>
-        )}
-      </div>
 
-      <Card className="overflow-hidden border-accent/30 p-0">
-        <div className="flex flex-col gap-4 bg-gradient-to-r from-accent/[0.08] via-surface to-surface p-6 md:flex-row md:items-center md:justify-between md:p-8">
-          <div>
-            <div className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-accent"><span className="relative flex h-2 w-2"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" /><span className="relative inline-flex h-2 w-2 rounded-full bg-accent" /></span> Informator</div>
-            <h3 className="text-xl font-display font-bold text-ink md:text-2xl">Masz dokumenty, wiedzę albo sygnał w tej sprawie?</h3>
-            <p className="mt-2 max-w-2xl text-sm text-muted">Przekaż informację bezpiecznie i anonimowo. Każdy wiarygodny sygnał pomaga w dalszym śledztwie.</p>
+            <div className="dossier-grain dossier-cover-shadow overflow-hidden rounded-t-xl border border-[#2a313d] bg-gradient-to-b from-[#171b22] to-[#12161c]">
+              <div className="border-b border-[#2a313d]/80 p-4 sm:p-6">
+                <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
+                  <div className="min-w-0">
+                    <div className="flex flex-wrap items-center gap-3">
+                      <Link to="/sprawy" className="text-sm text-muted hover:text-gold">← Sprawy</Link>
+                      <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-gold">Teczka śledcza</span>
+                      <StatusStampSmall status={dossier.caseStatus} />
+                    </div>
+                    <h1 className="mt-3 max-w-4xl text-2xl font-display font-bold leading-tight text-ink md:text-4xl">{content.title}</h1>
+                    <p className="mt-2 font-mono text-[11px] tracking-wide text-[#9aa3b2]">
+                      {dossierCountLabel(dossier.updates.length, 'aktualizacja')} · {dossierCountLabel(dossier.documents.length, 'dokument')} · {dossierCountLabel(dossier.statements.length, 'stanowisko')}
+                    </p>
+                  </div>
+                  <div className="flex shrink-0 items-center gap-2">
+                    <Button variant="secondary" size="sm" onClick={() => void onShare()} leftIcon={<Share2 className="h-4 w-4" />}>Udostępnij</Button>
+                    <Button variant="ghost" size="sm" onClick={() => setIsOpen(false)} leftIcon={<X className="h-4 w-4" />}>Zamknij teczkę</Button>
+                  </div>
+                </div>
+              </div>
+
+              {(content.video_id || content.thumbnail_url) && (
+                <div className="border-b border-[#2a313d]/80 bg-black/20 p-4 sm:p-6">
+                  {content.video_id ? (
+                    <div className="overflow-hidden rounded-lg border border-[#2a313d] bg-black">
+                      {videoOpen ? (
+                        <div className="aspect-video">
+                          <iframe
+                            src={`https://www.youtube-nocookie.com/embed/${content.video_id}?autoplay=1&rel=0`}
+                            title={content.title}
+                            className="h-full w-full"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowFullScreen
+                          />
+                        </div>
+                      ) : (
+                        <button type="button" onClick={() => setVideoOpen(true)} className="group relative block aspect-video w-full">
+                          <img src={content.thumbnail_url || `https://i.ytimg.com/vi/${content.video_id}/hqdefault.jpg`} alt={content.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.02]" loading="lazy" />
+                          <div className="absolute inset-0 bg-black/35 transition-colors group-hover:bg-black/45" />
+                          <div className="absolute inset-0 flex items-center justify-center"><div className="flex h-16 w-16 items-center justify-center rounded-full bg-accent text-white shadow-lg"><svg className="ml-1 h-6 w-6 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg></div></div>
+                        </button>
+                      )}
+                    </div>
+                  ) : content.thumbnail_url ? (
+                    <div className="overflow-hidden rounded-lg border border-[#2a313d]"><img src={content.thumbnail_url} alt={content.title} className="aspect-video w-full object-cover" loading="lazy" /></div>
+                  ) : null}
+                </div>
+              )}
+
+              {dossier.latestUpdate && (dossier.latestUpdate.title || dossier.latestUpdate.summary) && (
+                <div className="border-b border-[#2a313d]/80 p-4 sm:p-6">
+                  <div className="relative rounded-r-lg border border-[#2a313d] border-l-2 border-l-accent bg-[#14171D]/90 p-4 sm:p-5">
+                    <p className="font-mono text-[11px] font-bold uppercase tracking-[0.2em] text-accent">Najnowsze w sprawie</p>
+                    {dossier.latestUpdate.date && <p className="mt-2 font-mono text-xs tabular-nums text-gold">{dossier.latestUpdate.date}</p>}
+                    {dossier.latestUpdate.title && <h2 className="mt-2 text-lg font-display font-bold text-ink">{dossier.latestUpdate.title}</h2>}
+                    {dossier.latestUpdate.summary && <p className="mt-2 text-sm leading-relaxed text-muted">{dossier.latestUpdate.summary}</p>}
+                    <button type="button" onClick={() => setTab('updates')} className="mt-4 text-sm font-semibold text-gold hover:text-gold-light">Zobacz wszystkie aktualizacje →</button>
+                  </div>
+                </div>
+              )}
+
+              <div className="px-3 pt-4 sm:px-6">
+                <div className="-mb-px flex gap-1 overflow-x-auto pb-px scrollbar-hide">
+                  {tabs.map((t) => {
+                    const active = tab === t.id;
+                    return (
+                      <button
+                        key={t.id}
+                        type="button"
+                        onClick={() => setTab(t.id)}
+                        className={cn(
+                          'relative shrink-0 rounded-t-xl border-x border-t px-3 py-2.5 text-left text-sm transition-all sm:px-4',
+                          active
+                            ? 'z-10 border-[#3a4352] border-t-accent bg-[#14171D] text-ink shadow-[0_-1px_0_#14171D]'
+                            : 'border-[#2a313d] bg-[#10141a] text-muted hover:bg-[#151a21] hover:text-ink'
+                        )}
+                      >
+                        <span className="flex items-center gap-2 whitespace-nowrap font-medium">
+                          {t.label}
+                          {typeof t.count === 'number' && (
+                            <span className={cn('rounded-full px-2 py-0.5 font-mono text-[11px] tabular-nums', active ? 'bg-accent-dim text-accent' : 'bg-[#1b212b] text-muted')}>{t.count}</span>
+                          )}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="relative border-t border-[#3a4352] bg-[#14171D] p-4 sm:p-6 md:p-8">
+                <div className="pointer-events-none absolute bottom-4 left-0 top-4 hidden w-px bg-[#2a313d] sm:left-6 sm:block" aria-hidden="true" />
+                <div className="pointer-events-none absolute left-3 top-8 hidden h-2.5 w-2.5 rounded-full border border-[#3a4352] bg-[#10141a] sm:left-[19px] sm:block" aria-hidden="true" />
+                <div className="pointer-events-none absolute left-3 top-20 hidden h-2.5 w-2.5 rounded-full border border-[#3a4352] bg-[#10141a] sm:left-[19px] sm:block" aria-hidden="true" />
+                <div className="sm:pl-6">
+                  <div key={tab} className="dossier-sheet-enter">
+                    {tab === 'summary' && <DossierSummaryTab dossier={dossier} bodyMarkdown={content.body_markdown} />}
+                    {tab === 'statements' && <DossierStatementsTab statements={dossier.statements} />}
+                    {locked ? (
+                      <Card className="border-gold/20 bg-gold-dim/10 p-8 text-center">
+                        <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-gold-dim"><Lock className="h-6 w-6 text-gold" /></div>
+                        <h3 className="text-xl font-display font-bold text-ink">Ta część teczki jest dla Klubu Bez Maski</h3>
+                        <p className="mx-auto mt-3 max-w-xl text-sm text-muted">Wspieraj niezależne dziennikarstwo śledcze, aby uzyskać pełny dostęp do aktualizacji, osi czasu i dokumentów. Stanowiska i odpowiedzi pozostają zawsze publiczne.</p>
+                        <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
+                          <Link to="/klub" className="btn btn-primary inline-flex items-center gap-2"><Crown className="h-4 w-4" /> Poznaj Klub</Link>
+                          <button type="button" onClick={() => setTab('statements')} className="btn btn-secondary">Zobacz stanowiska</button>
+                        </div>
+                      </Card>
+                    ) : (
+                      <>
+                        {tab === 'updates' && <DossierUpdatesTab updates={dossier.updates} />}
+                        {tab === 'timeline' && <DossierTimelineTab timeline={dossier.timeline} />}
+                        {tab === 'documents' && <DossierDocumentsTab documents={dossier.documents} />}
+                      </>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-          <a href={`/informator?temat=${encodeURIComponent(`Sprawa: ${content.title}`)}`} className="btn btn-primary shrink-0">
-            Przekaż anonimowo przez Informator →
-          </a>
+
+          <div className="mt-6">
+            <Card className="overflow-hidden border-accent/30 p-0">
+              <div className="flex flex-col gap-4 bg-gradient-to-r from-accent/[0.08] via-surface to-surface p-6 md:flex-row md:items-center md:justify-between md:p-8">
+                <div>
+                  <div className="mb-3 inline-flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em] text-accent"><span className="relative flex h-2 w-2"><span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-accent opacity-75" /><span className="relative inline-flex h-2 w-2 rounded-full bg-accent" /></span> Informator</div>
+                  <h3 className="text-xl font-display font-bold text-ink md:text-2xl">Masz dokumenty, wiedzę albo sygnał w tej sprawie?</h3>
+                  <p className="mt-2 max-w-2xl text-sm text-muted">Przekaż informację bezpiecznie i anonimowo. Każdy wiarygodny sygnał pomaga w dalszym śledztwie.</p>
+                </div>
+                <a href={`/informator?temat=${encodeURIComponent(`Sprawa: ${content.title}`)}`} className="btn btn-primary shrink-0">Przekaż anonimowo przez Informator →</a>
+              </div>
+            </Card>
+          </div>
         </div>
-      </Card>
+      )}
     </div>
   );
 }

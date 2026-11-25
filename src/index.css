@@ -448,3 +448,45 @@
   input, textarea, select { font-size: 16px !important; }
 }
 
+/* Dossier physical dossier styles */
+.dossier-grain {
+  background-image:
+    linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0) 28%),
+    radial-gradient(ellipse at top, rgba(217,45,32,0.06), transparent 55%);
+}
+.dossier-grain::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.045;
+  mix-blend-mode: soft-light;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='.55'/%3E%3C/svg%3E");
+}
+.dossier-cover-shadow {
+  box-shadow: 0 24px 60px -20px rgba(0,0,0,.65), inset 0 1px 0 rgba(255,255,255,.04);
+}
+.dossier-paper-edge {
+  box-shadow: 1px 0 0 rgba(229,211,179,.18), 2px 1px 0 rgba(229,211,179,.08);
+}
+.dossier-stamp {
+  transform: rotate(-3deg);
+}
+.dossier-sheet-enter {
+  animation: dossier-sheet-in 220ms ease-out;
+}
+@keyframes dossier-sheet-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.dossier-open-enter {
+  animation: dossier-open-in 380ms cubic-bezier(.2,.8,.2,1);
+}
+@keyframes dossier-open-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.995); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dossier-sheet-enter, .dossier-open-enter { animation: none; }
+}
+
