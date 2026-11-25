@@ -472,6 +472,9 @@
   background-color: #EFE9DC;
   color: #1E2026;
 }
+.dossier-paper h1, .dossier-paper h2, .dossier-paper h3, .dossier-paper h4, .dossier-paper h5, .dossier-paper h6 { color: #181A1F; }
+.dossier-paper .text-ink { color: #181A1F; }
+.dossier-paper .text-muted { color: #575A63; }
 .dossier-paper::before {
   content: '';
   position: absolute;
